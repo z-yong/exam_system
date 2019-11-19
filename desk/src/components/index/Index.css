@@ -1,0 +1,100 @@
+/* .wrapper /deep/ .header{
+    border-bottom: 1px solid #ccc;
+} */
+/* 3263ca */
+.index{
+    height: 100%;
+}
+.wrapper .index-main{
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+.wrapper .index-main .fixed{
+    position: fixed;
+    top: 0;
+    width: 20%;
+}
+.wrapper .index-main{
+    border-top: 1px solid #ccc
+}
+.index-main .content-left{
+    width: 20%;
+    height: 100%;
+}
+.content-left .user-mess{
+    text-align: center;
+    padding-top: 3vh;
+    border-right: 1px  solid #dde
+}
+.content-left .user-mess .user-photo{
+    display: inline-block;
+    
+}
+.content-left .user-mess .user-photo img{
+    border-radius: 50%;
+}
+.content-left .user-mess .user-name{
+    color: #0070d8;
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 6px;
+}
+.index-main .content-left .menu-left{
+    text-align: center;
+    /* border-right: 1px  solid #ccc */
+}
+.menu-left .iconfont{
+    font-size: 14px;
+    color: #333;
+    margin-right: 6px;
+}
+.el-menu.el-menu--inline .el-menu-item:focus, 
+.el-menu.el-menu--inline .el-menu-item:hover{
+    background: #0070d8 !important
+}
+.menu-left .el-submenu__title:hover,
+.menu-left .el-menu-vertical-demo>.el-menu-item:hover{
+    background: #eee !important;
+}
+.menu-left .el-menu.el-menu--inline{
+    background: #f8f8f8
+}
+.menu-left .el-menu-vertical-demo>.el-menu-item{
+    color: #0070d8 !important;
+}
+.menu-left .el-menu-vertical-demo>.el-menu-item .el-icon-s-opportunity{
+    color: #0070d8;
+}
+.menu-left .el-menu.el-menu--inline .el-menu-item{
+    background: #f8f8f8 !important;
+    /* text-indent: 8em; */
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 8vw !important;
+}
+
+.menu-left .el-menu.el-menu--inline .el-menu-item:hover i{
+    color: #fff
+}
+.menu-left .is-active{
+    color: #fff;
+}
+.index-main .content-right{
+    width: 80%;
+    height: 125vh;
+}
+.menu-left .el-menu.el-menu--inline .el-menu-item .enclo-text,
+.menu-left .el-menu.el-menu--inline .el-menu-item .sub-text{
+    color: #0070d8
+}
+.menu-left .el-menu.el-menu--inline .el-menu-item:hover{
+    color: #fff !important;
+    background: #0070d8 !important;
+}
+.menu-left .el-menu.el-menu--inline .el-menu-item:hover .enclo-text,
+.menu-left .el-menu.el-menu--inline .el-menu-item:hover .sub-text{
+    color: #fff !important;
+}

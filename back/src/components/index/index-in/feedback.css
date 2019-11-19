@@ -1,0 +1,67 @@
+.feed-wrapper{
+    padding: 2vh 1vw
+}
+.feed-wrapper .feed-head{
+    display: flex;
+    border-bottom: 1px solid #eee;
+}
+.feed-wrapper .feed-head .head-item{
+    width: 5vw;
+    padding: 1vh;
+    margin-right: .5vh;
+    text-align: center;
+    border: 1px solid #eee;
+    font-size: 14px;
+    background: #fff;
+    border-bottom: 1px solid #fff;
+    cursor: pointer;
+    user-select: none;
+}
+.feed-wrapper .feed-head .head-item.active{
+    background: #409EFF;
+    color: #fff;
+    border: 1px solid #409EFF
+}
+.feed-wrapper .feed-content{
+    background: #fff;
+    box-shadow: 1px 1px 1px 0px #ccc;
+    font-size: 14px;
+    padding: 1vw
+}
+.feed-wrapper .feed-content .no{
+    text-align: center;
+    color: #666
+}
+.feed-wrapper .feed-content .content-item{
+    background: #f9f9f9;
+    padding: 1vw;
+    margin-bottom: 1vw
+}
+.feed-wrapper .feed-content .stu-name{
+    margin-bottom: 1vh
+}
+.feed-wrapper .feed-content .stu-content,
+.feed-wrapper .feed-content .tea-content{
+    text-indent: 1em
+}
+.feed-wrapper .feed-content .stu-content,
+.feed-wrapper .feed-content textarea,
+.feed-wrapper .feed-content .el-button{
+    margin-left: 3vw
+}
+.feed-wrapper .feed-content .tea-content{
+    margin-left: 3vw;
+}
+.feed-wrapper .feed-content .content-item .el-button{
+    display: block;
+    margin-top: 1vh
+}
+.feed-wrapper .feed-content textarea{
+    width: 90%;
+    height: 10vh;
+    margin-top: 1.5vh;
+    padding: 1vh 1vw
+}
+.feed-wrapper .feed-content .tea-name{
+    margin: 2vh 0 1vh;
+}

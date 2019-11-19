@@ -1,0 +1,48 @@
+ .add-stu{
+    padding: 3vh 0 0;
+    background: #f5f5f5;
+}
+.add-stu .add-wrapper{
+    background: #fff;
+    padding: 0 0 2vh;
+}
+.add-stu .add-wrapper .add-title{
+    height: 7vh;
+    line-height: 7vh;
+    font-size: 16px;
+    font-weight: 600;
+    text-indent: 1.5em;
+}
+.add-stu .add-wrapper .add-box{
+    display: flex;
+    margin: 2vh 0 0 5vw
+}
+.add-stu .add-wrapper .add-box .add-box-title{
+    margin-bottom: 4vh;
+    font-weight: 600;
+    font-size: 15px
+}
+.add-stu .add-wrapper .add-box .to-lead{
+    margin-left: 15vw
+}
+.add-stu .add-wrapper .el-form{
+    margin-top: 2vh
+}
+ .add-stu .el-form-item .el-form-item__label{
+    font-size: 15px;
+    color: #111;
+}
+ .add-stu .el-form-item{
+    display: block;
+    margin-bottom: 2vh;
+}
+.add-stu .el-form-item{
+    text-align: center
+}
+.add-stu .el-form-item .el-button{
+    margin: 2vh 0 0 2vw
+}
+.add-stu .el-dialog__body .el-form-item .el-form-item__content .el-select,
+.add-stu .el-dialog__body .el-form-item .el-form-item__content .el-input{
+    width: 60% !important;
+}

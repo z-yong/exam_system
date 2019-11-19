@@ -1,0 +1,99 @@
+.user-wrapper{
+    width: 100%;
+    height: 100%;
+    background: #f7f7f7;
+    padding-top: 3vh;
+}
+.user-wrapper .user-box{
+    width: 98%;
+    margin: 0vh auto;
+}
+.user-wrapper .user-box .search{
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: #111;
+}
+.user-wrapper .user-box .search{
+    padding: 3vh 1vw;
+    background: #ffff;
+    border-left: 3px solid #1362cc
+}
+.user-wrapper .search .el-select{
+    margin-left: 1vw
+}
+.user-wrapper .search .el-select .el-input.el-input--suffix{
+    width: 50%;
+}
+.search .el-select .el-input{
+    width: 60%
+}
+.search .time .endDate{
+    margin-left: 0.5vw
+}
+.search .el-icon-search{
+    margin-left: 2vw
+}
+.search .add-ident{
+    position: absolute;
+    top: 50%;
+    right: 3vw;
+    transform: translate(0,-50%)
+}
+.user-wrapper .table{
+    width: 100%;
+    background: #fff;
+    margin-top: 2vh;
+    padding-bottom: 3vh
+}
+.user-wrapper .table .table-title{
+    height: 7vh;
+    line-height: 7vh;
+    font-size: 16px;
+    font-weight: 600;
+    text-indent: 0.5em;
+    border-bottom: 1px solid #eee
+}
+.user-wrapper .el-button.el-button--text.el-button--small{
+    color: #111;
+    margin: 0 10px
+}
+.user-wrapper .el-button.el-button--text.el-button--small:nth-child(1) .iconfont{
+    color: #7d96f4;
+    margin-right: 3px
+}
+.user-wrapper .el-button.el-button--text.el-button--small:nth-child(2) .iconfont{
+    color: #ffbdc7;
+    margin-right: 3px
+}
+.user-wrapper .identity{
+    display: inline-block;
+    margin-left: -5vw
+}
+.user-wrapper .identity .el-input{
+    width: auto
+}
+.user-box .el-table__body .red{
+    color: #ff637b
+}
+.user-box .el-table__body .green{
+    color: #4f70f0
+}
+.user-wrapper .el-button--primary,
+.user-wrapper .el-button--primary{
+    background: #1362cc;
+    border-color: #1362cc
+}
+.user-wrapper .el-button--primary:focus,
+.user-wrapper .el-button--primary:hover{
+    background: #1301ec;
+    border-color: #1302cc
+}
+.user-wrapper .el-checkbox.is-bordered{
+    margin-bottom: 3vh
+}
+.user-wrapper .el-checkbox.is-bordered+.el-checkbox.is-bordered{
+    margin-left: 0
+}
+ 

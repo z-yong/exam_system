@@ -1,0 +1,108 @@
+.topic-wrapper{
+    background: #fff;
+    height: 100%;
+}
+.topic-wrapper .topic-box{
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+.topic-wrapper .topic-menu{
+    width: 16%;
+    min-height: 100%;
+    background: #2673db;
+    color: #fff;
+    padding: 2vh 0vw 0;
+}
+.topic-wrapper .topic-menu .name{
+    padding: 2vh 0;
+    color: #fff
+}
+.topic-wrapper .topic-menu .name .name-desc{
+    font-weight: 600;
+    padding-left: 1vw
+}
+.topic-wrapper .topic-menu .name .title{
+    font-size: 18px;
+    padding: 1vh 2.5vw;
+    
+}
+.topic-wrapper .topic-menu ul{
+    background: #1362cc;
+    height: 100%;
+    padding: 3vh 1vw 0
+}
+.topic-wrapper .topic-menu ul>p{
+    font-weight: 600;
+    margin-bottom: 2vh;
+}
+.topic-wrapper .topic-menu ul li{
+    padding: 1vh;
+    text-align: center;
+    border-bottom: 1px solid #6aa4f0;
+    cursor: pointer;
+    user-select: none;
+}
+.topic-wrapper .topic-menu ul li:hover{
+    background: #2177e7;
+}
+.topic-wrapper .topic-menu ul li.active{
+    background: #2177e7;
+}
+.topic-content{
+    width: 84%;
+}
+.topic-content .outline{
+    border-bottom: 1px solid #eee
+}
+.topic-content .outline .outline-title{
+    height: 4vh;
+    line-height: 4vw;
+    font-weight: 600;
+    text-indent: 2em;
+}
+.topic-content .outline .content{
+    padding: 2vh 4vw
+}
+.topic-content .adjun{
+    border-bottom: 1px solid #eee
+}
+.topic-content .adjun .adjun-title{
+    height: 4vh;
+    line-height: 4vh;
+    font-weight: 900;
+    text-indent: 2em;
+}
+.topic-content .adjun ul{
+    padding: 0 4vw
+}
+.topic-content .adjun ul li{
+    border-top: 1px solid #eee
+}
+.topic-content .adjun ul li:nth-child(1){
+    border-top: none
+}
+.topic-content .adjun ul li .adjun-name{
+    padding: 1vh 0;
+}
+.topic-content .adjun ul li .adjun-content{
+    padding: 0vh 3vw 2vh
+}
+.topic-content .topics{
+}
+.topic-content .topics .topic-title{
+    height: 4vh;
+    line-height: 4vh;
+    font-weight: 600;
+    text-indent: 2em;
+}
+.topic-content .topics .topic-content{
+    padding: 0 4vw
+}
+.topic-content .topics-title{
+    font-weight: 600;
+    padding: 1vh 0;
+}
+.topic-content .alone{
+    /* padding:  */
+}

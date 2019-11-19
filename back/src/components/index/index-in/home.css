@@ -1,0 +1,320 @@
+.home-wrapper{
+    width: 100%;
+    height: 100%;
+    background: #f7f7f7;
+    padding: 10px 15px 0 15px;
+}
+.home-wrapper .home-box{
+    display: flex;
+    justify-content: space-between;
+}
+
+.home-wrapper .home-box .home-left{
+    width: 81%;
+}
+.home-box .home-left .test-paper{
+    width: 100%;
+    height: 30vh;
+    background: #fff;
+}
+.home-box .home-left .test-paper .test-title{
+    height: 5vh;
+    line-height: 5vh;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    text-indent: 1em
+}
+.home-left .test-paper .test-paper-content ul{
+    display: flex;
+    justify-content: space-evenly;
+    width: 98%;
+    height: 18vh;
+    align-items: center;
+    margin: 5vh auto 0;;
+}
+.test-paper .test-paper-content ul li{
+    font-size: #fff;
+    font-size: 14px;
+    width: 23%;
+    height: 100%;
+    cursor: pointer;
+    user-select: none;
+}
+.test-paper .test-paper-content ul li:nth-child(1){
+    background: #4f70f0;
+}
+.test-paper .test-paper-content ul li:nth-child(2){
+    background: #ff637b;
+}
+.test-paper .test-paper-content ul li:nth-child(3){
+    background: #ff8572;
+}
+.test-paper .test-paper-content ul li:nth-child(4){
+    background: #00c1ce;
+}
+.test-paper .test-paper-content ul li{
+    position: relative;
+    display: flex;
+    align-items: center;
+    color: #fff;
+}
+.test-paper .test-paper-content ul li .num{
+    font-size: 18px
+}
+.test-paper-content ul li:nth-child(1){
+    box-shadow: 1px 2px 3px 0 #738ff5
+}
+.test-paper-content ul li:nth-child(2){
+    box-shadow: 1px 2px 3px 0 #ff8295
+}
+.test-paper-content ul li:nth-child(3){
+    box-shadow: 1px 2px 3px 0 #ffa89a
+}
+.test-paper-content ul li:nth-child(4){
+    box-shadow: 1px 2px 3px 0 #30cdd7
+}
+.test-paper-content ul li:nth-child(1) .one,
+.test-paper-content ul li:nth-child(3) .one{
+    position: absolute;
+    top: -2vh;
+    left: -2vw;
+    width: 5vw;
+    height: 6vh;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1)
+}
+.test-paper-content ul li:nth-child(1) .two,
+.test-paper-content ul li:nth-child(3) .two{
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1)
+}
+.test-paper-content ul li:nth-child(1) .three,
+.test-paper-content ul li:nth-child(3) .three{
+    position: absolute;
+    bottom: 0;
+    right: 3px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1)
+}
+.test-paper-content ul li:nth-child(2) .one,
+.test-paper-content ul li:nth-child(4) .one{
+    position: absolute;
+    top: -2vh;
+    left: -2vw;
+    width: 5vw;
+    height: 6vh;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1)
+}
+.test-paper-content ul li:nth-child(2) .two,
+.test-paper-content ul li:nth-child(4) .two{
+    position: absolute;
+    top: -8px;
+    left: -20px;
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.1)
+}
+.test-paper-content ul li:nth-child(2) .three,
+.test-paper-content ul li:nth-child(4) .three{
+    position: absolute;
+    bottom: -10px;
+    right: -20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1)
+}
+.test-paper-content ul li .icon{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fff;
+    text-align: center;
+    margin-left: 20px;
+}
+.test-paper-content ul li:nth-child(1) .icon{
+    border: 4px solid #728df3
+}
+.test-paper-content ul li:nth-child(2) .icon{
+    border: 4px solid #ff8295
+}
+.test-paper-content ul li:nth-child(3) .icon{
+    border: 4px solid #ffa89a
+}
+.test-paper-content ul li:nth-child(4) .icon{
+    border: 4px solid #30cdd7
+}
+.test-paper-content ul li .mess-desc{
+    margin-left: 10px;
+
+}
+.test-paper-content ul li .icon .iconfont{
+    line-height: 38px;
+}
+.test-paper-content ul li:nth-child(1) .icon .iconfont{
+    color: #4f70f0
+}
+.test-paper-content ul li:nth-child(2) .icon .iconfont{ 
+    color: #ff637b
+}
+.test-paper-content ul li:nth-child(3) .icon .iconfont{
+    color: #ff8572
+}
+.test-paper-content ul li:nth-child(4) .icon .iconfont{
+    color: #00c1ce
+}
+.ratio{
+    width: 100%;
+    height: 60vh;
+    margin-top: 3vh;
+}
+.ratio .ratio-list{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.ratio .ratio-list>li{
+    width: 49.5%;
+    height: 100%;
+    background: #fff;
+}
+.ratio .ratio-list>li .ratio-title{
+    padding: 10px 0 0 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+}
+.ratio .ratio-list>li #myChart1,
+.ratio .ratio-list>li #myChart2{
+    width: 100%;
+    height: 80%;
+    margin: auto
+}
+.ratio .ratio-list .chart ul{
+    width: 90%;
+    margin: 10px auto;
+    display: flex;
+    justify-content: space-around;
+    font-size: 14px;
+    color: #666;
+}
+.ratio .ratio-list .chart ul .color .circle{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.ratio .ratio-list .chart ul .color span{
+    margin-left: 5px;
+}
+.home-wrapper .home-box .home-right{
+    width: 18%;
+}
+.home-right .right-top{
+    background: #fff;
+    height: 50vh;
+}
+.home-right .calendar{
+    padding: 10px 10px 0;
+    text-align: center
+}
+.home-right .calendar .calendar-name{
+    font-size: 14px;
+    font-weight: 600;
+    text-indent: 0.5em
+}
+.home-right .calendar .el-calendar__header{
+    padding: 10px;
+}
+.home-right .calendar .el-calendar__title{
+    font-size: 14px
+}
+.home-right .calendar .el-button--mini, .el-button--mini.is-round{
+    padding: 5px
+}
+.home-right .calendar .el-calendar__body{
+    padding: 10px
+}
+.home-right .calendar .el-calendar-table thead th{
+    padding: 5px 0;
+    font-size: 12px;
+}
+.home-right .calendar .el-calendar-table .el-calendar-day{
+    height: auto;
+    font-size: 12px;
+}
+.home-right .calendar .el-calendar-table td.is-today .el-calendar-day{
+    background: #4d7cfe;
+    margin: 2px 6px;
+    padding: 6px 2px;
+    color: #fff;
+    border-radius: 50%
+}
+.home-right .task{
+    padding: 2vh 10px 10px;
+    border-top: 1px solid #ddd;
+}
+.home-right .task .task-list{
+    
+    font-size: 13px;
+}
+.task .task-list li{
+    display: flex;
+    align-items: center;
+    padding: 8px 0 5px 15px
+}
+.task .task-list li .icon i{
+    font-size: 18px;
+}
+.task .task-list li  .task-desc{
+    margin-left: 1vw
+}
+.task .task-list li  .task-desc .task-time{
+    color: #aaa;
+}
+.task .task-list li  .task-desc .tack-content{
+    margin-top: 5px;
+    color: #888
+}
+.home-right .right-bottom{
+    width: 100%;
+    height: 42vh;
+    margin-top: 1vh;
+    background: #fff;
+}
+.home-right .right-bottom .log{
+    padding: 2vh 2vw
+}
+.home-right .right-bottom .log .log-title{
+    font-size: 14px;
+    font-weight: 600;
+    color: #111
+}
+.log .log-content{
+    display: flex;
+    align-items: center;
+    margin-top: 2vh
+}
+.log .log-content .icon i{
+    font-size: 18px;
+}
+.log-content .log-desc{
+    margin-left: 1vw;
+    font-size: 13px
+}
+.log-content .log-desc .log-time{
+    color: #aaa;
+}
+.log-content .log-desc .log-mess{
+    margin-top: 5px;
+    color: #888
+}

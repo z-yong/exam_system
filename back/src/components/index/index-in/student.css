@@ -1,0 +1,77 @@
+.stu-wrapper{
+    width: 100%;
+    height: 100%;
+    background: #f7f7f7;
+    padding-top: 3vh
+}
+.stu-wrapper .stu-box{
+    width: 98%;
+    margin: auto;
+}
+.stu-wrapper .search{
+    background: #fff;
+    font-size: 15px;
+    color: #111;
+    padding: 3vh 1vw;
+    background: #ffff;
+    border-left: 3px solid #1362cc
+}
+.stu-wrapper .search .el-input{
+    margin-left: 2vw;
+    width: 18%
+}
+.stu-box .stu-table .table-title{
+    height: 7vh;
+    line-height: 7vh;
+    font-size: 16px;
+    font-weight: 600;
+    text-indent: 1.5em;
+    border-bottom: 1px solid #eee
+}
+/* .stu-box .add-stu{
+    padding: 3vh 0;
+    background: #fff;
+}
+.stu-box .add-stu .el-form-item .el-form-item__label{
+    font-size: 15px;
+    color: #111;
+    width: 60%
+}
+.stu-box .add-stu .el-form-item{
+    margin-bottom: 0;
+    width: 18%;
+    margin-right: 0;
+}
+.stu-box .add-stu  .el-form--inline .el-form-item__content {
+    width: 60%;
+}
+
+.stu-box .add-stu .el-form-item:nth-child(5){
+    margin-left: 5vw
+} */
+.stu-wrapper .paging{
+    text-align: center;
+    margin: 4vh 0 0;
+}
+.stu-table{
+    width: 100%;
+    margin-top: 2vh;
+    background: #fff;
+    padding-bottom: 3vh
+}
+.stu-wrapper .paging .el-pagination.is-background .el-pager li{
+    min-width: 36px;
+}
+.stu-wrapper .el-button.el-button--text.el-button--small{
+    color: #333;
+    margin: 0 8px;
+    font-size: 14px;
+}
+.stu-wrapper .el-button.el-button--text.el-button--small:nth-child(1) .iconfont{
+    color: #7d96f4;
+    margin-right: 3px
+}
+.stu-wrapper .el-button.el-button--text.el-button--small:nth-child(2) .iconfont{
+    color: #ffbdc7;
+    margin-right: 3px
+}

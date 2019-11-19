@@ -1,0 +1,51 @@
+.mis-wrapper{
+    background: #f7f7f7;
+    padding-top: 2vh;
+    width: 100%;
+}
+.mis-wrapper .mis-box{
+    background: #fff;
+    width: 90%;
+    margin: auto;
+    padding: 0 2vw 2vh;
+    border-top: 2px solid #1362cc;
+    box-shadow: 2px 2px 3px 0px #ccc
+}
+.mis-wrapper .mis-box .el-table .has-gutter{
+    color: #555
+}
+.mis-wrapper .mis-box .el-table .has-gutter th,
+.mis-wrapper .mis-box .el-table .has-gutter tr{
+    background: #f6f6f6;
+}
+
+.mis-wrapper .mis-box .mis-title{
+    position: relative;
+    /* text-align: center; */
+    font-size: 15px;
+    font-weight: 600;
+    color: #111;
+    height: 8vh;
+    line-height: 8vh;
+}
+.mis-box .mis-title .tt{
+    display: inline-block;
+    height: 100%;
+    box-sizing: border-box;
+    line-height: 8vh
+}
+.mis-box .mis-table{
+    padding-top: 5vh;
+    border-top: 1px solid #ddd
+}
+.mis-wrapper .paging{
+    text-align: center;
+    margin: 4vh 0 2vh;
+}
+.mis-wrapper .paging .el-pagination.is-background .el-pager li{
+    min-width: 36px;
+}
+.mis-wrapper .el-table td, 
+.mis-wrapper .el-table th{
+    padding: 10px 0;
+}

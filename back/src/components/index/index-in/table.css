@@ -1,0 +1,79 @@
+.table-wrapper{
+    width: 95%;
+    margin: auto;
+    background: #f7f7f7;
+    padding-top: 1vh
+}
+.table-wrapper .table-box{
+    margin-top: 3vh;
+    background: #fff;
+    width: 100%;
+}
+.table-wrapper .table-title{
+    height: 8vh;
+    line-height: 8vh;
+    text-align: center;
+    box-sizing: border-box;
+}
+.table-wrapper .table-title span{
+    display: inline-block;
+    height: 8vh;
+    line-height: 8vh;
+    box-sizing: border-box;
+    color: #333;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid #1362cc
+}
+.table-wrapper #table{
+    width: 100%;
+    padding: 1vw;
+    border-top: 1px solid #ddd;
+    box-sizing: border-box;
+}
+.table-wrapper .el-table__header{
+    width: 100%;
+}
+.table-wrapper .el-table{
+    text-align: center
+}
+.el-table .cell, .el-table th div, .el-table--border td:first-child .cell, .el-table--border th:first-child .cell{
+    text-align: center !important
+}
+.table-wrapper .el-table th{
+    background: #1362cc !important;
+    color: #fff;
+    text-align: center;
+    padding: 6px;
+}
+.table-wrapper .el-table td{
+    padding: 7px
+}
+.table-wrapper .el-button--text{
+    background: #1362cc;
+    color: #fff;
+    padding: 5px 8px;
+    border-radius: 10px
+}
+.table-wrapper .el-button--text:hover{
+    opacity: 0.7;
+    background: #1362cc;
+    color: #fff
+}
+/* .table-wrapper .el-button--text:nth-last-child(1){
+    background: #eee;
+    color: #666
+} */
+.table-wrapper .result{
+    color: #1362cc;
+}
+.table-wrapper .noQual{
+    color: #ff6d84
+}
+.table-wrapper .paging{
+    text-align: center;
+    margin: 4vh 0 2vh;
+}
+.table-wrapper .paging .el-pagination.is-background .el-pager li{
+    min-width: 36px;
+}

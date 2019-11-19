@@ -1,0 +1,183 @@
+.set-wrapper{
+    width: 100%;
+    height: 100%;
+    background: #f7f7f7;
+    padding: 1vw;
+}
+.set-wrapper .set-header{
+    padding: 1vh 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+}
+.set-wrapper .set-header span{
+    display: inline-block;
+    border-left: 3px solid #0070d8;
+    text-indent: 1em;
+    line-height: 4vh;
+}
+.set-wrapper .issue-box{
+    width: 95%;
+    margin: auto;
+    background: #fff;
+    padding: 7vh 2vw 10vh;
+    text-align: left
+}
+.set-wrapper .issue-box .el-input__inner,
+.set-wrapper .issue-box .el-textarea__inner{
+    color: #111
+}
+.set-wrapper .issue-box .editor .el-form-item__label{
+    margin-top: -4vh
+}
+.set-wrapper .issue-box .el-form-item__label{
+    float: none;
+    display: inline-block;
+}
+.set-wrapper .issue-box .el-input,
+.set-wrapper .issue-box .el-form-item__content{
+    display: inline-block;
+    width: 90%;
+}
+.set-wrapper .el-form-item__content{
+    margin: 0 !important
+}
+.set-wrapper .issue-box .el-input{
+    width: 100%;
+}
+.set-wrapper .issue-box .el-input:nth-child(1) .el-input__inner{
+    width: 100%;
+}
+.set-wrapper .issue-box .el-select{
+    width: 60%;
+}
+.set-wrapper .issue-box .el-form>.editor .el-form-item__label{
+    margin-top: -3vh
+}
+/* .set-wrapper .issue-box .el-form>.el-form-item:nth-child(5) .el-form-item__label,
+.set-wrapper .issue-box .el-form .topics>.el-form-item:nth-child(3) .el-form-item__label{
+    margin-top: -34vh
+} */
+.set-wrapper .el-form>.el-form-item:nth-child(3),
+.set-wrapper .el-form>.el-form-item:nth-child(4){
+    display: inline-block;
+    width: 50%
+}
+.set-wrapper .el-form>.el-form-item:nth-child(3) .el-form-item__content,
+.set-wrapper .el-form>.el-form-item:nth-child(4) .el-form-item__content{
+    width: 60%
+}
+.set-wrapper .el-form .topics>.el-form-item:nth-child(1),
+.set-wrapper .el-form .topics>.el-form-item:nth-child(2){
+    display: inline-block;
+    width: 50%;
+}
+.set-wrapper .issue-box .el-form .topics>.el-form-item:nth-child(1) .el-form-item__content,
+.set-wrapper .issue-box .el-form .topics>.el-form-item:nth-child(2) .el-form-item__content{
+    width: 80%;
+}
+.set-wrapper .issue-box .el-form>.el-form-item:nth-child(6) .el-form-item__label{
+    width: 60px !important;
+}
+.set-wrapper .issue-box .option{
+    margin-left: 7vw
+}
+.set-wrapper .issue-box .option .el-form-item{
+    margin-bottom: 18px;
+}
+.set-wrapper .issue-box .option .el-form-item__label{
+    width: auto !important
+}
+.set-wrapper .issue-box .option .el-input .el-input__inner{
+    width: 40%;
+}
+.set-wrapper .issue-box .option .el-form-item:nth-child(4) .el-form-item__label{
+    margin: 0
+}
+.set-wrapper .issue-box .answer .el-form-item .el-form-item__content{
+    /* margin-left: 2vw !important; */
+    width: 60%
+}
+.set-wrapper .issue-box .grade .el-form-item{
+    display: inline-block
+}
+.set-wrapper .issue-box .grade a{
+    margin-left: 12vw
+}
+.set-wrapper .issue-box .grade>.el-button{
+    margin-left: 3vw
+}
+.set-wrapper .issue-box .grade .el-form-item .el-form-item__content{
+    width: 50%
+}
+.set-wrapper .issue-box .el-dialog__wrapper .el-form-item .el-form-item__content{
+    width: 50%
+}
+.set-wrapper .issue-box  .el-form-item>.el-form-item__content:nth-last-of-type(1) .el-button{
+    margin: 7vh 0 0 10vw;
+    padding: 12px 40px;
+}
+.set-wrapper .issue-box .el-form-item .el-textarea__inner{
+    height: 20vh;
+}
+.set-wrapper .issue-box .el-button--primary{
+    background: #1362cc;
+    border-color: #1362cc
+}
+.set-wrapper .issue-box .el-button--primary:focus,
+.set-wrapper .issue-box .el-button--primary:hover{
+    background: #1301ec;
+    border-color: #1302cc
+}
+.set-wrapper .issue-box .el-radio__input.is-checked .el-radio__inner,
+.set-wrapper .issue-box .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    background-color: #1362cc;
+    border-color: #1362cc
+}
+.set-wrapper .el-radio__input.is-checked.el-radio__label{
+    color: #1362cc
+}
+.set-wrapper .el-checkbox__input.is-checked.el-checkbox__label{
+    color: #1362cc
+}
+.set-wrapper .issue-box .demo-ruleForm{
+    position: relative;
+}
+.set-wrapper .issue-box .demo-ruleForm .adj,
+.set-wrapper .issue-box .demo-ruleForm .btnbtn{
+    margin-left: 25vw;
+    z-index: 9999;
+}
+.set-wrapper .issue-box .demo-ruleForm .adj{
+    margin-bottom: 5vh;
+}
+.dia-content{
+    display: inline-block;
+    text-indent: 2em;
+    font-size: 17px;
+}
+.el-dialog__title{
+    font-size: 16px;
+    font-weight: 600
+}
+.topic_ed{
+    margin-bottom: 6vh
+}
+.topic_ed>.el-form-item:nth-child(1) .el-form-item__label{
+    font-weight: 800;
+    color: #000
+}
+.gap .el-form-item .el-input{
+    width: 70%;
+}
+.gap .el-form-item .gap-desc{
+    margin-left: 1vw;
+    font-size: 14px;
+}
+
+/* 去掉input-number右边箭头 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button { -webkit-appearance: none; }
+input[type="number"]{ -moz-appearance: textfield; }
