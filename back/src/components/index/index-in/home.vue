@@ -66,15 +66,6 @@
                                     <p class="task-content">{{item.content}}</p>
                                 </div>
                             </li>
-                            <!-- <li>
-                                <div class="icon">
-                                    <i class="iconfont">&#xe653;</i>
-                                </div>
-                                <div class="task-desc">
-                                    <p class="task-time">01：30PM - 06:30PM</p>
-                                    <p class="task-content">B卷考试，分配工作任务</p>
-                                </div>
-                            </li> -->
                         </ul>
                     </div>
                 </div>
@@ -117,28 +108,19 @@ export default {
         gotoTable(index){
             let data = {};
             let tableData = [];
-            let isQual;
+            let isQual,isOper;
             let isSimuTitle = '所有试卷列表';
-            let home,mis,setTopic,simu,student,addStu,addClass,feedback,setUp,table,isOper,userAdmin;
+            let show;
             if(index == 0 || index == 1 || index == 2){
-                home = false;
-                mis = false;
-                setTopic = false;
-                simu = false;
-                student = false;
-                addStu = false;
-                setUp = false;
-                feedback = false;
-                addClass = false;
-                userAdmin = false;
-                table = true;
+                show = 'table' 
+                isOper = false
             }
             if(index == 0){
                  isQual = true;
                  this.axios.get('/admin/index/qualified?state=0').then(res =>{
                      tableData = res.data.data;
                      data = {
-                            tableData,home,mis,setTopic,simu,table,student,feedback,addClass,addStu,setUp,isQual,isSimuTitle,isOper,userAdmin
+                            tableData,isQual,isSimuTitle,isOper,show
                         }
                     this.$emit('homeSend',data)
                  })
@@ -147,7 +129,7 @@ export default {
                 this.axios.get('/admin/index/qualified?state=1').then(res =>{
                      tableData = res.data.data;
                      data = {
-                            tableData,home,mis,setTopic,simu,table,student,feedback,addClass,addStu,setUp,isQual,isSimuTitle,isOper,userAdmin
+                            tableData,isQual,isSimuTitle,isOper,show
                         }
                     this.$emit('homeSend',data)
                  })
@@ -156,30 +138,18 @@ export default {
                 this.axios.get('/admin/index/qualified?state=2').then(res =>{
                      tableData = res.data.data;
                      data = {
-                            tableData,home,mis,setTopic,simu,table,student,feedback,addStu,addClass,setUp,isQual,isSimuTitle,isOper,userAdmin
+                            tableData,isQual,isSimuTitle,isOper,show
                         }
                     this.$emit('homeSend',data)
                  })
             }else if(index == 3){
-                home = false;
-                mis = false;
-                setTopic = false;
-                simu = false;
-                table = false;
-                student = false;
-                addStu = false;
-                feedback = false;
-                setUp = false;
-                addClass = false;
-                userAdmin = false;
+                show = 'simu';
                 isOper = true;
-                simu = true;
                 data = {
-                            tableData,home,mis,setTopic,simu,table,student,addClass,feedback,addStu,setUp,isQual,isSimuTitle,isOper,userAdmin
+                        tableData,isQual,isSimuTitle,isOper,show
                     }
                 this.$emit('homeSend',data)
             }
-            
         },
          _drawLine1(){
         // 基于准备好的dom，初始化echarts实例

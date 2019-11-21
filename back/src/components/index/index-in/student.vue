@@ -1,25 +1,6 @@
 <template>
     <div class="stu-wrapper">
         <div class="stu-box">
-            <!-- <div class="add-stu">
-                <el-form :inline="true" :model="formInline" :rules="rules" ref="formInline" label-width="70px" class="demo-form-inline">
-                    <el-form-item label="姓名" prop="name">
-                        <el-input v-model="formInline.name" placeholder="请输入内容"></el-input>
-                    </el-form-item>
-                    <el-form-item label="手机号" prop="phone">
-                       <el-input v-model="formInline.phone" placeholder="请输入内容"></el-input>
-                    </el-form-item>
-                    <el-form-item label="学号" prop="id">
-                       <el-input v-model="formInline.id" placeholder="请输入内容"></el-input>
-                    </el-form-item>
-                    <el-form-item label="性别" prop="sex">
-                       <el-input v-model="formInline.sex" placeholder="请输入内容"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmit('formInline')">添加学生</el-button>
-                    </el-form-item>
-                </el-form>
-            </div> -->
             <div class="search">
                 <div class="condition">
                     <span>筛选条件：</span>
@@ -30,15 +11,6 @@
                         clearable>
                     </el-input>
                 </div>
-                <!-- <div>
-                  <span class="topic-name">试卷名称</span>
-                  <el-input
-                    placeholder="请输入试卷名称"
-                    v-model="topicName"
-                    @input="searchTopicName"
-                    clearable>
-                  </el-input>
-                </div> -->
             </div>
             <div class="stu-table">
                 <p class="table-title">所有学生列表</p>
@@ -57,15 +29,14 @@
                         </el-table-column>
                         <el-table-column prop="examination" label="试卷名称" min-width="15px">
                         </el-table-column>
-                        <!-- <el-table-column prop="teacher" label="老师姓名" min-width="10px">
-                        </el-table-column> -->
                         <el-table-column label="操作" min-width="15px">
                             <template slot-scope="scope">
                                 <el-button type="text" @click="redact(scope.row)" size="small"><i class="iconfont">&#xe64b;</i>编辑</el-button>
                                 <el-button type="text" @click="deleteStu(scope.row)" size="small"><i class="iconfont">&#xe631;</i>删除</el-button>
+                                <el-button type="text" size="small" @click="seePerformancet(scope.row)"><i class="iconfont">&#xe738;</i>查看成绩</el-button>
                             </template>
                         </el-table-column>
-                    </el-table>
+                    </el-table> 
                 </template>
                 <div class="paging">
                     <el-pagination
@@ -164,6 +135,10 @@ export default {
                 this.pages =  Math.ceil(this.tableData.length*10/6);
                 this.myTableData = this.tableData.slice(0,6)
             })
+        },
+        // 查看该学生历史成绩  
+        seePerformancet(row){
+            this.$emit('seeStuPer',row.id)
         },
         // // 添加学生按钮
         // onSubmit(formName){

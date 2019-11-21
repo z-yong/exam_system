@@ -75,3 +75,7 @@
     color: #ffbdc7;
     margin-right: 3px
 }
+.stu-wrapper .el-button.el-button--text.el-button--small:nth-child(3) .iconfont{
+    color: #33CC00;
+    margin-right: 3px
+}

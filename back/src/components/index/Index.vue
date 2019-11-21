@@ -61,10 +61,6 @@
                                 <i class="iconfont circle">&#xe6b7;</i>
                                 学生反馈
                             </el-menu-item>
-                            <!-- <el-menu-item index="3-4" v-if="isii">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                所有学生
-                            </el-menu-item> -->
                         </el-submenu>
                         <el-submenu index="4" v-if="isJ">
                             <template slot="title">
@@ -82,7 +78,6 @@
                         </el-submenu>
                     </el-menu>
                 </el-col>
-
             </div>
         </div>
         <div class="index-right">
@@ -118,17 +113,18 @@
             </div>
             <div class="right-content" v-if="isRouterAlive">
                 <!-- <router-view ></router-view> -->
-                <z-home v-if="home" @homeSend='receiveHome($event)'></z-home>
-                <z-table v-if="table" :tableData='tableData' :isQual='isQual' @lookErr='gotoErr($event)'></z-table>
-                <z-mis v-if="mis" :id="id" @leaveMis='backTable($event)'></z-mis>
-                <z-set-topic v-if="setTopic" :topicTitle='topicTitle' :topicType='s_type' ref="setTopic" :isGetInfo='isGetInfo' :topicID='topicID' :topicName='topicName' :outline='outline' @gotoTopicTable='gotoTopicTable($event)'></z-set-topic>
-                <z-simu v-if="simu" :isOper='isOper' @studentShow='studentShow' :title="isSimuTitle" @addTopic='addTopic($event)' @amendTopic='amendTopic($event)'></z-simu>
-                <z-student v-if="student" :classID='classID'></z-student>
-                <z-feedback v-if="feedback"></z-feedback>
-                <z-add-stu v-if="addStu"></z-add-stu>
-                <z-add-class v-if="addClass" @seeStudent='seeStudent($event)'></z-add-class>
-                <z-set-up v-if="setUp"></z-set-up>
-                <z-user-admin v-if="userAdmin"/>
+                <z-home v-if="show == 'home'" @homeSend='receiveHome($event)'></z-home>
+                <z-table v-if="show =='table'" :tableData='tableData' :isQual='isQual' @lookErr='gotoErr($event)'></z-table>
+                <z-mis v-if="show == 'mis'" :id="id" @leaveMis='backTable($event)'></z-mis>
+                <z-set-topic v-if="show == 'setTopic'" :topicTitle='topicTitle' :topicType='s_type' ref="setTopic" :isGetInfo='isGetInfo' :topicID='topicID' :topicName='topicName' :outline='outline' @gotoTopicTable='gotoTopicTable($event)'></z-set-topic>
+                <z-simu v-if="show =='simu'" :isOper='isOper' @studentShow='studentShow' :title="isSimuTitle" @addTopic='addTopic($event)' @amendTopic='amendTopic($event)'></z-simu>
+                <z-student v-if="show =='student'" :classID='classID' @seeStuPer='seeStuPer($event)'></z-student>
+                <z-feedback v-if="show =='feedback'"></z-feedback>
+                <z-add-stu v-if="show =='addStu'"></z-add-stu>
+                <z-add-class v-if="show =='addClass'" @seeStudent='seeStudent($event)'></z-add-class>
+                <z-set-up v-if="show == 'setUp'"></z-set-up>
+                <z-user-admin v-if="show == 'userAdmin'"/>
+                <z-stu-performancet v-if="show == 'stuPerformancet'" :id='stuPerID'/>
             </div>
         </div>
         <el-dialog
@@ -159,6 +155,7 @@ import setUp from './index-in/setUp'
 import addStu from './index-in/addStu'
 import addClass from './index-in/addClass'
 import userAdmin from './index-in/userAdmin'
+import stuPerformancet from './index-in/stuPerformancet'
 
 export default {
     components: {
@@ -172,7 +169,8 @@ export default {
         "z-add-stu": addStu,
         "z-add-class": addClass,
         "z-feedback": feedback,
-        "z-user-admin": userAdmin
+        "z-user-admin": userAdmin,
+        "z-stu-performancet": stuPerformancet
     },
     // 用于刷新页面
     provide(){
@@ -184,17 +182,7 @@ export default {
         return{
             userName: '',
             fixed: false,
-            home: true,
-            table: false,
-            mis: false,
-            setTopic: false,
-            simu: false,
-            student: false,
-            addStu: false,
-            addClass: false,
-            feedback: false,
-            setUp: false,
-            userAdmin: false,
+            show: 'home',
             isOper: false,
             // 菜单权限显示
             isA: false,
@@ -212,6 +200,7 @@ export default {
             id: 0,
             topicID: 0,
             classID: 0,
+            stuPerID: 0,
             isTextShow: false,
             isRouterAlive: true,//用于刷新
             isQual: true,//确认是不是查看错题组件
@@ -243,90 +232,45 @@ methods: {
                 }
             ]
             this.currentIndex = -1;
-            this.tableData = e.tableData;
+            this.tableData = e.tableData; 
             this.isQual = e.isQual;
-            this.home = e.home;
-            this.mis = e.mis;
-            this.setTopic = e.setTopic;
-            this.simu = e.simu;
-            this.student = e.student;
-            this.addStu = e.addStu;
-            this.addClass = e.addClass;
-            this.setUp = e.setUp;
-            this.feedback = e.feedback;
-            this.userAdmin = e.userAdmin;
+            this.show = e.show;
             this.isOper = e.isOper;
-            this.table = e.table;
-            this.isSimuTitle = e.isSimuTitle
+            this.isSimuTitle = e.isSimuTitle;
+            console.log(e)
+        },
+        seeStuPer(e){
+            this.stuPerID = e.id;
+            this._showPage('stuPerformancet')
         },
         // 监听考卷管理页面添加B卷
         addTopic(e){
-            this.table = false;
-            this.mis = false;                      
-            this.home = false;
-            this.student = false;
-            this.addStu = false;
-            this.feedback = false;
-            this.setUp = false;
-            this.simu = false;
-            this.addClass = false;
-            this.userAdmin = false;
             this.s_type = e.title;
             this.topicID = e.id;
             this.outline = e.outline;
             this.topicName = e.name;
             this.isGetInfo = false;
-            this.setTopic = true;
+            this._showPage('setTopic')
         },
+        // 
         amendTopic(e){
-            this.table = false;
-            this.mis = false;                      
-            this.home = false;
-            this.student = false;
-            this.addStu = false;
-            this.feedback = false;
-            this.setUp = false;
-            this.addClass = false;
-            this.userAdmin = false;
-            this.simu = false;
             this.topicName = '';
             this.s_type = e.s_type;
             this.topicID = e.id;
             this.outline = '修改'
             this.isGetInfo = false;
-            this.setTopic = true;
-            console.log(typeof e.id)
+            this._showPage('setTopic')
         },
         gotoTopicTable(e){
             this.isSimuTitle = e.title;
-            this.home = false;
-            this.table = false;
-            this.mis = false; 
-            this.student = false;
-            this.feedback = false;
-            this.addStu = false;
-            this.userAdmin = false;
-            this.addClass = false;
-            this.setUp = false;
-            this.setTopic = false;
             this.isOper = false;
-            this.simu = true;
             this.reload(false)
+            this._showPage('simu')
         },
         seeStudent(e){
             this.classID = e;
-            this.home = false;
-            this.table = false;
-            this.mis = false; 
-            this.simu = false;
-            this.feedback = false;
-            this.addStu = false;
-            this.userAdmin = false;
-            this.addClass = false;
-            this.setUp = false;
-            this.setTopic = false;
             this.isOper = false;
-            this.student = true;
+            this._showPage('student')
         },
         handleOpen(index, indexPath) {
             if(index == 1){
@@ -402,25 +346,9 @@ methods: {
                 this.currentIndex = 0;
                 this.currentMenuIndex = 4
             }
-            // this.table = false;
-            // this.mis = false;             
-            // this.setTopic = false;
-            // this.simu = false;
-            // this.addStu = false;
-            // this.student = false;
-            // this.feedback = false;
-            // this.setUp = false;
-            // this.home = true;
         },
         handleClose(key, keyPath) {
-            // this.menuList = [
-            //     {
-            //         icon: '&#xe663;',
-            //         name: '首页'
-            //     }
-            // ],
-            // this.currentIndex = 0;
-            // this.currentMenuIndex = 0
+            
         },
         // 右边菜单路由
         changeMenu(index){
@@ -435,148 +363,48 @@ methods: {
             this.currentIndex = index;
             if(index == 0){
                     // this.$router.push({path: '/index/home'})// 到首页
-                    this.table = false;
-                    this.mis = false;                
-                    this.setTopic = false;
-                    this.simu = false;
-                    this.student = false;
-                    this.addStu = false;
-                    this.addClass = false;
-                    this.feedback = false;
-                    this.userAdmin = false;
-                    this.setUp = false;
-                    this.home = true;
+                    this._showPage('home')
                     return
             }
             if(this.currentMenuIndex == 0){ //如果在首页
             }else if(this.currentMenuIndex == 1){//如果在题库管理
                 if(index == 1){// 模拟考卷管理'
-                    this.table = false;
-                    this.mis = false;                      
-                    this.home = false;
-                    this.student = false;
-                    this.addStu = false;
-                    this.addClass = false;
-                    this.feedback = false;
-                    this.userAdmin = false;
-                    this.setUp = false;
-                    this.simu = false;
                     this.topicTitle = '模拟考卷';
                     this.isGetInfo = true;
-                    this.setTopic = true; 
+                    this._showPage('setTopic') 
                     // this.$refs.setTopic._getInfo()
                 }else if(index == 2){//正式考卷管理'
-                    this.table = false;
-                    this.mis = false;                
-                    this.home = false;
-                    this.student = false;
-                    this.feedback = false;
-                    this.addStu = false;
-                    this.addClass = false;
-                    this.userAdmin = false;
-                    this.setUp = false;
-                    this.simu = false;
                     this.topicTitle = '正式考卷'
                     this.isGetInfo = true;
-                    this.setTopic = true; 
+                    this._showPage('setTopic')
                     // this.$refs.setTopic._getInfo()
                 }
             }else if(this.currentMenuIndex == 2){//如果在考卷管理
                 if(index == 1){ //模拟考卷
-                    this.home = false;
-                    this.table = false;
-                    this.mis = false; 
-                    this.student = false;
-                    this.addStu = false;
-                    this.addClass = false;
-                    this.feedback = false;
-                    this.userAdmin = false;
-                    this.setUp = false;
-                    this.setTopic = false;
                     this.isSimuTitle = '模拟考卷列表'
                     this.isOper = false;
                     this.reload(false)
-                    this.simu = true;
+                    this._showPage('simu')
                 }else if(index == 2){//正式考卷
-                    this.home = false;
-                    this.table = false;
-                    this.mis = false; 
-                    this.student = false;
-                    this.addStu = false;
-                    this.userAdmin = false;
-                    this.addClass = false;
-                    this.feedback = false;
-                    this.setUp = false;
-                    this.setTopic = false;
                     this.isSimuTitle = '正式考卷列表'
                     this.isOper = false;
                     this.reload(false);
-                    this.simu = true;
+                    this._showPage('simu')
                 }
 
             }else if(this.currentMenuIndex == 3){//如果在学生管理
                 if(index == 1){
-                    this.home = false;
-                    this.table = false;
-                    this.mis = false;
-                    this.setTopic = false;
-                    this.userAdmin = false;
-                    this.setUp = false;
-                    this.addClass = false;
-                    this.feedback = false;
-                    this.simu = false;
-                    this.student = false;
-                    this.addStu =  true;
+                    this._showPage('addStu')
                 }else if(index == 2){
-                    this.home = false;
-                    this.table = false;
-                    this.mis = false;
-                    this.setTopic = false;
-                    this.setUp = false;
-                    this.userAdmin = false;
-                    this.simu = false;
-                    this.feedback = false;
-                    this.addStu = false;
-                    this.student = false;
-                    this.addClass = true;  
+                    this._showPage('addClass') 
                 }else if(index == 3){
-                    this.home = false;
-                    this.table = false;
-                    this.mis = false;
-                    this.userAdmin = false;
-                    this.setTopic = false;
-                    this.setUp = false;
-                    this.simu = false;
-                    this.addStu = false;
-                    this.addClass = false;
-                    this.student = false; 
-                    this.feedback = true;
+                    this._showPage('feedback')
                 }
             }else if(this.currentMenuIndex == 4){//如果在设置
                 if(index == 1){
-                    this.home = false;
-                    this.table = false;
-                    this.mis = false;
-                    this.simu = false;
-                    this.userAdmin = false;
-                    this.setTopic = false;
-                    this.student = false;
-                    this.feedback = false;
-                    this.addClass = false;
-                    this.addStu = false;
-                    this.setUp = true;
+                    this._showPage('setUp')
                 }else if(index == 2){
-                    this.home = false;
-                    this.table = false;
-                    this.mis = false;
-                    this.simu = false;
-                    this.setUp = false;
-                    this.setTopic = false;
-                    this.student = false;
-                    this.feedback = false;
-                    this.addClass = false;
-                    this.addStu = false;
-                    this.userAdmin = true;
+                    this._showPage('userAdmin')    
                 }
             }
         },
@@ -597,19 +425,9 @@ methods: {
                         name: '正式考卷出题'
                     }
                 ]
-                this.home = false;
-                this.table = false;
-                this.mis = false;
-                this.student = false;
-                this.addStu = false;
-                this.setUp = false;
-                this.addClass = false;
-                this.feedback = false;
-                this.userAdmin = false;
-                this.simu = false;
+                this._showPage('setTopic')    
                 this.topicTitle = '模拟考卷'
                 this.isGetInfo = true;
-                this.setTopic = true;
                 this.reload(false)
                 this.currentIndex = 1;
                 this.currentMenuIndex = 1;
@@ -629,20 +447,9 @@ methods: {
                         name: '正式考卷出题'
                     }
                 ]
-                this.home = false;
-                this.table = false;
-                this.mis = false;
-                this.setTopic = false;
-                this.userAdmin = false;      
-                this.student = false;
-                this.addStu = false;
-                this.feedback = false;
-                this.addClass = false;
-                this.setUp = false;  
-                this.simu = false;
+                this._showPage('setTopic')    
                 this.topicTitle = '正式考卷'
                 this.isGetInfo = true;
-                this.setTopic = true;
                 this.reload(false)
                 this.currentIndex = 2;
                 this.currentMenuIndex = 1;
@@ -661,20 +468,10 @@ methods: {
                         icon: '&#xe61a;',
                         name: '正式考卷'
                     }
-                ],               
-                this.home = false;
-                this.table = false;
-                this.mis = false;
-                this.student = false;
-                this.feedback = false;
-                this.addStu = false;
-                this.setUp = false;
-                this.userAdmin = false;
-                this.addClass = false;
-                this.setTopic = false;
+                ],
+                this._showPage('simu')    
                 this.isSimuTitle = '模拟考卷列表'
                 this.isOper = false;
-                this.simu = true;
                 this.reload(false)
                 this.currentIndex = 1;
                 this.currentMenuIndex = 2;
@@ -693,19 +490,9 @@ methods: {
                         name: '正式考卷'
                     }
                 ],               
-                this.home = false;
-                this.table = false;
-                this.mis = false;
-                this.student = false;
-                this.userAdmin = false;
-                this.addStu = false;
-                this.feedback = false;
-                this.addClass = false;
-                this.setUp = false;
-                this.setTopic = false;
+                this._showPage('simu')    
                 this.isSimuTitle = '正式考卷列表'
                 this.isOper = false;
-                this.simu = true;
                 this.reload(false)
                 this.currentIndex = 2;
                 this.currentMenuIndex = 2;
@@ -728,17 +515,7 @@ methods: {
                         name: '学生反馈'
                     }
                 ]
-                this.home = false;
-                this.table = false;
-                this.mis = false;
-                this.setTopic = false;
-                this.feedback = false;
-                this.simu = false;
-                this.userAdmin = false;
-                this.setUp = false;
-                this.student = false;
-                this.addClass = false;
-                this.addStu = true;      
+                this._showPage('addStu')          
                 this.currentIndex = 1;
                 this.currentMenuIndex =  3;
             }else if(index == '3-2'){//学生管理
@@ -760,17 +537,7 @@ methods: {
                         name: '学生反馈'
                     }
                 ]
-                this.home = false;
-                this.table = false;
-                this.mis = false;
-                this.setTopic = false;
-                this.addStu = false;
-                this.userAdmin = false;
-                this.setUp = false;
-                this.feedback = false;
-                this.simu = false; 
-                this.student = false;
-                this.addClass = true;   
+                this._showPage('addClass')       
                 this.currentIndex = 2;
                 this.currentMenuIndex =  3;
             }else if(index == '3-3'){//学生管理
@@ -792,17 +559,7 @@ methods: {
                         name: '学生反馈'
                     }
                 ]
-                this.home = false;
-                this.table = false;
-                this.mis = false;
-                this.setTopic = false;
-                this.addStu = false;
-                this.setUp = false;
-                this.simu = false; 
-                this.student = false;
-                this.userAdmin = false;
-                this.addClass = false;
-                this.feedback = true;     
+                this._showPage('feedback')         
                 this.currentIndex = 3;
                 this.currentMenuIndex = 3;
             }else if(index == '4-1'){//设置
@@ -820,16 +577,7 @@ methods: {
                         name: '用户管理'
                     }
                 ]
-                this.home = false;
-                this.table = false;
-                this.mis = false;
-                this.setTopic = false;
-                this.simu = false;
-                this.student = false;
-                this.userAdmin = false;
-                this.feedback = false;
-                this.addStu = false;
-                this.setUp = true;    
+                this._showPage('setUp')        
                 this.currentIndex = 1;
                 this.currentMenuIndex = 4
             }else if(index == '4-2'){
@@ -847,63 +595,22 @@ methods: {
                         name: '用户管理'
                     }
                 ]
-                this.home = false;
-                this.table = false;
-                this.mis = false;
-                this.setTopic = false;
-                this.simu = false;
-                this.student = false;
-                this.setUp = false;
-                this.feedback = false;
-                this.addStu = false;
-                this.userAdmin = true;    
+                this._showPage('userAdmin')    
                 this.currentIndex = 2;
                 this.currentMenuIndex = 4
             }
         },
         // 监听模拟题库组件
         studentShow(){
-            this.home  = false;
-            this.table = false;
-            this.simu = false;
-            this.setTopic = false;
-            this.addStu = false;
-            this.feedback = false;
-            this.addClass = false;
-            this.userAdmin = false;
-            this.mis = false;
-            this.setUp = false;
-            this.$nextTick(() =>{
-                    this.setTopic = true;
-                })
+            this._showPage('setTopic')
         },
         // 监听表格组件传来的参数
         gotoErr(e){
             this.id = e;
-            this.home  = false;
-            this.table = false;
-            this.simu = false;
-            this.setTopic = false;
-            this.student = false;
-            this.feedback = false;
-            this.userAdmin = false;
-            this.addClass = false;
-            this.addStu = false;
-            this.setUp = false;
-            this.mis = true;
+             this._showPage('mis');
         },
         backTable(){ //回到合格或者不合格页面
-            this.home  = false;
-            this.mis = false;
-            this.simu = false;
-            this.setTopic = false;
-            this.student = false;
-            this.feedback = false;
-            this.addClass = false;
-            this.addStu = false;
-            this.userAdmin = false;
-            this.setUp = false;
-            this.table = true;
+             this._showPage('table');
         },
         // 页面刷新
         reload(circle){
@@ -928,17 +635,7 @@ methods: {
         },
         // 回到首页
         goHome(){
-            this.table  = false;
-            this.mis = false;
-            this.simu = false;
-            this.setTopic = false;
-            this.student = false;
-            this.addStu = false;
-            this.addClass = false;
-            this.userAdmin = false;
-            this.feedback = false;
-            this.setUp = false;
-            this.home = true;
+            this._showPage('home');
             this.currentIndex = 0
         },
         // 回到登录页
@@ -948,6 +645,10 @@ methods: {
                 this.isLeave = true
                 this.$router.push('/')
             })
+        },
+        _showPage(page){
+            this.show = page;
+            this.$forceUpdate()
         },
         // 菜单权限设置
         _getInfoMenu(){

@@ -77,3 +77,9 @@
 .table-wrapper .paging .el-pagination.is-background .el-pager li{
     min-width: 36px;
 }
+.no_table{
+    text-align: center;
+    color: #888888;
+    margin-top: 5vh;
+    font-size: 18px;
+}

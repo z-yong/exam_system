@@ -1,6 +1,6 @@
 <template>
     <div class="table-wrapper">
-        <div class="table-box">
+        <div v-if="myTableData.length != 0" class="table-box">
             <p class="table-title"><span>{{myTableData[0]['state'] == '缺考' ? '缺考人数' : myTableData[0]['state']}}</span></p>
             <!-- 表格 -->
             <div id="table">
@@ -35,6 +35,9 @@
                     </el-pagination>
                 </div>
             </div>
+        </div>
+        <div v-else class="no_table">
+            暂无考试记录
         </div>
     </div>
 </template>
