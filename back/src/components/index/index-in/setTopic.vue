@@ -73,10 +73,10 @@
                             <el-form-item label="D：">
                                 <el-input type="text" v-model="ruleForm['topics'][index]['optionD']" @input="change($event)"></el-input>
                             </el-form-item>
-                            <el-form-item v-if="ruleForm['topics'][index]['topicType'] == '单选题'"  label="E：">
+                            <el-form-item v-if="ruleForm['topics'][index]['topicType'] == '多选题'"  label="E：">
                                 <el-input type="text" v-model="ruleForm['topics'][index]['optionE']" @input="change($event)"></el-input>
                             </el-form-item>
-                            <el-form-item v-if="ruleForm['topics'][index]['topicType'] == '单选题'" label="F：">
+                            <el-form-item v-if="ruleForm['topics'][index]['topicType'] == '多选题'" label="F：">
                                 <el-input type="text" v-model="ruleForm['topics'][index]['optionF']" @input="change($event)"></el-input>
                             </el-form-item>
                         </div>
@@ -86,8 +86,6 @@
                                 <el-radio v-model="ruleForm['topics'][index]['correct']" label="B" @change="change($event)">B</el-radio>
                                 <el-radio v-model="ruleForm['topics'][index]['correct']" label="C" @change="change($event)">C</el-radio>
                                 <el-radio v-model="ruleForm['topics'][index]['correct']" label="D" @change="change($event)">D</el-radio>
-                                <el-radio v-model="ruleForm['topics'][index]['correct']" label="E" @change="change($event)">E</el-radio>
-                                <el-radio v-model="ruleForm['topics'][index]['correct']" label="F" @change="change($event)">F</el-radio>
                                 <!-- <el-checkbox-group v-if="ruleForm['topics'][index]['topicType'] == '多选题'" v-model="ruleForm['topics'][index]['checkList']">
                                     <el-checkbox label="A" @change="change($event)"></el-checkbox>
                                     <el-checkbox label="B" @change="change($event)"></el-checkbox>
@@ -101,6 +99,8 @@
                                     <el-checkbox label="B" @change="change($event)"></el-checkbox>
                                     <el-checkbox label="C" @change="change($event)"></el-checkbox>
                                     <el-checkbox label="D" @change="change($event)"></el-checkbox>
+                                    <el-checkbox label="E" @change="change($event)"></el-checkbox>
+                                    <el-checkbox label="F" @change="change($event)"></el-checkbox>
                                 </el-checkbox-group>
                             </el-form-item>
                             <div class="gap">
@@ -225,22 +225,22 @@ export default {
             options2: [
                         {
                         label: '单选题'
-                        }, {
+                    }, {
                         label: '多选题'
-                        }, {
+                    }, {
                         label: '填空题'
-                        }
+                    }
                 ],
             degrees: [
                         {
                         label: '一般'
-                        }, {
+                    }, {
                         label: '普通难度'
-                        }, {
+                    }, {
                         label: '较难'
-                        },{
+                    },{
                         label: '最高难度'
-                        }
+                    }
                 ],
             ways: [
                 {value: '人工阅卷'},
@@ -379,6 +379,9 @@ export default {
                 if(currentTopic.topicType == '单选题'){
                     type = 1;
                     answer = currentTopic.correct;
+                }else if (currentTopic.topicType == '多选题'){
+                    type = 2;
+                    answer = currentTopic.checkList;
                     if(!currentTopic.optionE){
                         this._isEmpty('请填写E选项!')
                         return
@@ -387,9 +390,6 @@ export default {
                         this._isEmpty('请填写F选项!')
                         return
                     }
-                }else if (currentTopic.topicType == '多选题'){
-                    type = 2;
-                    answer = currentTopic.checkList;
                 }else if(currentTopic.topicType == '填空题'){
                     type = 3;
                     answer = currentTopic.gap;
@@ -496,7 +496,6 @@ export default {
                     this.ruleForm.adjun.push({adjName: '', f_id: '', tinymceContent: ''});
                 })
             }
-            
         },
         // 最终提交
         submitTure(){
@@ -512,7 +511,11 @@ export default {
                 enclosure[index].content = tinymce.editors['content'+index].getContent();
                 enclosure[index].id = ele.f_id
             })
-            console.log(enclosure)
+            if(enclosure.length){
+                const enc = enclosure[enclosure.length-1];
+                if(!enc.title) return this._isEmpty('请输入附件名称!',true);
+                if(!enc.content) return this._isEmpty('请输入附件内容!',true);
+            }
             this.ruleForm.topics.forEach((ele,index) =>{
                 subject[index] = {};
                 let type = 0;
@@ -540,6 +543,25 @@ export default {
                 subject[index].e = ele.optionE
                 subject[index].f = ele.optionF
             })
+            if(subject.length){
+                const sub = subject[subject.length-1];
+                if(!sub.title) return this._isEmpty('请出最后一题！',true);
+                if(sub.type == 1){
+                    if(!sub.a) return this._isEmpty('请填写A选项！',true);
+                    if(!sub.b) return this._isEmpty('请填写B选项！',true);
+                    if(!sub.c) return this._isEmpty('请填写C选项！',true);
+                    if(!sub.d) return this._isEmpty('请填写D选项！',true);
+                }else if(sub.type == 2){
+                    if(!sub.a) return this._isEmpty('请填写A选项！',true);
+                    if(!sub.b) return this._isEmpty('请填写B选项！',true);
+                    if(!sub.c) return this._isEmpty('请填写C选项！',true);
+                    if(!sub.d) return this._isEmpty('请填写D选项！',true);
+                    if(!sub.e) return this._isEmpty('请填写E选项！',true);
+                    if(!sub.f) return this._isEmpty('请填写F选项！',true);
+                }
+                if(!sub.answer) return this._isEmpty('请填写正确答案！',true);
+                if(!sub.fraction) return this._isEmpty('请填写此题分数！',true);
+            }
             const data = {
                 id,
                 outline,
@@ -555,9 +577,10 @@ export default {
                 }
             }
             this.axios.post('/admin/issue/preservation',data).then(res =>{
+                tinymce.editors['tinymce'].setContent('');
                 if(this.isGetInfo){
                     this.dialogFormVisible = false;
-                    this.tinymceHtml = '';
+                    console.log(this.tinymceHtml)
                     this.ruleForm = {id: 0, title: '', topicNum: 1, topics: [], adjun: []};
                     this.$message({
                         message: '辛苦了,此试卷创建成功! 您可以继续创建试卷!',
@@ -566,7 +589,6 @@ export default {
                     return
                 }else{
                     this.dialogFormVisible = false;
-                    this.tinymceHtml = '';
                     let title = '';
                     if(res.data.data == 0){
                         title = '正式考卷列表'
@@ -665,11 +687,14 @@ export default {
             }
             this.isAllShow = true
         },
-        _isEmpty(message){
+        _isEmpty(message,close=false){
             this.$message({
                 message,
                 type: 'error'
             })
+            if(close){
+                this.dialogFormVisible = false
+            }
         },
         _getInfo(){
             let data = {};
@@ -710,7 +735,7 @@ export default {
                 this.isAllShow = true;
                 this.ruleForm.title = this.topicName;
                 this.tinymceHtml = this.outline;
-                this.disabled = true
+                this.disabled = true;
             } 
         }
     }

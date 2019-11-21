@@ -33,6 +33,8 @@
                         <el-upload
                             class="upload-demo"
                             drag
+                            name='excel'
+                            show-file-list
                             action="http://ksxt.90plus.cn/admin/user/addUserAll"
                             multiple
                             :on-preview='clickFile'

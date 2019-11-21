@@ -13,7 +13,7 @@
             <div class="table">
                 <p class="table-title">班级列表</p>
                 <el-table :data="myTableData" style="width: 100%">
-                    <el-table-column prop="id" label="编号" min-width="20px">
+                    <el-table-column prop="id" label="编号" min-width="10px">
                     </el-table-column>
                     <el-table-column prop="name" label="班级名称" min-width="20px">
                     </el-table-column>
@@ -23,10 +23,11 @@
                     </el-table-column>
                     <el-table-column prop="time" label="创建时间" min-width="20px">
                     </el-table-column>
-                    <el-table-column label="操作" min-width="20px">
+                    <el-table-column label="操作" min-width="30px">
                         <template slot-scope="scope">
                             <el-button type="text" size="small" @click="addClass('redact',scope.row,scope.$index)"><i class="iconfont">&#xe64b;</i>编辑</el-button>
                             <el-button type="text" size="small" @click="deleteData(scope.row)"><i class="iconfont">&#xe631;</i>删除</el-button>
+                            <el-button type="text" size="small" @click="seeStudent(scope.row)"><i class="iconfont">&#xe738;</i>查看学生</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -165,6 +166,10 @@ export default {
                 this.dialogVisible2 = false;
                 this._getInfoData()
             })
+        },
+        // 查看当前班级学生
+        seeStudent(row){
+            this.$emit('seeStudent',row.id)
         },
         changeExamination(e){
             this.zhengshiID = e;

@@ -57,14 +57,14 @@
                                 <i class="iconfont circle">&#xe6b7;</i>
                                 班级管理
                             </el-menu-item>
-                            <el-menu-item index="3-3" v-if="isii">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                所有学生
-                            </el-menu-item>
-                            <el-menu-item index="3-4" v-if="isll">
+                            <el-menu-item index="3-3" v-if="isll">
                                 <i class="iconfont circle">&#xe6b7;</i>
                                 学生反馈
                             </el-menu-item>
+                            <!-- <el-menu-item index="3-4" v-if="isii">
+                                <i class="iconfont circle">&#xe6b7;</i>
+                                所有学生
+                            </el-menu-item> -->
                         </el-submenu>
                         <el-submenu index="4" v-if="isJ">
                             <template slot="title">
@@ -123,10 +123,10 @@
                 <z-mis v-if="mis" :id="id" @leaveMis='backTable($event)'></z-mis>
                 <z-set-topic v-if="setTopic" :topicTitle='topicTitle' :topicType='s_type' ref="setTopic" :isGetInfo='isGetInfo' :topicID='topicID' :topicName='topicName' :outline='outline' @gotoTopicTable='gotoTopicTable($event)'></z-set-topic>
                 <z-simu v-if="simu" :isOper='isOper' @studentShow='studentShow' :title="isSimuTitle" @addTopic='addTopic($event)' @amendTopic='amendTopic($event)'></z-simu>
-                <z-student v-if="student"></z-student>
+                <z-student v-if="student" :classID='classID'></z-student>
                 <z-feedback v-if="feedback"></z-feedback>
                 <z-add-stu v-if="addStu"></z-add-stu>
-                <z-add-class v-if="addClass"></z-add-class>
+                <z-add-class v-if="addClass" @seeStudent='seeStudent($event)'></z-add-class>
                 <z-set-up v-if="setUp"></z-set-up>
                 <z-user-admin v-if="userAdmin"/>
             </div>
@@ -211,6 +211,7 @@ export default {
             isll: false,
             id: 0,
             topicID: 0,
+            classID: 0,
             isTextShow: false,
             isRouterAlive: true,//用于刷新
             isQual: true,//确认是不是查看错题组件
@@ -297,7 +298,6 @@ methods: {
             console.log(typeof e.id)
         },
         gotoTopicTable(e){
-            console.log(e)
             this.isSimuTitle = e.title;
             this.home = false;
             this.table = false;
@@ -312,6 +312,21 @@ methods: {
             this.isOper = false;
             this.simu = true;
             this.reload(false)
+        },
+        seeStudent(e){
+            this.classID = e;
+            this.home = false;
+            this.table = false;
+            this.mis = false; 
+            this.simu = false;
+            this.feedback = false;
+            this.addStu = false;
+            this.userAdmin = false;
+            this.addClass = false;
+            this.setUp = false;
+            this.setTopic = false;
+            this.isOper = false;
+            this.student = true;
         },
         handleOpen(index, indexPath) {
             if(index == 1){
@@ -361,10 +376,6 @@ methods: {
                     {
                         icon: '&#xe6f5;',
                         name: '班级管理'
-                    },
-                    {
-                        icon: '&#xe6a2;',
-                        name: '所有学生'
                     },
                     {
                         icon: '&#xe61b;',
@@ -538,20 +549,8 @@ methods: {
                     this.simu = false;
                     this.addStu = false;
                     this.addClass = false;
-                    this.feedback = false; 
-                    this.student = true;
-                }else if(index == 4){
-                    this.home = false;
-                    this.table = false;
-                    this.mis = false;
-                    this.setTopic = false;
-                    this.userAdmin = false;
-                    this.setUp = false;
-                    this.simu = false;
-                    this.addStu = false;
-                    this.addClass = false;
-                    this.student = false;
-                    this.feedback = true 
+                    this.student = false; 
+                    this.feedback = true;
                 }
             }else if(this.currentMenuIndex == 4){//如果在设置
                 if(index == 1){
@@ -725,10 +724,6 @@ methods: {
                         name: '班级管理'
                     },
                     {
-                        icon: '&#xe6a2;',
-                        name: '所有学生'
-                    },
-                    {
                         icon: '&#xe61b;',
                         name: '学生反馈'
                     }
@@ -759,10 +754,6 @@ methods: {
                     {
                         icon: '&#xe6f5;',
                         name: '班级管理'
-                    },
-                    {
-                        icon: '&#xe6a2;',
-                        name: '所有学生'
                     },
                     {
                         icon: '&#xe61b;',
@@ -797,10 +788,6 @@ methods: {
                         name: '班级管理'
                     },
                     {
-                        icon: '&#xe6a2;',
-                        name: '所有学生'
-                    },
-                    {
                         icon: '&#xe61b;',
                         name: '学生反馈'
                     }
@@ -812,48 +799,12 @@ methods: {
                 this.addStu = false;
                 this.setUp = false;
                 this.simu = false; 
-                this.feedback = false;
-                this.userAdmin = false;
-                this.addClass = false;
-                this.student = true;     
-                this.currentIndex = 3;
-                this.currentMenuIndex =  3;
-            }else if(index == '3-4'){//学生管理
-                this.menuList = [
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe67f;',
-                        name: '添加学生'
-                    },
-                    {
-                        icon: '&#xe6f5;',
-                        name: '班级管理'
-                    },
-                    {
-                        icon: '&#xe6a2;',
-                        name: '所有学生'
-                    },
-                    {
-                        icon: '&#xe61b;',
-                        name: '学生反馈'
-                    }
-                ]
-                this.home = false;
-                this.table = false;
-                this.mis = false;
-                this.setTopic = false;
-                this.userAdmin = false;
-                this.addStu = false;
-                this.setUp = false;
                 this.student = false;
+                this.userAdmin = false;
                 this.addClass = false;
-                this.simu = false; 
                 this.feedback = true;     
-                this.currentIndex = 4;
-                this.currentMenuIndex =  3;
+                this.currentIndex = 3;
+                this.currentMenuIndex = 3;
             }else if(index == '4-1'){//设置
                 this.menuList  =[
                     {

@@ -116,6 +116,11 @@
 </style>
 <script>
 export default {
+    props: {
+        classID: {
+            type: Number
+        }
+    },
     data(){
         return {
             pages: 0,
@@ -221,7 +226,7 @@ export default {
             // console.log(index)
         },
         _getStuData(){
-            this.axios.get('/admin/user/userlist').then(res =>{
+            this.axios.post('/admin/user/get_all_users',{b_id: this.classID}).then(res =>{
                 res.data.data.forEach((ele,index) =>{
                     ele.serial = index+1
                 })
@@ -231,11 +236,10 @@ export default {
             }).catch(err =>{
                 console.log(err)
             })
-        }
+        } 
     },
     created(){
         this._getStuData()
-        
     }
 }
 </script>

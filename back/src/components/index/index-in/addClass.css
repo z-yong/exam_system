@@ -67,6 +67,10 @@
     color: #ffbdc7;
     margin-right: 3px
 }
+.add-class-wrapper .el-button.el-button--text.el-button--small:nth-child(3) .iconfont{
+    color: #33CC00;
+    margin-right: 3px
+}
 .add-class-wrapper .identity{
     display: inline-block;
     margin-left: -5vw
