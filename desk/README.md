@@ -1,6 +1,9 @@
 # exam-system
 cnpm i element-ui -S
 cnpm install vue-amap --s
+cnpm install axios
+cnpm install vuex  --save
+cnpm install vuex-along --save
 ## Project setup
 ```
 npm install

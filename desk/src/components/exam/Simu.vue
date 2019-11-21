@@ -18,7 +18,7 @@
                     </div>
                     <div class="state">
                         <p class="state-text">状态</p>
-                        <p class="state-desc">未考</p>
+                        <p class="state-desc">正在考试</p>
                     </div>
                     <div class="end">
                         <p class="end-desc">结束时间</p>
@@ -32,23 +32,33 @@
                 <div class="topic-item">
                     <div class="item-name">{{itemTitle}}{{type == '3' ? index+' ('+topicType+ ' ' +grade+'分)' : ''}}</div>
                     <div class="topic-content-box">
-                        <div class="topic-content" v-html="content">
+                        <div class="" v-html="content" :class="type == 3 ? '' : 'topic-content'">
                             {{content}}
                         </div>
                         <div v-if="type == '3'" class="topic-sub">
                             <div v-if="topicType == '单选题'" class="selects">
-                                <p class="select-item">A: <span>{{a}}</span></p>
-                                <p class="select-item">B: <span>{{b}}</span></p>
-                                <p class="select-item">C: <span>{{c}}</span></p>
-                                <p class="select-item">D: <span>{{d}}</span></p>
-                                <p class="select-item">E: <span>{{e}}</span></p>
-                                <p class="select-item">F: <span>{{f}}</span></p>
+                                <p class="select-item"><el-radio label="A" v-model="radio" @change="changeRadio($event)">A</el-radio><span>{{a}}</span></p>
+                                <p class="select-item"><el-radio label="B" v-model="radio" @change="changeRadio($event)">B</el-radio><span>{{b}}</span></p>
+                                <p class="select-item"><el-radio label="C" v-model="radio" @change="changeRadio($event)">C</el-radio><span>{{c}}</span></p>
+                                <p class="select-item"><el-radio label="D" v-model="radio" @change="changeRadio($event)">D</el-radio><span>{{d}}</span></p>
                             </div>
                             <div v-if="topicType == '多选题'" class="selects">
-                                <p class="select-item">A: <span>{{a}}</span></p>
-                                <p class="select-item">B: <span>{{b}}</span></p>
-                                <p class="select-item">C: <span>{{c}}</span></p>
-                                <p class="select-item">D: <span>{{d}}</span></p>
+                                <el-checkbox-group v-model="check" @change="changeCheck(e)">
+                                    <p class="select-item"><el-checkbox label="A"></el-checkbox><span>{{a}}</span></p>
+                                    <p class="select-item"><el-checkbox label="B"></el-checkbox><span>{{b}}</span></p>
+                                    <p class="select-item"><el-checkbox label="C"></el-checkbox><span>{{c}}</span></p>
+                                    <p class="select-item"><el-checkbox label="D"></el-checkbox><span>{{d}}</span></p>
+                                    <p class="select-item"><el-checkbox label="E"></el-checkbox><span>{{e}}</span></p>
+                                    <p class="select-item"><el-checkbox label="F"></el-checkbox><span>{{f}}</span></p>
+                                </el-checkbox-group>
+                            </div>
+                            <div v-if="topicType == '填空题'" class="selects">
+                                <el-input @input="changeGap"
+                                    type="textarea"
+                                    :rows="2"
+                                    placeholder="请输入答案"
+                                    v-model="gap">
+                                </el-input>
                             </div>
                             <p class="difficulty">难度：<span>{{difficulty}}</span></p>
                         </div>
@@ -57,7 +67,14 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="submit" @click="submitAnswer">提交答卷</div> -->
+                <div class="submit" @click="submitAnswer">提交答卷</div>
+                <!-- <div class="gap">
+                    <el-form-item v-if="ruleForm['topics'][index]['topicType'] == '填空题'" label="正确答案">
+                        <el-input v-model="ruleForm['topics'][index]['gap']" @input="change($event)"></el-input>
+                        <span class="gap-desc">精确到 0.1</span>
+                    </el-form-item>
+                </div> -->
+                <!--  -->
             </div>
         </div>
         <!-- 对话框 -->
@@ -95,12 +112,19 @@ export default {
     },
     data(){
         return {
+            id: '',//题目id
+            s_id: '',//试卷id
+            radio: '',
+            check: [],
+            gap: '',
             menuList: ['基本想定','全部附件','作业条件'],
             currentIndex: 0,
             fixed: false,
             countDown: '',
+            examTime: '',
             dialogVisible: false,
             timer: '',
+            timer1: '',//定时获取学生答案
             cancelShow: false,
             allow: false,
             hint: '考试未结束，无法查看其他页面!',
@@ -128,6 +152,39 @@ export default {
             this.currentIndex = index;
             this.$emit('simuSend',index)
         },
+        changeRadio(e){
+            const data = {t_id: this.id, user_answer: e};
+            this.axios.post('/index/index/post_answer',data).then(res =>{
+                if(res.data.code != 200){
+                    this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        })
+                }
+            })  
+        },
+        changeCheck(e){
+            const data = {t_id: this.id, user_answer: this.check.join(',')};
+            this.axios.post('/index/index/post_answer',data).then(res =>{
+                if(res.data.code != 200){
+                    this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        })
+                }
+            })
+        },
+        changeGap(e){
+            const data = {t_id: this.id, user_answer: this.gap};
+            this.axios.post('/index/index/post_answer',data).then(res =>{
+                if(res.data.code != 200){
+                    this.$message({
+                            message: res.data.msg,
+                            type: 'error'
+                        })
+                }
+            })
+        },
         // 提交答卷
         submitAnswer(){
             if(!JSON.parse(localStorage.getItem('leave'))){
@@ -138,6 +195,71 @@ export default {
                 this.allow = true
                 this.dialogVisible = true
             }
+        },
+        
+        setInterTime(){
+            //判断取值 防止用户刷新
+            let minute;
+            let seconds ;
+            if(localStorage.getItem('seconds')){
+                minute = localStorage.getItem('minute');
+                seconds = localStorage.getItem('seconds')
+            }else{
+                minute = parseInt(this.countDown);
+                seconds = 0
+                localStorage.setItem('minute',minute)
+                localStorage.setItem('seconds',seconds)
+            }
+            this._changeCountDown(minute,seconds);
+        },
+        // 倒计时已到 考试结束
+        examEnd(){
+            this.dialogVisible2 = false
+        },
+        // 用户离开
+        leaveTrue(){
+           if(this.allow){
+                const minute = localStorage.getItem('minute');
+                const seconds = localStorage.getItem('seconds');
+                let time = 0;
+                const examTime = parseInt(this.examTime);
+                if(seconds > 0){
+                    const min = examTime - minute - 1;
+                    time = min*60 + (60 - seconds)
+                }else{
+                    const min = examTime - minute;
+                    time = min*60
+                }
+                const data = {
+                    s_id:  this.s_id,
+                    time
+                }
+               this.axios.post('/index/index/post_issue_answer',data).then(res =>{
+                    clearInterval(this.timer)
+                    clearInterval(this.timer1)
+                    localStorage.removeItem('minute');
+                    localStorage.removeItem('seconds');
+                    localStorage.removeItem('startTime');
+                    localStorage.removeItem('endTime');
+                    localStorage.setItem('leave',true);
+                    this.dialogVisible = false;
+                    this.isLeave = true;
+                    let url = location.href;
+                    const index = url.indexOf('index')
+                    url = url.slice(0,index);
+                    this.$router.push({name: 'Examend', query: {data: res}})
+               })
+                
+           }else{
+               this.dialogVisible = false;
+           }
+        },
+        handleClose(done) {
+            // this.$confirm('确认关闭？')
+            // .then(_ => {
+                done();
+            // })
+            // .catch(_ => {});
         },
         // 设置倒计时
         _changeCountDown(minute,seconds){
@@ -177,52 +299,17 @@ export default {
                     }
                 },1000)
         },
-        setInterTime(){
-            //判断取值 防止用户刷新
-            let minute;
-            let seconds ;
-            if(localStorage.getItem('seconds')){
-                minute = localStorage.getItem('minute');
-                seconds = localStorage.getItem('seconds')
-            }else{
-                minute = parseInt(this.countDown);
-                seconds = 0
-                localStorage.setItem('minute',minute)
-                localStorage.setItem('seconds',seconds)
-            }
-            this._changeCountDown(minute,seconds);
-        },
-        // 倒计时已到 考试结束
-        examEnd(){
-            this.dialogVisible2 = false
-        },
-        // 用户离开
-        leaveTrue(){
-           if(this.allow){
-                clearInterval(this.timer)
-                localStorage.removeItem('minute');
-                localStorage.removeItem('seconds');
-                localStorage.removeItem('startTime');
-                localStorage.removeItem('endTime');
-                localStorage.setItem('leave',true)
-                this.dialogVisible = false;
-                this.isLeave = true;
-                let url = location.href;
-                const index = url.indexOf('index')
-                url = url.slice(0,index);
-                this.$router.push({name: 'Examend'})
-                // this.$router.back()
-                // location.href = url + 'examend?a=1'
-           }else{
-               this.dialogVisible = false;
-           }
-        },
-        handleClose(done) {
-            // this.$confirm('确认关闭？')
-            // .then(_ => {
-                done();
-            // })
-            // .catch(_ => {});
+        _getAnswer(){
+            this.axios.post('/index/index/get_answer',{t_id: this.id}).then(res =>{
+                const data = res.data.data;
+                if(data.type == 1){
+                    this.radio = data.user_answer
+                }else if(data.type == 2){
+                    this.check = data.user_answer.split(',')
+                }else if(data.type == 3){
+                    this.gap = data.user_answer
+                }
+            })
         }
     },
     computed: {
@@ -254,7 +341,7 @@ export default {
     },
     created(){
         const data = this.$route.query;
-        console.log(data)
+        this.s_id = data.topicID;
         this.type = data.indexPath;
         if(data.indexPath == '1'){
             this.currentIndex = 0;
@@ -262,6 +349,7 @@ export default {
                 this.itemTitle = res.data.data.title;
                 this.content = res.data.data.outline;
                 this.countDown = res.data.data.kssc_time;
+                this.examTime = this.countDown;
                 this.setInterTime()
             })
         }else if(data.indexPath == '2'){
@@ -270,6 +358,7 @@ export default {
                 this.itemTitle = res.data.data.title;
                 this.content = res.data.data.content;
                 this.countDown = res.data.data.kssc_time;
+                this.examTime = this.countDown;
                 this.id = res.data.data.id;
                 this.setInterTime()
             })
@@ -281,8 +370,8 @@ export default {
                 this.index = data.id.slice(data.id.indexOf('&'+1))
             }
             this.axios.get('/index/index/getSubject?id='+data.id).then(res =>{
-                console.log(res)
                 const data = res.data.data;
+                this.id = data.id;
                 this.itemTitle = '作业条件'
                 this.content = data.title;
                 if(data.type == 1){ //单选题
@@ -291,14 +380,14 @@ export default {
                     this.b = data.b;
                     this.c = data.c;
                     this.d = data.d;
-                    this.e = data.e;
-                    this.f = data.f; 
                 }else if(data.type == 2){//多选题
                     this.topicType = '多选题';
                     this.a = data.a;
                     this.b = data.b;
                     this.c = data.c;
                     this.d = data.d;
+                    this.e = data.e;
+                    this.f = data.f;
                 }else if(data.type == 3){//填空题
                     this.topicType = '填空题'
                 }
@@ -310,7 +399,12 @@ export default {
                 if(data.difficulty == 2)  this.difficulty = '较难'
                 if(data.difficulty == 3)  this.difficulty = '最高难度'
                 this.countDown = data.kssc_time;
+                this.examTime = this.countDown;
                 this.setInterTime()
+                 // 获取学生所填答案
+                this.timer1 = setInterval(() =>{
+                    this._getAnswer()
+                },3000)
             })
         }
         this.$nextTick(()=>{
@@ -325,6 +419,7 @@ export default {
                 }
             })
         })
+       
     }
 }
 </script>

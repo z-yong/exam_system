@@ -9,7 +9,7 @@
         </div>
         <div class="card">
             <ul class="card-box">
-                <li @click="goToIndex" class="card-item item-left">
+                <li @click="goToSimu" class="card-item item-left">
                     <div class="card-content">
                         <img src="../../assets/img/enclo.png" alt="">
                         <p>试卷菜单详情</p>
@@ -110,9 +110,10 @@ export default {
             userName: localStorage.getItem('username'),
             time: ''
         }
-    },
+    }, 
     methods: {
-        goToIndex(){
+        goToSimu(){
+            const date = this._getStartTime()
             let enclosure = [];
             let subject = [];
             let id = 0;
@@ -121,18 +122,20 @@ export default {
                     localStorage.setItem('exam','simu')
                     enclosure = res.data.data.enclosure;
                     subject = res.data.data.subject;
-                    id = res.data.data.id
-                    this.$router.push({path: '/index',query: {menuIndex: ["2"], isMenuShow: true ,enclosure, subject, id}})
-                }).catch(err =>{
+                    id = res.data.data.id//{Time: date, indexPath: indexPath[0], id: index, topicID: this.id}
+                    const { href } = this.$router.resolve({path: '/index/simu',query: {menuIndex: ["1"],Time: date,indexPath: 1, isMenuShow: true ,enclosure, subject, topicID:id}})
+                    window.open(href, '_blank');
+               }).catch(err =>{
                     console.log(err)
                 })
-            }else if(this.id == 1){
+            }else if(this.id == 1){ 
                 this.axios.get('/index/index/StartExam').then(res =>{
                     localStorage.setItem('exam','official')
                     enclosure = res.data.data.enclosure;
                     subject = res.data.data.subject;
-                    id = res.data.data.id
-                    this.$router.push({path: '/index',query: {menuIndex: ["2"], isMenuShow: true ,enclosure, subject ,id}})
+                    id = res.data.data.id;
+                   const { href } = this.$router.resolve({path: '/index/simu',query: {menuIndex: ["1"],Time: date,indexPath: 1, isMenuShow: true ,enclosure, subject ,topicID:id}})
+                    window.open(href, '_blank');
                 }).catch(err =>{
                     console.log(err)
                 })

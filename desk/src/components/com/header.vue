@@ -136,7 +136,14 @@ export default {
         // 退出
         exit(){
             if(this.aloneExit){
-                this.dialogVisible = true;
+                if(localStorage.getItem('seconds')){
+                    this.$message({
+                        message: '考试未结束',
+                        type: 'error'
+                    })
+                }else{
+                    this.dialogVisible = true;
+                }
             }
         },
         // 确认退出

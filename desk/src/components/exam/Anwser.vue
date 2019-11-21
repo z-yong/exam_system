@@ -15,7 +15,7 @@
                     </div>
                     <div class="state">
                         <p class="state-text">状态</p>
-                        <p class="state-desc">未考</p>
+                        <p class="state-desc">正在考试</p>
                     </div>
                     <div class="end">
                         <p class="end-desc">结束时间</p>
@@ -32,13 +32,11 @@
                         <ul class="topic-content-ul">
                             <li v-for="(dan,di) in radioTopics" :key="di">
                                 <div class="item-mess"><p>{{dan.order}}、</p><div v-html="dan.title">{{dan.title}} </div><span class="span">({{radioData[di].fraction}}分)</span></div>
-                                <el-radio-group v-model="radioData[di]['user_answer']">
+                                <el-radio-group v-model="radioData[di]['user_answer']" @change="changeRadio(radioData[di])">
                                     <el-radio label="A">A</el-radio>
                                     <el-radio label="B">B</el-radio>
                                     <el-radio label="C">C</el-radio>
                                     <el-radio label="D">D</el-radio>
-                                    <el-radio label="E">E</el-radio>
-                                    <el-radio label="F">F</el-radio>
                                 </el-radio-group>
                                 <p class="item-desc" @click="goToSimu(dan.id,dan.order)">作业条件{{dan.order}}</p>
                             </li>
@@ -54,11 +52,13 @@
                         <ul class="topic-content-ul">
                             <li v-for="(duo,ui) in checkTopics" :key="ui">
                                 <div class="item-mess"><p>{{duo.order}}、</p><div v-html="duo.title">{{duo.title}}</div><span class="span">({{checkData[ui].fraction}}分)</span></div>
-                                <el-checkbox-group v-model="checkData[ui]['user_answer']">
+                                <el-checkbox-group v-model="checkData[ui]['user_answer']" @change="changeCheck(checkData[ui])">
                                     <el-checkbox label="A">A</el-checkbox>
                                     <el-checkbox label="B">B</el-checkbox>
                                     <el-checkbox label="C">C</el-checkbox>
                                     <el-checkbox label="D">D</el-checkbox>
+                                    <el-checkbox label="E">E</el-checkbox>
+                                    <el-checkbox label="F">F</el-checkbox>
                                 </el-checkbox-group>
                                 <p class="item-desc" @click="goToSimu(duo.id,duo.order)">作业条件{{duo.order}}</p>
                             </li>
@@ -74,7 +74,7 @@
                         <ul class="topic-content-ul">
                             <li v-for="(tian,ti) in gapTopics" :key="ti">
                                 <div class="item-mess"><p>{{tian.order}}、</p><div v-html="tian.title">{{tian.title}}</div><span class="span">({{gapData[ti].fraction}}分)</span></div>
-                                <textarea class="gap-anw" placeholder="请输入答案" v-model="gapData[ti]['user_answer']"></textarea>
+                                <textarea class="gap-anw" type='number' placeholder="请输入答案" v-model="gapData[ti]['user_answer']" @input="changeGap(gapData[ti])"></textarea>
                                 <p class="item-desc tian" @click="goToSimu(tian.id,tian.order)">作业条件{{tian.order}}</p>
                             </li>
                         </ul>
@@ -143,6 +143,7 @@ export default {
             dialogVisible: false,
             cancelShow: true,
             timer: '',
+            timer1: '',//定时获取学生答案
             hint: '是否确认提交？',
             allow: false,
             isLeave: false,
@@ -156,6 +157,24 @@ export default {
         }
     },
     methods: {
+        changeRadio(e){
+            const data = {t_id: e.t_id, user_answer: e.user_answer};
+            this.axios.post('/index/index/post_answer',data).then(res =>{
+                console.log(res)
+            })  
+        },
+        changeCheck(e){
+            const data = {t_id: e.t_id, user_answer: e.user_answer.join(',')};
+            this.axios.post('/index/index/post_answer',data).then(res =>{
+                console.log(res)
+            })
+        },
+        changeGap(e){
+            const data = {t_id: e.t_id, user_answer: e.user_answer};
+            this.axios.post('/index/index/post_answer',data).then(res =>{
+                console.log(res)
+            })
+        },
         submitAnswer(){
             if(!JSON.parse(localStorage.getItem('leave'))){
                 const minute = localStorage.getItem('minute');
@@ -170,6 +189,40 @@ export default {
             const date = this._getStartTime()
             const { href } = this.$router.resolve({path: '/index/simu',query: {Time: date, indexPath: '3', id, index}})
             window.open(href, '_blank');
+        },
+        leaveTrue(){
+           if(this.allow){
+                const minute = localStorage.getItem('minute');
+                const seconds = localStorage.getItem('seconds');
+                let time = 0;
+                if(seconds > 0){
+                    const min = this.$route.query.countDown - minute - 1;
+                    time = min*60 + (60 - seconds)
+                }else{
+                    const min = this.$route.query.countDown - minute;
+                    time = min*60
+                }
+                const data = {
+                    s_id: this.id,
+                    time,
+                }
+                this.axios.post('/index/index/post_issue_answer',data).then(res =>{
+                    clearInterval(this.timer)
+                    clearInterval(this.timer1)
+                    localStorage.clear()
+                    localStorage.setItem('leave',true)
+                    this.isLeave = true;
+                    this.dialogVisible = false;
+                    this.$router.push({path: '/examend', query: {data: res}})
+                    // this.$router.back()
+                    // location.href = 'http://localhost:8080/index'
+                })
+           }else{
+               this.dialogVisible = false;
+           }
+        },
+        handleClose(done){
+            done()
         },
          _changeCountDown(minute,seconds){
                 minute = parseInt(minute);
@@ -216,46 +269,6 @@ export default {
                     }
                 },1000)
         },
-        leaveTrue(){
-           if(this.allow){
-                this.formData = [...this.radioData, ...this.checkData, ...this.gapData];
-                const minute = localStorage.getItem('minute');
-                const seconds = localStorage.getItem('seconds');
-                let time = 0;
-                if(seconds > 0){
-                    const min = this.$route.query.countDown - minute - 1;
-                    time = min*60 + (60 - seconds)
-                }else{
-                    const min = this.$route.query.countDown - minute;
-                    time = min*60
-                }
-                const timu = this.formData;
-                const data = {
-                    s_id: this.id,
-                    time,
-                    timu
-                }
-                this.axios.post('/index/index/postAnswer',data).then(res =>{
-                    clearInterval(this.timer)
-                    // localStorage.removeItem('minute');
-                    // localStorage.removeItem('seconds');
-                    // localStorage.removeItem('startTime');
-                    // localStorage.removeItem('endTime');
-                    localStorage.clear()
-                    localStorage.setItem('leave',true)
-                    this.isLeave = true;
-                    this.dialogVisible = false;
-                    this.$router.push({path: '/examend', query: {data: res}})
-                    // this.$router.back()
-                    // location.href = 'http://localhost:8080/index'
-                })
-           }else{
-               this.dialogVisible = false;
-           }
-        },
-        handleClose(done){
-            done()
-        },
         _getStartTime(){
             let startTime = '';
             let endTime = '';
@@ -284,10 +297,8 @@ export default {
         },
         _getInfoData(){
             const type = this.$route.query.type;
-            console.log(type)
-            if(type == 0){
+            if(type == 0){//模拟
                 this.axios.get('/index/index/datika').then(res =>{
-                    console.log(res)
                     this.id = res.data.data.shijuan.id;
                     this.radioTopics = res.data.data.dan;
                     this.checkTopics = res.data.data.duo;
@@ -301,8 +312,12 @@ export default {
                     this.gapTopics.forEach((ele,index) =>{
                         this.gapData.push({t_id: ele.id, user_answer: '', fraction: ele.fraction})
                     })
+                     // 获取学生所填答案
+                    this.timer1 = setInterval(() =>{
+                        this._getAnswer()
+                    },3000)
                 })
-            }else if(type == 1){
+            }else if(type == 1){//正式
                 this.axios.get('/index/index/zsdatika').then(res =>{
                     this.id = res.data.data.shijuan.id;
                     this.radioTopics = res.data.data.dan;
@@ -317,8 +332,39 @@ export default {
                     this.gapTopics.forEach((ele,index) =>{
                         this.gapData.push({t_id: ele.id, user_answer: '', fraction: ele.fraction})
                     })
+                     // 获取学生所填答案
+                    this.timer1 = setInterval(() =>{
+                        this._getAnswer()
+                    },3000)
                 })
             }
+        },
+         _getAnswer(){
+            this.axios.post('/index/index/get_answer_cart',{s_id: this.id}).then(res =>{
+                const data = res.data.data;
+                for (const item of data) {
+                    if(item.type == 1){
+                        for (const ans1 of this.radioData) {
+                            if(ans1.t_id == item.t_id){
+                                ans1.user_answer = item.user_answer;
+                            }
+                        }
+                    }else if(item.type == 2){
+                        for (const ans2 of this.checkData) {
+                            if(ans2.t_id == item.t_id){
+                                ans2.user_answer = item.user_answer.split(',')
+                            }
+                        }
+                    }else if(item.type == 3){
+                        console.log(item.user_answer)
+                        for (const ans3 of this.gapData) {
+                            if(ans3.t_id == item.t_id){
+                                ans3.user_answer = item.user_answer;
+                            }
+                        }
+                    }
+                }
+            })
         }
     },
     computed: {
@@ -378,6 +424,8 @@ export default {
             localStorage.setItem('seconds',cardSeconds)
         }
         this._changeCountDown(cardMinute,cardSeconds);
+
+        
     }
 }
 </script>

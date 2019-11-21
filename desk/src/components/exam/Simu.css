@@ -135,7 +135,7 @@
     user-select: none;
 }
 .topic-sub{
-    padding: 2vh 1vw 1vh;
+    padding: 2vh 0vw 1vh;
 }
 .topic-sub .difficulty{
     font-size: 14px;

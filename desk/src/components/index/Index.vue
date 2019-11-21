@@ -14,11 +14,11 @@
                     <el-row class="tac">
                         <el-col :span="24">
                             <el-menu unique-opened	:default-openeds='menuIndexArr' router
-                            class="el-menu-vertical-demo"
-                            @select="currentMenu"
-                            background-color="#fff"
-                            text-color="#0070d8"
-                            active-text-color="#fff">
+                                     class="el-menu-vertical-demo"
+                                     @select="currentMenu"
+                                     background-color="#fff"
+                                     text-color="#0070d8"
+                                     active-text-color="#fff">
                                 <el-menu-item index="1">
                                     <i class="el-icon-s-opportunity"></i>
                                     <span slot="title">基本想定</span>
@@ -28,11 +28,10 @@
                                         <i class="el-icon-s-grid" style="color:#0070d8"></i>
                                         <span>全部附件</span>
                                     </template>
-                                        <el-menu-item v-for="(enclo,i) in enclosure" :key="i" :index='enclo.id'><i class="iconfont">&#xe6b7;</i>
-                                            附件{{i+1}}
+                                    <el-menu-item v-for="(enclo,i) in enclosure" :key="i" :index='enclo.id'><i class="iconfont">&#xe6b7;</i>
+                                        附件{{i+1}}
                                         <span class="enclo-text">({{enclo.title}})</span>
-                                        </el-menu-item>
-                                        
+                                    </el-menu-item>
                                 </el-submenu>
                                 <el-submenu index="3">
                                     <template slot="title">
@@ -88,9 +87,8 @@ export default {
             console.log(id,index)
         },
         currentMenu(index,indexPath){
-            console.log(index,indexPath)
             const date = this._getStartTime()
-            this.bgColor = '#0070d8',
+            this.bgColor = '#0070d8', 
             this.color = '#fff',
             this.path = require('../../assets/img/LOGO-white.png');
             const { href } = this.$router.resolve({path: '/index/simu',query: {Time: date, indexPath: indexPath[0], id: index, topicID: this.id}})
@@ -169,6 +167,7 @@ export default {
         _getExamingData(){
             // 获取Examing页面传过来的数据
             if(this.$route.query.enclosure){
+                console.log(123)
                 this.menuIndexArr = this.$route.query.menuIndex;
                 this.isMenuShow = this.$route.query.isMenuShow;
                 this.enclosure = this.$route.query.enclosure;
@@ -234,6 +233,25 @@ export default {
         this._goMenuMess();
         // 设置一把公共锁 当学生离开试卷页面或者答题卡页面时即解锁
         localStorage.setItem('leave',false);
+
+        const href = window.location.href;
+        const index = href.indexOf('?') + 1;
+        if(index > 0){
+            const argument = href.slice(index);
+            if(argument.length){
+                const reg = /([^?&=]+)=([^?&=|#]*)/g;
+                const arr = argument.match(reg);
+                let store_id = ''; 
+                arr.forEach((ele) =>{
+                    const i = ele.indexOf('=');
+                    const name = ele.slice(0,i)
+                    if(name == 'indexPath'){
+                        this.isMenuShow = true;
+                        this.menuIndexArr = [ele.slice(i+1)]
+                    }
+                })
+            }
+        }
     }
     
 }
