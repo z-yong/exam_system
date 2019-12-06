@@ -26,19 +26,19 @@
         </div>
         <div class="topic-box">
             <div class="topic">
-                <div class="topic-item">
-                    <div class="item-name">单选题</div>
+                <div v-if="radioTopics.length" class="topic-item">
+                    <!-- <div class="item-name">单选题</div> -->
                     <div class="topic-content-wrapper">
                         <ul class="topic-content-ul">
                             <li v-for="(dan,di) in radioTopics" :key="di">
-                                <div class="item-mess"><p>{{dan.order}}、</p><div v-html="dan.title">{{dan.title}} </div><span class="span">({{radioData[di].fraction}}分)</span></div>
+                                <div class="item-mess"><p style="margin-right:1vh;font-weight:600">{{dan.serial}}</p><div v-html="dan.title">{{dan.title}} </div><span class="span">({{radioData[di].fraction}}分)</span></div>
                                 <el-radio-group v-model="radioData[di]['user_answer']" @change="changeRadio(radioData[di])">
                                     <el-radio label="A">A</el-radio>
                                     <el-radio label="B">B</el-radio>
                                     <el-radio label="C">C</el-radio>
                                     <el-radio label="D">D</el-radio>
                                 </el-radio-group>
-                                <p class="item-desc" @click="goToSimu(dan.id,dan.order)">作业条件{{dan.order}}</p>
+                                <p class="item-desc" @click="goToSimu(dan.id,dan.serial)">作业条件{{dan.serial}}</p>
                             </li>
                         </ul>
                         <div class="item-line">
@@ -46,12 +46,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="topic-item">
-                    <div class="item-name">多选题</div>
+                <div v-if="checkTopics.length" class="topic-item">
+                    <!-- <div class="item-name">多选题</div> -->
                     <div class="topic-content-wrapper">
                         <ul class="topic-content-ul">
                             <li v-for="(duo,ui) in checkTopics" :key="ui">
-                                <div class="item-mess"><p>{{duo.order}}、</p><div v-html="duo.title">{{duo.title}}</div><span class="span">({{checkData[ui].fraction}}分)</span></div>
+                                <div class="item-mess"><p style="margin-right:1vh;font-weight:600">{{duo.serial}}</p><div v-html="duo.title">{{duo.title}}</div><span class="span">({{checkData[ui].fraction}}分)</span></div>
                                 <el-checkbox-group v-model="checkData[ui]['user_answer']" @change="changeCheck(checkData[ui])">
                                     <el-checkbox label="A">A</el-checkbox>
                                     <el-checkbox label="B">B</el-checkbox>
@@ -60,7 +60,7 @@
                                     <el-checkbox label="E">E</el-checkbox>
                                     <el-checkbox label="F">F</el-checkbox>
                                 </el-checkbox-group>
-                                <p class="item-desc" @click="goToSimu(duo.id,duo.order)">作业条件{{duo.order}}</p>
+                                <p class="item-desc" @click="goToSimu(duo.id,duo.serial)">作业条件{{duo.serial}}</p>
                             </li>
                         </ul>
                         <div class="item-line">
@@ -68,14 +68,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="topic-item">
-                    <div class="item-name">填空题</div>
+                <div v-if="gapTopics.length" class="topic-item">
+                    <!-- <div class="item-name">填空题</div> -->
                     <div class="topic-content-wrapper">
                         <ul class="topic-content-ul">
                             <li v-for="(tian,ti) in gapTopics" :key="ti">
-                                <div class="item-mess"><p>{{tian.order}}、</p><div v-html="tian.title">{{tian.title}}</div><span class="span">({{gapData[ti].fraction}}分)</span></div>
+                                <div class="item-mess"><p><p style="margin-right:1vh;font-weight:600">{{tian.serial}}</p><div v-html="tian.title">{{tian.title}}</div><span class="span">({{gapData[ti].fraction}}分)</span></div>
                                 <textarea class="gap-anw" type='number' placeholder="请输入答案" v-model="gapData[ti]['user_answer']" @input="changeGap(gapData[ti])"></textarea>
-                                <p class="item-desc tian" @click="goToSimu(tian.id,tian.order)">作业条件{{tian.order}}</p>
+                                <p class="item-desc tian" @click="goToSimu(tian.id,tian.serial)">作业条件{{tian.serial}}</p>
                             </li>
                         </ul>
                         <div class="item-line">
@@ -153,7 +153,8 @@ export default {
             radioData: [],//单选答案
             checkData: [],//多选答案
             gapData: [],//填空答案
-            formData: []//总的答案
+            formData: [],//总的答案,
+            condition: []
         }
     },
     methods: {
@@ -186,9 +187,26 @@ export default {
             }
         },
         goToSimu(id,index){
+            let indexi, ii;
+            let i = 0;
+            for (const item of this.condition) {
+                let j = 0;
+                for (const el of item.subject) {
+                    if(el.id == id){
+                        indexi = i;
+                        ii = j;
+                        break;
+                    }
+                    j++
+                }
+                i++
+            }
             const date = this._getStartTime()
-            const { href } = this.$router.resolve({path: '/index/simu',query: {Time: date, indexPath: '3', id, index}})
+            const condition = JSON.stringify(this.condition)
+            const { href } = this.$router.resolve({path: '/index/simu',query: {condition}})
             window.open(href, '_blank');
+            localStorage.setItem('i',indexi);
+            localStorage.setItem('j',ii);
         },
         leaveTrue(){
            if(this.allow){
@@ -224,7 +242,7 @@ export default {
         handleClose(done){
             done()
         },
-         _changeCountDown(minute,seconds){
+        _changeCountDown(minute,seconds){
                 minute = parseInt(minute);
                 seconds = parseInt(seconds);
                 this.timer = setInterval(() =>{
@@ -299,10 +317,16 @@ export default {
             const type = this.$route.query.type;
             if(type == 0){//模拟
                 this.axios.get('/index/index/datika').then(res =>{
-                    this.id = res.data.data.shijuan.id;
-                    this.radioTopics = res.data.data.dan;
-                    this.checkTopics = res.data.data.duo;
-                    this.gapTopics = res.data.data.tian;
+                    res.data.data.forEach((ele,index) =>{
+                        if(ele.type == 1){
+                            this.radioTopics.push(ele)
+                        }else if(ele.type == 2){
+                            this.checkTopics.push(ele)
+                        }else{
+                            this.gapTopics.push(ele)
+                        }
+                    })
+                    this.id = res.data.msg;
                     this.radioTopics.forEach((ele,index) =>{
                         this.radioData.push({t_id: ele.id, user_answer: '', fraction: ele.fraction})
                     })
@@ -319,10 +343,16 @@ export default {
                 })
             }else if(type == 1){//正式
                 this.axios.get('/index/index/zsdatika').then(res =>{
-                    this.id = res.data.data.shijuan.id;
-                    this.radioTopics = res.data.data.dan;
-                    this.checkTopics = res.data.data.duo;
-                    this.gapTopics = res.data.data.tian;
+                    res.data.data.forEach((ele,index) =>{
+                        if(ele.type == 1){
+                            this.radioTopics.push(ele)
+                        }else if(ele.type == 2){
+                            this.checkTopics.push(ele)
+                        }else{
+                            this.gapTopics.push(ele)
+                        }
+                    })
+                    this.id = res.data.msg;
                     this.radioTopics.forEach((ele,index) =>{
                         this.radioData.push({t_id: ele.id, user_answer: '', fraction: ele.fraction})
                     })
@@ -366,7 +396,7 @@ export default {
                 }
             })
         }
-    },
+    }, 
     computed: {
         startTime(){
             if(!localStorage.getItem('startTime')){
@@ -398,6 +428,7 @@ export default {
     },
     created(){
         this._getInfoData();
+        this.condition = JSON.parse(this.$route.query.condition)
         this.$nextTick(()=>{
             const head = document.getElementById('head');
             const top = head.offsetTop;

@@ -47,12 +47,18 @@ export default new Router({
             {
               path: '/index/content/personal/:id',
               name: 'personal',
-              component: personal
+              component: personal,
+              meta: {
+                title: '个人中心'
+              }
             },
             {
               path: '/index/content/qua/:id',
               name: 'qua',
-              component: qua
+              component: qua,
+              meta: {
+                title: '问题反馈'
+              }
             },
             {
               path: '/index/content/myQua',
@@ -79,7 +85,10 @@ export default new Router({
         {
           path: '/index/simu',
           name: 'Simu',
-          component: Simu
+          component: Simu,
+          meta: {
+            title: '试卷内容'
+          }
         }
       ]
     },
@@ -91,7 +100,10 @@ export default new Router({
     {
       path: '/anwser',
       name: 'Anwser',
-      component: Anwser
+      component: Anwser,
+      meta: {
+        title: '答题卡'
+      }
     },
     {
       path: '/examend',

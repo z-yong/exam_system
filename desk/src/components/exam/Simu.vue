@@ -30,37 +30,38 @@
         <div class="topic-box">
             <div class="topic">
                 <div class="topic-item">
-                    <div class="item-name">{{itemTitle}}{{type == '3' ? index+' ('+topicType+ ' ' +grade+'分)' : ''}}</div>
+                    <div v-if="!topicShow" class="item-name">{{itemTitle}}</div>
+                    <div v-else class="item-name">作业条件{{condition[z_index].subject[t_index].serial}}</div>
                     <div class="topic-content-box">
                         <div class="" v-html="content" :class="type == 3 ? '' : 'topic-content'">
                             {{content}}
                         </div>
-                        <div v-if="type == '3'" class="topic-sub">
-                            <div v-if="topicType == '单选题'" class="selects">
-                                <p class="select-item"><el-radio label="A" v-model="radio" @change="changeRadio($event)">A</el-radio><span>{{a}}</span></p>
-                                <p class="select-item"><el-radio label="B" v-model="radio" @change="changeRadio($event)">B</el-radio><span>{{b}}</span></p>
-                                <p class="select-item"><el-radio label="C" v-model="radio" @change="changeRadio($event)">C</el-radio><span>{{c}}</span></p>
-                                <p class="select-item"><el-radio label="D" v-model="radio" @change="changeRadio($event)">D</el-radio><span>{{d}}</span></p>
+                        <div v-if="topicShow" class="topic-sub">
+                            <div v-if="condition[z_index].subject[t_index].type == '1'" class="selects">
+                                <p class="select-item"><el-radio label="A" v-model="radio" @change="changeRadio($event)">A</el-radio><span>{{condition[z_index].subject[t_index].a}}</span></p>
+                                <p class="select-item"><el-radio label="B" v-model="radio" @change="changeRadio($event)">B</el-radio><span>{{condition[z_index].subject[t_index].b}}</span></p>
+                                <p class="select-item"><el-radio label="C" v-model="radio" @change="changeRadio($event)">C</el-radio><span>{{condition[z_index].subject[t_index].c}}</span></p>
+                                <p class="select-item"><el-radio label="D" v-model="radio" @change="changeRadio($event)">D</el-radio><span>{{condition[z_index].subject[t_index].d}}</span></p>
                             </div>
-                            <div v-if="topicType == '多选题'" class="selects">
+                            <div v-if="condition[z_index].subject[t_index].type == '2'" class="selects">
                                 <el-checkbox-group v-model="check" @change="changeCheck(e)">
-                                    <p class="select-item"><el-checkbox label="A"></el-checkbox><span>{{a}}</span></p>
-                                    <p class="select-item"><el-checkbox label="B"></el-checkbox><span>{{b}}</span></p>
-                                    <p class="select-item"><el-checkbox label="C"></el-checkbox><span>{{c}}</span></p>
-                                    <p class="select-item"><el-checkbox label="D"></el-checkbox><span>{{d}}</span></p>
-                                    <p class="select-item"><el-checkbox label="E"></el-checkbox><span>{{e}}</span></p>
-                                    <p class="select-item"><el-checkbox label="F"></el-checkbox><span>{{f}}</span></p>
+                                    <p class="select-item"><el-checkbox label="A"></el-checkbox><span>{{condition[z_index].subject[t_index].a}}</span></p>
+                                    <p class="select-item"><el-checkbox label="B"></el-checkbox><span>{{condition[z_index].subject[t_index].b}}</span></p>
+                                    <p class="select-item"><el-checkbox label="C"></el-checkbox><span>{{condition[z_index].subject[t_index].c}}</span></p>
+                                    <p class="select-item"><el-checkbox label="D"></el-checkbox><span>{{condition[z_index].subject[t_index].d}}</span></p>
+                                    <p class="select-item"><el-checkbox label="E"></el-checkbox><span>{{condition[z_index].subject[t_index].e}}</span></p>
+                                    <p class="select-item"><el-checkbox label="F"></el-checkbox><span>{{condition[z_index].subject[t_index].f}}</span></p>
                                 </el-checkbox-group>
                             </div>
-                            <div v-if="topicType == '填空题'" class="selects">
+                            <div v-if="condition[z_index].subject[t_index].type == '3'" class="selects">
                                 <el-input @input="changeGap"
-                                    type="textarea"
+                                    type="number"
                                     :rows="2"
                                     placeholder="请输入答案"
                                     v-model="gap">
                                 </el-input>
                             </div>
-                            <p class="difficulty">难度：<span>{{difficulty}}</span></p>
+                            <p class="difficulty">难度：<span>{{condition[z_index].subject[t_index].difficulty}}</span></p>
                         </div>
                         <div class="item-line">
                             <img src='../../assets/img/line.png' alt="">
@@ -100,13 +101,12 @@
 <script>
 import { setInterval, clearInterval } from 'timers';
 import map from './map'
+let index;
+
 export default {
-    // props: {
-    //     fixed: {
-    //         type: Boolean,
-    //         required: true
-    //     }
-    // },
+    props: {
+        ids: Object
+    },
     components: {
         "z-map": map
     },
@@ -119,6 +119,9 @@ export default {
             gap: '',
             menuList: ['基本想定','全部附件','作业条件'],
             currentIndex: 0,
+            z_index: '',//作业条件索引
+            t_index: '',//题目索引
+            condition: '',
             fixed: false,
             countDown: '',
             examTime: '',
@@ -134,33 +137,32 @@ export default {
             type: '',
             topicType: '',
             index: 0,
-            id: 0,
-            a: '',
-            b: '',
-            c: '',
-            d: '',
-            e: '',
-            f: '',
+            topicShow: false,
             difficulty: '',
             grade: '',
             answer: ''
+        }
+    },
+    watch:{
+        ids(){
+            this._getData(this.ids.indexPath, this.ids.id)
         }
     },
     methods: {
         // 点击顶部菜单项
         clickTopMenu(index){
             this.currentIndex = index;
-            this.$emit('simuSend',index)
+            this.$emit('simuSend',index);
         },
         changeRadio(e){
             const data = {t_id: this.id, user_answer: e};
             this.axios.post('/index/index/post_answer',data).then(res =>{
                 if(res.data.code != 200){
                     this.$message({
-                            message: res.data.msg,
-                            type: 'error'
-                        })
-                }
+                        message: res.data.msg,
+                        type: 'error'
+                    })
+                } 
             })  
         },
         changeCheck(e){
@@ -168,9 +170,9 @@ export default {
             this.axios.post('/index/index/post_answer',data).then(res =>{
                 if(res.data.code != 200){
                     this.$message({
-                            message: res.data.msg,
-                            type: 'error'
-                        })
+                        message: res.data.msg,
+                        type: 'error'
+                    })
                 }
             })
         },
@@ -263,9 +265,10 @@ export default {
         },
         // 设置倒计时
         _changeCountDown(minute,seconds){
-                minute = parseInt(minute);
-                seconds = parseInt(seconds)
-                this.timer = setInterval(() =>{
+            minute = parseInt(minute);
+            seconds = parseInt(seconds)
+            if(this.timer == ''){
+                 this.timer = setInterval(() =>{
                     if(!JSON.parse(localStorage.getItem('leave'))){
                         if(seconds == 0){
                             seconds = 60;
@@ -298,6 +301,7 @@ export default {
                         clearInterval(this.timer)
                     }
                 },1000)
+            }
         },
         _getAnswer(){
             this.axios.post('/index/index/get_answer',{t_id: this.id}).then(res =>{
@@ -310,6 +314,48 @@ export default {
                     this.gap = data.user_answer
                 }
             })
+        },
+        _getData(indexPath,id){
+            this.topicShow = false;
+            if(indexPath == '1'){
+                this.currentIndex = 0;
+                this.axios.get('/index/index/getIssue?id='+this.s_id).then(res =>{
+                    this.itemTitle = res.data.data.title;
+                    this.content = res.data.data.outline;
+                    this.countDown = res.data.data.kssc_time;
+                    this.examTime = this.countDown;
+                    this.setInterTime()
+                    
+                })
+            }else if(indexPath == '2'){
+                this.currentIndex = 1;
+                this.axios.get('/index/index/getEnclosure?id='+id).then(res =>{
+                    this.itemTitle = res.data.data.title;
+                    this.content = res.data.data.content;
+                    this.countDown = res.data.data.kssc_time;
+                    this.examTime = this.countDown;
+                    this.id = res.data.data.id;
+                    this.setInterTime()
+                })
+            }else if(indexPath == '3'){
+                this.currentIndex = 2;
+                const i = id.slice(0,id.indexOf('&'));
+                const j = id.slice(id.indexOf('&')+1);
+                this.z_index = i;
+                if(j == 'content'){
+                    this.content = this.condition[this.z_index].content;
+                    console.log(this.content)
+                }else{
+                    this.t_index = j;
+                    this.content = this.condition[this.z_index].subject[this.t_index].title;
+                    this.topicShow = true;
+                    this.id = this.condition[this.z_index].subject[this.t_index].id;
+                }
+                setInterval(() =>{
+                    this._getAnswer()
+                },3000)
+                console.log(this.ids)
+            }
         }
     },
     computed: {
@@ -343,69 +389,12 @@ export default {
         const data = this.$route.query;
         this.s_id = data.topicID;
         this.type = data.indexPath;
-        if(data.indexPath == '1'){
-            this.currentIndex = 0;
-            this.axios.get('/index/index/getIssue?id='+data.topicID).then(res =>{
-                this.itemTitle = res.data.data.title;
-                this.content = res.data.data.outline;
-                this.countDown = res.data.data.kssc_time;
-                this.examTime = this.countDown;
-                this.setInterTime()
-            })
-        }else if(data.indexPath == '2'){
-            this.currentIndex = 1;
-            this.axios.get('/index/index/getEnclosure?id='+data.id).then(res =>{
-                this.itemTitle = res.data.data.title;
-                this.content = res.data.data.content;
-                this.countDown = res.data.data.kssc_time;
-                this.examTime = this.countDown;
-                this.id = res.data.data.id;
-                this.setInterTime()
-            })
-        }else if(data.indexPath == '3'){
-            this.currentIndex = 2;
-            if(data.index){
-                this.index = data.index
-            }else{
-                this.index = data.id.slice(data.id.indexOf('&'+1))
-            }
-            this.axios.get('/index/index/getSubject?id='+data.id).then(res =>{
-                const data = res.data.data;
-                this.id = data.id;
-                this.itemTitle = '作业条件'
-                this.content = data.title;
-                if(data.type == 1){ //单选题
-                    this.topicType = '单选题';
-                    this.a = data.a;
-                    this.b = data.b;
-                    this.c = data.c;
-                    this.d = data.d;
-                }else if(data.type == 2){//多选题
-                    this.topicType = '多选题';
-                    this.a = data.a;
-                    this.b = data.b;
-                    this.c = data.c;
-                    this.d = data.d;
-                    this.e = data.e;
-                    this.f = data.f;
-                }else if(data.type == 3){//填空题
-                    this.topicType = '填空题'
-                }
-                this.id = data.id;
-                this.answer = data.answer;
-                this.grade = data.fraction;
-                if(data.difficulty == 0)  this.difficulty = '一般'
-                if(data.difficulty == 1)  this.difficulty = '普通难度'
-                if(data.difficulty == 2)  this.difficulty = '较难'
-                if(data.difficulty == 3)  this.difficulty = '最高难度'
-                this.countDown = data.kssc_time;
-                this.examTime = this.countDown;
-                this.setInterTime()
-                 // 获取学生所填答案
-                this.timer1 = setInterval(() =>{
-                    this._getAnswer()
-                },3000)
-            })
+        this.condition = JSON.parse(data.condition);
+        if(localStorage.getItem('i')){
+            const id = localStorage.getItem('i')+'&'+localStorage.getItem('j')
+            this._getData('3',id);
+        }else{
+             this._getData(this.type,data.id);
         }
         this.$nextTick(()=>{
             const head = document.getElementById('head');

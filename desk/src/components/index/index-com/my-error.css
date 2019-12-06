@@ -42,6 +42,7 @@
     text-align: center;
     margin: 4vh 0 2vh;
 }
+
 .mis-wrapper .paging .el-pagination.is-background .el-pager li{
     min-width: 36px;
 }

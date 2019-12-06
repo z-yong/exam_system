@@ -11,6 +11,14 @@ Vue.use(ElementUI);
 Vue.prototype.axios = axios
 Vue.config.productionTip = false
 
+// 设置标题
+router.beforeEach((to,form,next) =>{
+  if(to.meta.title){
+    document.title = to.meta.title
+  }
+  next()
+})
+
 new Vue({
   router,
   render: h => h(App)

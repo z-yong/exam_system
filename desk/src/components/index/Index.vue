@@ -13,9 +13,9 @@
                 <div v-if="isMenuShow" class="menu-left" :class="fixed ? 'fixed' : ''" id="menuLeft">
                     <el-row class="tac">
                         <el-col :span="24">
-                            <el-menu unique-opened	:default-openeds='menuIndexArr' router
+                            <el-menu unique-opened
                                      class="el-menu-vertical-demo"
-                                     @select="currentMenu"
+                                     @select="currentMenu" @open='openMenu'
                                      background-color="#fff"
                                      text-color="#0070d8"
                                      active-text-color="#fff">
@@ -38,10 +38,20 @@
                                         <i class="el-icon-s-operation" style="color:#0070d8"></i>
                                         <span>作业条件</span>
                                     </template>
-                                        <el-menu-item v-for="(sub,ii) in subject" :key="ii" @click="goToSimu(sub.id,ii)" :index="sub.id+'&'+(ii+1)"><i class="iconfont">&#xe6b7;</i>
-                                            条件{{ii+1}}
-                                        <span class="sub-text">({{sub.title}})</span>
+                                    <el-submenu v-for="(con,ic) in condition" :key="ic" index='3-1'>
+                                        <template slot="title">
+                                            <i class="el-icon-s-operation" style="color:#0070d8"></i>
+                                            <span>作业条件{{ic+1}}</span>
+                                        </template>
+                                        <el-menu-item :index="ic+'&content'">
+                                            <i class="iconfont">&#xe6b7;</i>
+                                            条件详情
                                         </el-menu-item>
+                                        <el-menu-item v-for="(sub,ii) in con.subject" :key="ii" :index="ic+'&'+ii"><i class="iconfont">&#xe6b7;</i>
+                                            第{{ii+1}}题
+                                            <!-- <span class="sub-text">({{sub.title}})</span> -->
+                                        </el-menu-item>
+                                    </el-submenu>
                                 </el-submenu>
                             </el-menu>
                         </el-col>
@@ -49,7 +59,7 @@
                 </div>
             </div>
             <div class="content-right">
-                <router-view :index='index' @simuSend='getCurrentIndex($event)'></router-view>
+                <router-view :index='index' @simuSend='getCurrentIndex($event)' :ids='ids' @answerIndex='answerIndex($event)'></router-view>
             </div>
         </div> 
     </div>
@@ -66,6 +76,7 @@ export default {
     },
     data(){
         return {
+            ids: {},
             fixed: false,
             path: require('../../assets/img/LOGO-white.png'),
             bgColor: '#0070d8',
@@ -78,24 +89,28 @@ export default {
             openOther: true,
             isMenuShow: false,
             enclosure: [],
-            subject: [],
+            condition: [],
             currentIndex: 0
         }
     },
     methods: {
-        goToSimu(id,index){
-            console.log(id,index)
-        },
         currentMenu(index,indexPath){
-            const date = this._getStartTime()
-            this.bgColor = '#0070d8', 
-            this.color = '#fff',
-            this.path = require('../../assets/img/LOGO-white.png');
-            const { href } = this.$router.resolve({path: '/index/simu',query: {Time: date, indexPath: indexPath[0], id: index, topicID: this.id}})
+            // const date = this._getStartTime()
+            // this.bgColor = '#0070d8', 
+            // this.color = '#fff',
+            // this.path = require('../../assets/img/LOGO-white.png');
+            // const { href } = this.$router.resolve({path: '/index/simu',query: {Time: date, indexPath: indexPath[0], id: index, topicID: this.id}})
             // if(this.openOther){
             //     this.openOther = false
-                window.open(href, '_blank');
+                // window.open(href, '_blank');
             // }
+            this.ids = {
+                id: index,//附件id或者作业条件id
+                indexPath: indexPath[0]
+            }
+        },
+        openMenu(index,indexPath){
+            console.log(index,indexPath)
         },
         // header组件触发时间
         receivePer(index){
@@ -167,11 +182,10 @@ export default {
         _getExamingData(){
             // 获取Examing页面传过来的数据
             if(this.$route.query.enclosure){
-                console.log(123)
                 this.menuIndexArr = this.$route.query.menuIndex;
                 this.isMenuShow = this.$route.query.isMenuShow;
                 this.enclosure = this.$route.query.enclosure;
-                this.subject = this.$route.query.subject;
+                this.condition = this.$route.query.condition;
                 this.id = this.$route.query.id;
             }
         },
@@ -188,19 +202,19 @@ export default {
             }
             const exam = localStorage.getItem('exam');
             let enclosure = [];
-            let subject = [];
+            let condition = [];
             if(exam == 'simu'){
                 this.axios.get('/index/index/StartExamMn').then(res =>{
                     localStorage.setItem('exam','simu');
                     enclosure = res.data.data.enclosure;
-                    subject = res.data.data.subject;
+                    condition = res.data.data.condition;
                     this.enclosure = enclosure;
-                    this.subject = subject;
+                    this.condition = condition;
                     this.countDowmTime = res.data.data.kssc_time;
                     this.id = res.data.data.id;
                     // 去除富文本标签
                     // const reg = /<.+>/g;
-                    this.subject.forEach(ele =>{
+                    this.condition.forEach(ele =>{
                         ele.title = ele.title.replace(/<[^>]+>/g, '')
                     })
                 }).catch(err =>{
@@ -210,15 +224,15 @@ export default {
                 this.axios.get('/index/index/StartExam').then(res =>{
                     localStorage.setItem('exam','official')
                     enclosure = res.data.data.enclosure;
-                    subject = res.data.data.subject;   
+                    condition = res.data.data.condition;   
                     this.enclosure = enclosure;
-                    this.subject = subject;
+                    this.condition = condition;
                     this.countDowmTime = res.data.data.kssc_time;
                     this.id = res.data.data.id;
                     // 去除富文本标签
                     // const reg = /<.+>/g;
-                    this.subject.forEach(ele =>{
-                        ele.title = ele.title.replace(/<[^>]+>/g, '')
+                    this.condition.forEach(ele =>{
+                        ele.content = ele.content.replace(/<[^>]+>/g, '')
                     })
                 }).catch(err =>{
                     console.log(err)

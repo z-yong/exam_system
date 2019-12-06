@@ -6,8 +6,11 @@
                     <img src="../../../assets/img/simulate.png" alt="">
                 </div>
                 <p class="title-name">模拟考试</p>
-                <p class="title-desc">根据最新大纲的考察要求为你自动生成的模拟考卷。</p>
-                <div @click="simuExam" class="action-btn">开始考试</div>
+                <p class="title-desc">根据最新大纲的考察要求为你自动生成的模拟考卷</p>
+                <div class="btn-box">
+                    <div @click="simuExam" class="action-btn">技术测试</div>
+                    <div class="action-btn">理论测试</div>
+                </div>
             </div>
         </div>
         <div class="exam-box due">
@@ -16,8 +19,11 @@
                     <img src="../../../assets/img/exam.png" alt="">
                 </div>
                 <p class="title-name">正式考试</p>
-                <p class="title-desc">根据最新大纲的考察要求为你自动生成的考卷。</p>
-                <div @click="officialExam" class="action-btn">开始考试</div>
+                <p class="title-desc">根据最新大纲的考察要求为你自动生成的正式考卷</p>
+                <div class="btn-box">
+                    <div @click="officialExam" class="action-btn">技术测试</div>
+                    <div class="action-btn">理论测试</div>
+                </div>
             </div>
         </div>
         <el-dialog
@@ -63,10 +69,15 @@
         color: #888;
         margin-top: 8px;
     }
+    .btn-box{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 2vh auto 0
+    }
     .exam-content .action-btn{
         padding: 3px 0;
-        width: 12vw;
-        margin:  20px auto 0;
+        width: 6vw;
         height: 3vh;
         color: #333;
         font-size: 14px;
@@ -77,6 +88,9 @@
         border-radius: 20px;
         user-select: none;
         cursor: pointer;
+    }
+    .exam-content .action-btn:nth-child(2){
+        margin-left: 2vw
     }
     .wrapper .exam-box.due{
         margin-top: 3vh;
@@ -95,22 +109,20 @@ export default {
     methods: {
         simuExam(){
             this.axios.get('/index/index/shijuantimu?zt=2').then(res =>{
-                console.log(res)
                 if(res.data.code == 400){
                     this.dialogVisible = true;
                 }else{
-                    localStorage.setItem('title',res.data.msg)
+                    localStorage.setItem('title',res.data.msg);
                     this.$router.push({path: '/examing/0',});
                 }
             })
         },
         officialExam(){    
             this.axios.get('/index/index/shijuantimu?zt=1').then(res =>{
-                console.log(res)
                 if(res.data.code == 400){
                     this.dialogVisible = true;
                 }else{
-                    localStorage.setItem('title',res.data.msg)
+                    localStorage.setItem('title',res.data.msg);
                     this.$router.push({path: '/examing/1'});
                 }
             })

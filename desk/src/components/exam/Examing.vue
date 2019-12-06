@@ -113,17 +113,19 @@ export default {
     }, 
     methods: {
         goToSimu(){
-            const date = this._getStartTime()
+           
             let enclosure = [];
-            let subject = [];
+            let condition = [];
             let id = 0;
-            if(this.id == 0){
+            if(this.id == 0){ 
                 this.axios.get('/index/index/StartExamMn').then(res =>{
                     localStorage.setItem('exam','simu')
                     enclosure = res.data.data.enclosure;
-                    subject = res.data.data.subject;
+                    this.time = res.data.data.kssc_time;
+                    const date = this._getStartTime()
+                    condition = JSON.stringify(res.data.data.condition);
                     id = res.data.data.id//{Time: date, indexPath: indexPath[0], id: index, topicID: this.id}
-                    const { href } = this.$router.resolve({path: '/index/simu',query: {menuIndex: ["1"],Time: date,indexPath: 1, isMenuShow: true ,enclosure, subject, topicID:id}})
+                    const { href } = this.$router.resolve({path: '/index/simu',query: {menuIndex: ["1"],Time: date,indexPath: 1, isMenuShow: true ,enclosure, condition, topicID:id}})
                     window.open(href, '_blank');
                }).catch(err =>{
                     console.log(err)
@@ -131,10 +133,12 @@ export default {
             }else if(this.id == 1){ 
                 this.axios.get('/index/index/StartExam').then(res =>{
                     localStorage.setItem('exam','official')
+                    this.time = res.data.data.kssc_time;
+                    const date = this._getStartTime()
                     enclosure = res.data.data.enclosure;
-                    subject = res.data.data.subject;
+                    condition = JSON.stringify(res.data.data.condition);
                     id = res.data.data.id;
-                   const { href } = this.$router.resolve({path: '/index/simu',query: {menuIndex: ["1"],Time: date,indexPath: 1, isMenuShow: true ,enclosure, subject ,topicID:id}})
+                    const { href } = this.$router.resolve({path: '/index/simu',query: {menuIndex: ["1"],Time: date,indexPath: 1, isMenuShow: true ,enclosure, condition ,topicID:id}})
                     window.open(href, '_blank');
                 }).catch(err =>{
                     console.log(err)
@@ -142,13 +146,15 @@ export default {
             }
         },
         goToAnwser(){
+            let condition = [];
             if(this.id == 0){
                 this.axios.get('/index/index/StartExamMn').then(res =>{
                     console.log(res)
                     this.time = res.data.data.kssc_time;
                     const date = this._getStartTime();
+                    condition = JSON.stringify(res.data.data.condition);
                     const type = 0;
-                    const href  = this.$router.resolve({path: '/anwser',query: {Time: date,countDown: this.time,type}});  
+                    const href  = this.$router.resolve({path: '/anwser',query: {Time: date,countDown: this.time,type,condition}});  
                     window.open(href.href, '_blank');
                 }).catch(err =>{
                     console.log(err)
@@ -158,8 +164,9 @@ export default {
                     console.log(res)
                     this.time = res.data.data.kssc_time;
                     const date = this._getStartTime();
+                    condition = JSON.stringify(res.data.data.condition);
                     const type = 1;
-                    const href  = this.$router.resolve({path: '/anwser',query: {Time: date,countDown: this.time,type}});  
+                    const href  = this.$router.resolve({path: '/anwser',query: {Time: date,countDown: this.time,type,condition}});  
                     window.open(href.href, '_blank');
                 }).catch(err =>{
                     console.log(err)
@@ -171,7 +178,7 @@ export default {
             let endTime = '';
             if(!localStorage.getItem('startTime')){
                 const date = new Date();
-                const endDate = new Date(date.getTime() + this.time*60*1000);
+                const endDate = new Date(date.getTime() + parseFloat(this.time)*60*1000);
                 let hours = date.getHours();
                 let minutes = date.getMinutes();
                 let seconds = date.getSeconds();
@@ -190,6 +197,7 @@ export default {
                 startTime = localStorage.getItem('startTime');
                 endTime = localStorage.getItem('endTime');
             }
+            console.log(endTime)
             return [startTime,endTime];
         }
     },
