@@ -19,10 +19,10 @@
                                          :class-name="myTableData[0]['state'] == '合格' ? 'state' : 'noQual'" min-width="15px">
                         </el-table-column>
                         <el-table-column label="操作" min-width="15px" v-if="isQual">
-                        <template slot-scope="scope">
-                            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                            <!-- <el-button class-name="aa" type="text" size="small">不查看</el-button> -->
-                        </template>
+                            <template slot-scope="scope">
+                                <el-button @click="handleClick(scope.row)" type="text" size="small">查看错题</el-button>
+                                <!-- <el-button class-name="aa" type="text" size="small">不查看</el-button> -->
+                            </template>
                         </el-table-column>
                     </el-table>
                 </template>

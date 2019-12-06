@@ -124,7 +124,8 @@
                 <z-add-class v-if="show =='addClass'" @seeStudent='seeStudent($event)'></z-add-class>
                 <z-set-up v-if="show == 'setUp'"></z-set-up>
                 <z-user-admin v-if="show == 'userAdmin'"/>
-                <z-stu-performancet v-if="show == 'stuPerformancet'" :id='stuPerID'/>
+                <z-stu-performancet v-if="show == 'stuPerformancet'" :id='stuPerID' @seeAnswer='seeAnswer($event)'/>
+                <z-stu-answer v-if="show == 'answer'" :answerData='answerData'/>
             </div>
         </div>
         <el-dialog
@@ -156,6 +157,7 @@ import addStu from './index-in/addStu'
 import addClass from './index-in/addClass'
 import userAdmin from './index-in/userAdmin'
 import stuPerformancet from './index-in/stuPerformancet'
+import stuAnswer from './index-in/anwser'
 
 export default {
     components: {
@@ -170,7 +172,8 @@ export default {
         "z-add-class": addClass,
         "z-feedback": feedback,
         "z-user-admin": userAdmin,
-        "z-stu-performancet": stuPerformancet
+        "z-stu-performancet": stuPerformancet,
+        "z-stu-answer": stuAnswer
     },
     // 用于刷新页面
     provide(){
@@ -201,6 +204,7 @@ export default {
             topicID: 0,
             classID: 0,
             stuPerID: 0,
+            answerData: '',
             isTextShow: false,
             isRouterAlive: true,//用于刷新
             isQual: true,//确认是不是查看错题组件
@@ -240,7 +244,7 @@ methods: {
             console.log(e)
         },
         seeStuPer(e){
-            this.stuPerID = e.id;
+            this.stuPerID = e;
             this._showPage('stuPerformancet')
         },
         // 监听考卷管理页面添加B卷
@@ -266,11 +270,17 @@ methods: {
             this.isOper = false;
             this.reload(false)
             this._showPage('simu')
-        },
+        }, 
+        // 查看班级学生
         seeStudent(e){
             this.classID = e;
             this.isOper = false;
             this._showPage('student')
+        },
+        // 查看答题卡
+        seeAnswer(e){
+            this.answerData = e;
+            this._showPage('answer')
         },
         handleOpen(index, indexPath) {
             if(index == 1){
@@ -641,10 +651,12 @@ methods: {
         // 回到登录页
         backLogin(){
             // this.dialogVisible = false;
-            this.axios.post('/admin/login/outLogin').then(res =>{
-                this.isLeave = true
-                this.$router.push('/')
-            })
+            this.isLeave = true
+            this.$router.push('/')
+            // this.axios.post('/admin/login/outLogin').then(res =>{
+            //     this.isLeave = true
+            //     this.$router.push('/')
+            // })
         },
         _showPage(page){
             this.show = page;
@@ -653,29 +665,41 @@ methods: {
         // 菜单权限设置
         _getInfoMenu(){
             this.axios('/admin/index/index').then(res =>{
-                res.data.data.forEach((ele,index) =>{
-                    ele.child.forEach(e =>{
-                        if(e.parent_id == 1) this.isA = true;
-                        if(e.parent_id == 4) this.isD = true;
-                        if(e.parent_id == 7) this.isG = true;
-                        if(e.parent_id == 10) this.isJ = true;
+                if(res.data.code == 200){
+                    res.data.data.forEach((ele,index) =>{
+                        ele.child.forEach(e =>{
+                            if(e.parent_id == 1) this.isA = true;
+                            if(e.parent_id == 4) this.isD = true;
+                            if(e.parent_id == 7) this.isG = true;
+                            if(e.parent_id == 10) this.isJ = true;
 
-                        if(e.id == 2) this.isbb = true;
-                        if(e.id == 3) this.iscc = true;
-                        if(e.id == 5) this.isee = true;
-                        if(e.id == 6) this.isff = true;
-                        if(e.id == 8) this.ishh = true;
-                        if(e.id == 9) this.isii = true;
-                        if(e.id == 11) this.iskk = true;
-                        if(e.id == 12) this.isll = true;
+                            if(e.id == 2) this.isbb = true;
+                            if(e.id == 3) this.iscc = true;
+                            if(e.id == 5) this.isee = true;
+                            if(e.id == 6) this.isff = true;
+                            if(e.id == 8) this.ishh = true;
+                            if(e.id == 9) this.isii = true;
+                            if(e.id == 11) this.iskk = true;
+                            if(e.id == 12) this.isll = true;
+                        })
                     })
-                })
+                }else{
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'error'
+                    })
+                }
             })
         },
         // 获取用户名
         _getUserName(){
             this.axios.get('/admin/index/getUser').then(res =>{
-                this.userName = res.data.msg
+                if(res.data.code == 200){
+                    this.userName = res.data.msg
+                }else if(res.data.code == 4){
+                    console.log(1)
+                    this.$router.push('/')
+                }
             })
         }
     },
@@ -714,8 +738,10 @@ methods: {
             this.isLeave = false
             this.$confirm('确认返回登录页？')
           .then(_ => {
+            this.axios.post('/admin/login/outLogin').then(res =>{
+                // this.$router.push('/')
+            })
             next();
-            
           })
           .catch(next(false));
         }

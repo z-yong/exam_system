@@ -1,7 +1,7 @@
 import axios from 'axios'
 // import { Message, Loading } from 'element-ui';
 import { Message } from 'element-ui';
-// import router from './router.js'
+import router from './router.js'
 
 
 // let loading;
@@ -37,6 +37,9 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
     response =>{
         // endLoading();
+        if(response.data.code == 4){
+            router.push({name: 'Login'})
+        }
         return response;
     },
     error =>{
@@ -47,12 +50,12 @@ axios.interceptors.response.use(
         const status = error.response.status;
         // 401代表此token过期
         if(status == 401){
-            Message({  
-                type: 'error',
-                message: 'token失效,请重新登录!'
-            });
-            // 当token值失效 就删掉此token
-            localStorage.removeItem('eleToken');
+            // Message({  
+            //     type: 'error',
+            //     message: 'token失效,请重新登录!'
+            // });
+            // 当token值失效 就删掉此token 
+            // localStorage.removeItem('eleToken');
             // router.push('/')
         }
         return Promise.reject(error)

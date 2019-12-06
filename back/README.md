@@ -3,6 +3,7 @@ cnpm i element-ui -S
 cnpm install echarts -S
 cnpm install @tinymce/tinymce-vue -S
 cnpm install tinymce -S
+cnpm install axios
 ## Project setup
 ```
 npm install

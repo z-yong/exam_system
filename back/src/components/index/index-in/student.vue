@@ -23,8 +23,8 @@
                         </el-table-column>
                         <el-table-column  prop="pass" label="合格率" min-width="10px">
                         </el-table-column>
-                        <el-table-column prop="mobile" label="手机号" min-width="10px">
-                        </el-table-column>
+                        <!-- <el-table-column prop="mobile" label="手机号" min-width="10px">
+                        </el-table-column> -->
                         <el-table-column prop="user_name" label="学号" min-width="20px">
                         </el-table-column>
                         <el-table-column prop="examination" label="试卷名称" min-width="15px">

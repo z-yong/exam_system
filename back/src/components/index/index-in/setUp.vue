@@ -235,8 +235,11 @@ export default {
         // 确认删除身份
         deleteTrue(){
             this.axios.get('/admin/manage/deleteLimit?id='+this.id).then(res =>{
-                console.log(res)
                 this.dialogVisible2 = false;
+                this.$message({
+                    message: res.data.msg,
+                    type: 'error'
+                })
                 this._getInfoData()
             })
         },

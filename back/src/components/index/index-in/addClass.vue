@@ -194,7 +194,6 @@ export default {
                 this.myTableData = this.tableData;
             })
             this.axios.get('/admin/user/getIssueZheng').then(res =>{
-                console.log(res)
                 this.examinations = res.data.data;
             })
             this.axios.get('/admin/user/getIssueMu').then(res =>{

@@ -180,7 +180,7 @@ export default {
         deleteData(row){
             this.id = row.id;
             this.dialogVisible2 = true;
-        },
+        }, 
         // 确认删除身份
         deleteTrue(){
             this.axios.get('/admin/user/deleteAdminUser?id='+this.id).then(res =>{

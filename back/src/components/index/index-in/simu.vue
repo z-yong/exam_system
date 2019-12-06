@@ -109,11 +109,11 @@
             <el-form-item label="考试人数" >
                <el-input v-model="formData.stuNum" autocomplete="off" placeholder="输入考试人数"></el-input>
             </el-form-item>
-            <el-form-item label="请选择审核方式">
+            <!-- <el-form-item label="请选择审核方式">
               <el-select v-model="formData.audit">
                 <el-option v-for="(item,index) in formData.audits" :key="index" :label="item" :value="item"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="是否需要修改已生成的试卷内容" label-width='240px'>
               <el-radio-group v-model="radio">
                 <el-radio-button label="是"></el-radio-button>

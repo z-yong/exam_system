@@ -1,0 +1,60 @@
+.per-wrapper{
+    width: 100%;
+    height: 100%;
+    background: #f7f7f7;
+    padding-top: 1vh
+}
+.stu-per{
+    width: 98%;
+    margin: auto;
+}
+.stu-per .search{
+    background: #fff;
+    font-size: 15px;
+    color: #111;
+    padding: 3vh 1vw;
+    background: #ffff;
+    border-left: 3px solid #1362cc
+}
+.stu-per .search .el-input{
+    margin-left: 2vw;
+    width: 18%
+}
+.per-table .table-title{
+    height: 7vh;
+    line-height: 7vh;
+    font-size: 16px;
+    font-weight: 600;
+    text-indent: 1.5em;
+    border-bottom: 1px solid #eee
+}
+.stu-per .paging{
+    text-align: center;
+    margin: 4vh 0 0;
+}
+.per-table{
+    width: 100%;
+    margin-top: 2vh;
+    background: #fff;
+    padding-bottom: 3vh
+}
+.stu-per .paging .el-pagination.is-background .el-pager li{
+    min-width: 36px;
+}
+.stu-per .el-button.el-button--text.el-button--small{
+    color: #333;
+    margin: 0 8px;
+    font-size: 14px;
+}
+.stu-per .el-button.el-button--text.el-button--small:nth-child(1) .iconfont{
+    color: #7d96f4;
+    margin-right: 3px
+}
+.stu-per .el-button.el-button--text.el-button--small:nth-child(2) .iconfont{
+    color: #ffbdc7;
+    margin-right: 3px
+}
+.stu-per .el-button.el-button--text.el-button--small:nth-child(3) .iconfont{
+    color: #33CC00;
+    margin-right: 3px
+}

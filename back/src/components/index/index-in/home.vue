@@ -211,70 +211,72 @@ export default {
         // 获取初始化首页数据
         _getInfoData(){
             this.axios.get('/admin/index/getIndexInfo').then(res =>{
-                const data = res.data.data;
-                // 四个方块数据
-                const qualified = {
-                        name: '合格',
-                        icon: '&#xe638;',
-                        num: data.lately.qualified
-                    }
-                const unqualified = {
+                if(res.data.code == 200){
+                    const data = res.data.data;
+                    // 四个方块数据
+                    const qualified = {
+                            name: '合格',
+                            icon: '&#xe638;',
+                            num: data.lately.qualified
+                        }
+                    const unqualified = {
+                            name: '未合格',
+                            icon: '&#xe62d;',
+                            num: data.lately.unqualified
+                        }
+                    const lack = {
+                            name: '缺考人数',
+                            icon: '&#xe620;',
+                            num: data.lately.lack
+                        }
+                    const total = {
+                            name: '总出卷',
+                            icon: '&#xe612;',
+                            num: data.lately.total
+                        };
+                    this.testPaper.push(qualified,unqualified,lack,total)
+                    // 第一个圆数据
+                    const qua = {
+                        ratio: data.proportion.qualified + '%',
                         name: '未合格',
-                        icon: '&#xe62d;',
-                        num: data.lately.unqualified
+                        color: '#ff637b'
                     }
-                const lack = {
-                        name: '缺考人数',
-                        icon: '&#xe620;',
-                        num: data.lately.lack
+                    const unq = {
+                        ratio: data.proportion.unqualified + '%',
+                        name: '合格',
+                        color: '#4f70f0'
                     }
-                const total = {
-                        name: '总出卷',
-                        icon: '&#xe612;',
-                        num: data.lately.total
+                    this.ratioMess.push(qua,unq);
+                    // 第二个圆数据
+                    const one = {
+                        ratio: data.difficulty.one + '%',
+                        name: '一般',
+                        color: '#00c1ce'
                     };
-                this.testPaper.push(qualified,unqualified,lack,total)
-                // 第一个圆数据
-                const qua = {
-                    ratio: data.proportion.qualified + '%',
-                    name: '未合格',
-                    color: '#ff637b'
+                    const two = {
+                        ratio: data.difficulty.two + '%',
+                        name: '普通难度',
+                        color: '#4f70f0'
+                    };
+                    const three = {
+                        ratio: data.difficulty.three + '%',
+                        name: '较难',
+                        color: '#ff8572'
+                    };
+                    const four = {
+                        ratio: data.difficulty.four + '%',
+                        name: '最高难度',
+                        color: '#ff637b'
+                    }
+                    this.parperSelect.push(one,two,three,four);
+                    // 确保dom挂载好再执行
+                    this._drawLine1();
+                    this._drawLine2();
+                    // 分配工作任务
+                    this.taskMess = data.task
+                    // 登录日志
+                    this.journalMess = data.journal
                 }
-                const unq = {
-                    ratio: data.proportion.unqualified + '%',
-                    name: '合格',
-                    color: '#4f70f0'
-                }
-                this.ratioMess.push(qua,unq);
-                // 第二个圆数据
-                const one = {
-                    ratio: data.difficulty.one + '%',
-                    name: '一般',
-                    color: '#00c1ce'
-                };
-                const two = {
-                    ratio: data.difficulty.two + '%',
-                    name: '普通难度',
-                    color: '#4f70f0'
-                };
-                const three = {
-                    ratio: data.difficulty.three + '%',
-                    name: '较难',
-                    color: '#ff8572'
-                };
-                const four = {
-                    ratio: data.difficulty.four + '%',
-                    name: '最高难度',
-                    color: '#ff637b'
-                }
-                this.parperSelect.push(one,two,three,four);
-                // 确保dom挂载好再执行
-                this._drawLine1();
-                this._drawLine2();
-                // 分配工作任务
-                this.taskMess = data.task
-                // 登录日志
-                this.journalMess = data.journal
             }).catch(err =>{
                 console.log(err)
             })

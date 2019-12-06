@@ -5,14 +5,32 @@
     padding: 1vw;
 }
 .set-wrapper .set-header{
-    padding: 1vh 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1.3vh 0;
     font-size: 18px;
     font-weight: 600;
     color: #333;
     border-bottom: 1px solid #ddd;
     background: #fff;
+   
 }
-.set-wrapper .set-header span{
+.set-wrapper .fixed{
+    position: fixed;
+    background: #fff;
+    top: 7vh;
+    z-index: 9999;
+}
+.set-header .btn-header{
+    display: flex;
+    align-items: center;
+    margin-left: 30vw;
+}
+.set-header .btn-header .btnbtn{
+    margin-left: 2vw;
+}
+.set-wrapper .set-header .title{
     display: inline-block;
     border-left: 3px solid #0070d8;
     text-indent: 1em;
@@ -148,10 +166,13 @@
 .set-wrapper .issue-box .demo-ruleForm .adj,
 .set-wrapper .issue-box .demo-ruleForm .btnbtn{
     margin-left: 25vw;
-    z-index: 9999;
 }
 .set-wrapper .issue-box .demo-ruleForm .adj{
     margin-bottom: 5vh;
+}
+.topics .editor .el-form-item .el-form-item__label{
+    font-weight: 800;
+    color: #000;
 }
 .dia-content{
     display: inline-block;
@@ -169,8 +190,12 @@
     font-weight: 800;
     color: #000
 }
-.gap .el-form-item .el-input{
-    width: 70%;
+.gap .el-form-item .el-input:nth-child(1){
+    width: 60%;
+}
+.gap .el-form-item .el-input:nth-child(2){
+    width: 20%;
+    margin-left: 1vw;
 }
 .gap .el-form-item .gap-desc{
     margin-left: 1vw;
