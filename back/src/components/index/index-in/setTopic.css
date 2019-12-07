@@ -48,7 +48,7 @@
     color: #111
 }
 .set-wrapper .issue-box .editor .el-form-item__label{
-    margin-top: -4vh
+    margin-top: -3vh
 }
 .set-wrapper .issue-box .el-form-item__label{
     float: none;
@@ -181,7 +181,7 @@
 }
 .el-dialog__title{
     font-size: 16px;
-    font-weight: 600
+    font-weight: 600;
 }
 .topic_ed{
     margin-bottom: 6vh
@@ -201,7 +201,9 @@
     margin-left: 1vw;
     font-size: 14px;
 }
-
+.gap .textarea .el-form-item__label{
+    margin-top: -34vh;
+}
 /* 去掉input-number右边箭头 */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button { -webkit-appearance: none; }

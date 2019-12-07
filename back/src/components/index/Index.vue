@@ -23,12 +23,16 @@
                             </template>
                             <el-menu-item index="1-1" v-if="isbb">
                                 <i class="iconfont circle">&#xe6b7;</i>
-                                模拟考卷出题
+                                模拟试卷出题
                             </el-menu-item>
                             <el-menu-item index="1-2" v-if="iscc">
                                 <i class="iconfont circle">&#xe6b7;</i>
-                                正式考卷出题
+                                正式试卷出题
                             </el-menu-item>
+                            <!-- <el-menu-item index="1-3" v-if="iscc">
+                                <i class="iconfont circle">&#xe6b7;</i>
+                                理论试卷出题
+                            </el-menu-item> -->
                         </el-submenu>
                         <el-submenu index="2" v-if="isD">
                             <template slot="title">
@@ -116,7 +120,8 @@
                 <z-home v-if="show == 'home'" @homeSend='receiveHome($event)'></z-home>
                 <z-table v-if="show =='table'" :tableData='tableData' :isQual='isQual' @lookErr='gotoErr($event)'></z-table>
                 <z-mis v-if="show == 'mis'" :id="id" @leaveMis='backTable($event)'></z-mis>
-                <z-set-topic v-if="show == 'setTopic'" :topicTitle='topicTitle' :topicType='s_type' ref="setTopic" :isGetInfo='isGetInfo' :topicID='topicID' :topicName='topicName' :outline='outline' @gotoTopicTable='gotoTopicTable($event)'></z-set-topic>
+                <z-set-topic v-if="show == 'setTopic'" :topicTitle='topicTitle' :topicType='s_type' ref="setTopic" :isGetInfo='isGetInfo' :topicID='topicID' :topicName='topicName' :outline='outline' @gotoTopicTable='gotoTopicTable($event)' :topicIndex='topicIndex'></z-set-topic>
+                <!-- <z-set-theoryTopic v-if="show=='setTheoryTopic'"/> -->
                 <z-simu v-if="show =='simu'" :isOper='isOper' @studentShow='studentShow' :title="isSimuTitle" @addTopic='addTopic($event)' @amendTopic='amendTopic($event)'></z-simu>
                 <z-student v-if="show =='student'" :classID='classID' @seeStuPer='seeStuPer($event)'></z-student>
                 <z-feedback v-if="show =='feedback'"></z-feedback>
@@ -158,6 +163,7 @@ import addClass from './index-in/addClass'
 import userAdmin from './index-in/userAdmin'
 import stuPerformancet from './index-in/stuPerformancet'
 import stuAnswer from './index-in/anwser'
+import setTheoryTopic from './index-in/setTheoryTopic'
 
 export default {
     components: {
@@ -165,6 +171,7 @@ export default {
         "z-table": table,
         "z-mis": mis,
         "z-set-topic": setTopic,
+        "z-set-theoryTopic": setTheoryTopic,
         "z-simu": simu,
         "z-student": student,
         "z-set-up": setUp,
@@ -183,6 +190,7 @@ export default {
     },
     data(){
         return{
+            topicIndex: 0,
             userName: '',
             fixed: false,
             show: 'home',
@@ -261,7 +269,8 @@ methods: {
             this.topicName = '';
             this.s_type = e.s_type;
             this.topicID = e.id;
-            this.outline = '修改'
+            this.outline = '修改';
+            this.topicIndex = e.currentIndex;
             this.isGetInfo = false;
             this._showPage('setTopic')
         },
@@ -291,11 +300,11 @@ methods: {
                     },
                     {
                         icon: '&#xe70b;',
-                        name: '模拟考卷出题'
+                        name: '模拟试卷出题'
                     },
                     {
                         icon: '&#xe996;',
-                        name: '正式考卷出题'
+                        name: '正式试卷出题'
                     }
                 ]
                 this.currentIndex = 0;
@@ -354,7 +363,7 @@ methods: {
                     }
                 ]
                 this.currentIndex = 0;
-                this.currentMenuIndex = 4
+                this.currentMenuIndex = 4;
             }
         },
         handleClose(key, keyPath) {
@@ -399,9 +408,11 @@ methods: {
                     this.isSimuTitle = '正式考卷列表'
                     this.isOper = false;
                     this.reload(false);
-                    this._showPage('simu')
+                    this._showPage('simu');
+                }else if(index == 3){//理论出卷
+                    this.reload(false);
+                    this._showPage('setTheoryTopic');
                 }
-
             }else if(this.currentMenuIndex == 3){//如果在学生管理
                 if(index == 1){
                     this._showPage('addStu')
@@ -428,11 +439,11 @@ methods: {
                     },
                     {
                         icon: '&#xe70b;',
-                        name: '模拟考卷出题'
+                        name: '模拟试卷出题'
                     },
                     {
                         icon: '&#xe996;',
-                        name: '正式考卷出题'
+                        name: '正式试卷出题'
                     }
                 ]
                 this._showPage('setTopic')    
@@ -450,11 +461,11 @@ methods: {
                     },
                     {
                         icon: '&#xe70b;',
-                        name: '模拟考卷出题'
+                        name: '模拟试卷出题'
                     },
                     {
                         icon: '&#xe996;',
-                        name: '正式考卷出题'
+                        name: '正式试卷出题'
                     }
                 ]
                 this._showPage('setTopic')    
@@ -462,6 +473,31 @@ methods: {
                 this.isGetInfo = true;
                 this.reload(false)
                 this.currentIndex = 2;
+                this.currentMenuIndex = 1;
+                // this.$refs.setTopic._getInfo()
+            }else if(index == '1-3'){//正式考卷管理
+                this.menuList = [
+                    {
+                        icon: '&#xe663;',
+                        name: '首页'
+                    },
+                    {
+                        icon: '&#xe70b;',
+                        name: '模拟试卷出题'
+                    },
+                    {
+                        icon: '&#xe996;',
+                        name: '正式试卷出题'
+                    },
+                    {
+                        icon: '&#xe996;',
+                        name: '理论试卷出题'
+                    }
+                ]
+                this._showPage('setTheoryTopic')    
+                this.topicTitle = '正式考卷';
+                this.reload(false)
+                this.currentIndex = 3;
                 this.currentMenuIndex = 1;
                 // this.$refs.setTopic._getInfo()
             }else if(index == '2-1'){ //考卷管理

@@ -35,20 +35,52 @@
         </div>
         <el-dialog :title="disTitle" :visible.sync="dialogFormVisible" :close-on-click-modal='false'>
             <el-form :model="formData">
-                <el-form-item label="班级名称" label-width="80px" v-model="formData.name">
+                <el-form-item label="班级名称" label-width="200px" v-model="formData.name">
                     <el-input v-model="formData.name" placeholder="输入班级名称" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="正式考卷" label-width="80px" v-model="formData.examination">
-                    <el-select v-model="formData.examination" filterable placeholder="请选择正式考卷" @change='changeExamination'>
+                <el-form-item label="正式考卷" label-width="200px" v-model="formData.examination">
+                    <el-select v-model="formData.examination" filterable placeholder="请选择技术试卷" @change='changeExamination'>
                         <el-option v-for="item in examinations" :key="item.title" :label="item.title" :value="item.id">
                         </el-option>
                     </el-select>
+                    <el-select style="marign-left:3vw" v-model="formData.examinationLilun" filterable placeholder="请选择理论试卷" @change='changeExamination'>
+                        <el-option v-for="item in examinationsLilun" :key="item.title" :label="item.title" :value="item.id">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="模拟考卷" label-width="80px" v-model="formData.examination_mn">
-                    <el-select v-model="formData.examination_mn" filterable placeholder="请选择模拟考卷"  @change='changeExaminationMn'>
+                <el-form-item label="正式技术卷开考时间" label-width="200px">
+                    <el-date-picker v-model="formData.timea" type="datetime" placeholder="选择日期时间"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="正式技术卷考试时长(分钟)" label-width="200px">
+                    <el-input v-model="formData.sca" autocomplete="off" placeholder="输入考试时长"></el-input>
+                </el-form-item>
+                <el-form-item label="正式理论卷开考时间" label-width="200px">
+                    <el-date-picker v-model="formData.timec" type="datetime" placeholder="选择日期时间"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="正式理论卷考试时长(分钟)" label-width="200px">
+                    <el-input v-model="formData.scc" autocomplete="off" placeholder="输入考试时长"></el-input>
+                </el-form-item>
+                <el-form-item label="模拟考卷" label-width="200px" v-model="formData.examination_mn">
+                    <el-select v-model="formData.examination_mn" filterable placeholder="请选择技术考卷"  @change='changeExaminationMn'>
                         <el-option v-for="item in examination_mns" :key="item.title" :label="item.title" :value="item.id">
                         </el-option>
                     </el-select>
+                    <el-select v-model="formData.examination_mnLilun" filterable placeholder="请选择理论考卷"  @change='changeExaminationMn'>
+                        <el-option v-for="item in examination_mnsLilun" :key="item.title" :label="item.title" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="模拟技术卷开考时间" label-width="200px">
+                    <el-date-picker v-model="formData.timeb" type="datetime" placeholder="选择日期时间"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="模拟理论卷开考时间" label-width="200px">
+                    <el-date-picker v-model="formData.scb" type="datetime" placeholder="选择日期时间"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="模拟理论卷开考时间" label-width="200px">
+                    <el-date-picker v-model="formData.timed" type="datetime" placeholder="选择日期时间"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="模拟理论卷考试时长(分钟)" label-width="200px">
+                    <el-input v-model="formData.scd" autocomplete="off" placeholder="输入考试时长"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -83,8 +115,18 @@ export default {
             className: '',
             formData:{
                 examination: '',
+                examinationLilun: '',
                 examination_mn: '',
-                name: ''
+                examination_mnLilun: '',
+                name: '',
+                timea: '',
+                timeb: '',
+                timec: '',
+                timed: '',
+                sca: '',
+                scb: '',
+                scc: '',
+                scd: '',
             },
             disTitle: '添加班级',
             dialogFormVisible: false,
@@ -93,6 +135,8 @@ export default {
             myTableData: [],
             examinations: [],
             examination_mns: [],
+            examinationsLilun: [],
+            examination_mnsLilun: [],
             zhengshiID: 0,
             moniID: 0
         }
@@ -110,9 +154,22 @@ export default {
                 this.id = row.id;
                 this.axios.get('/admin/user/getClassId?id='+row.id).then(res =>{
                     this.disTitle = '修改班级';
+                    console.log(res)
                     this.formData = res.data.data;
                     this.zhengshiID = res.data.data.examination_id;
                     this.moniID = res.data.data.examination_mn_id;
+                    if(res.data.data.examination){
+                        this.formData.examination = res.data.data.examination
+                    }
+                    if(res.data.data.examination_mn){
+                        this.formData.examination_mn = res.data.data.examination_mn
+                    }
+                    if(res.data.data.theory){
+                        this.formData.examinationLilun = res.data.data.theory
+                    }
+                    if(res.data.data.theory_mn){
+                        this.formData.examination_mnLilun = res.data.data.theory_mn
+                    }
                     this.dialogFormVisible = true;
                 })
             }
@@ -193,11 +250,19 @@ export default {
                 })
                 this.myTableData = this.tableData;
             })
+            // 技术类考卷
             this.axios.get('/admin/user/getIssueZheng').then(res =>{
                 this.examinations = res.data.data;
             })
             this.axios.get('/admin/user/getIssueMu').then(res =>{
                 this.examination_mns = res.data.data
+            })
+            // 理论类考卷
+            this.axios.get('/admin/user/getPaperZheng').then(res =>{
+                this.examinationsLilun = res.data.data;
+            })
+            this.axios.get('/admin/user/getPaperMu').then(res =>{
+                this.examination_mnsLilun = res.data.data
             })
         }
     },

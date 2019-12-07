@@ -41,8 +41,12 @@
                 </div> -->
                 <!-- <el-button type='primary' @click="searchData" class="el-icon-search"> 搜索</el-button> -->
             </div>
+            <div style="display:flex;align-items: center;background:#fff;border-bottom:1px solid #eee;margin-top:2vh">
+                <div v-for="(menu,mi) in menuList" :key="mi" style="padding:1.2vh 2vw;cursor: pointer;border:1px solid #f7f7f7;" @click="changeMenu(mi)"
+                     :style="{background:currentIndex == mi ? '#0070d8' : '',color: currentIndex == mi ? '#fff' : '',opacity: currentIndex == mi ? '0.7' : ''}">{{menu}}</div>
+            </div>
             <div class="table">
-                <p class="table-title">{{title}}</p>
+                <p class="table-title">{{title}}{{currentIndex == 0 ? '(技术卷)' : '(理论卷)'}}</p>
                 <el-table :data="myTableData" style="width: 100%">
                     <el-table-column prop="serial" label="序号" min-width="10px">
                     </el-table-column>
@@ -99,8 +103,7 @@
                 <el-option v-for="(item,index) in formData.selects" :key="index" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="开考日期" >
-               <!-- <el-date-picker v-model="formData.date" type="date" placeholder="选择考试日期"></el-date-picker> -->
+            <!-- <el-form-item label="开考日期" >
                <el-date-picker v-model="formData.date" type="datetime" placeholder="选择日期时间"></el-date-picker>
             </el-form-item>
             <el-form-item label="考试时长(分钟)" >
@@ -108,7 +111,7 @@
             </el-form-item>
             <el-form-item label="考试人数" >
                <el-input v-model="formData.stuNum" autocomplete="off" placeholder="输入考试人数"></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <!-- <el-form-item label="请选择审核方式">
               <el-select v-model="formData.audit">
                 <el-option v-for="(item,index) in formData.audits" :key="index" :label="item" :value="item"></el-option>
@@ -181,6 +184,7 @@
         value: '全部',
         startDate: '',
         endDate: '',
+        // 技术
         myTableData: [],
         tableData: [],
         formData: {
@@ -195,10 +199,16 @@
         },
         dialogVisible: false,
         dialogFormVisible2: false,
-        dialogVisible3: false
+        dialogVisible3: false,
+        currentIndex: 0,
+        menuList: ['技术卷','理论卷'],
       }
     },
     methods: {
+        changeMenu(index){
+          this.currentIndex = index;
+          this._getInfoData()
+        },
         // 获取下拉框内容
         getValue(value){
             if(this.title == '模拟考卷列表'){
@@ -263,15 +273,22 @@
         // 添加试卷
         addTopic(row){
           this.id = row.id
-          this.axios.get('/admin/issue/abcdIssue?id='+this.id).then(res =>{
-            console.log(res);
-            const title = row.currentTopic;
-            const id = this.id;
-            const name = res.data.data.title;
-            const outline = res.data.data.outline;
-            this.$emit('addTopic',{title, id, outline, name})
-          })
-          
+          if(this.currentIndex == 0){
+            this.axios.get('/admin/issue/abcdIssue?id='+this.id).then(res =>{
+              const title = row.currentTopic;
+              const id = this.id;
+              const name = res.data.data.title;
+              const outline = res.data.data.outline;
+              this.$emit('addTopic',{title, id, outline, name})
+            })
+          }else{
+            this.axios.get('/admin/paper/abcdIssue?id='+this.id).then(res =>{
+              const title = row.currentTopic;
+              const id = this.id;
+              const name = res.data.data.title;
+              this.$emit('addTopic',{title, id, name})
+            })
+          }
         },
         // 点击页码
         changePage(currentIndex){
@@ -280,18 +297,30 @@
         // 点击设置
         redact(row){
           this.id = row.id;
-          this.axios.get('/admin/issue/editIssue?id='+row.id).then(res =>{
-            this.formData.name  = res.data.data.title;
-            this.formData.date = res.data.data.kk_time;
-            this.formData.time = res.data.data.kssc_time;
-            this.formData.stuNum = res.data.data.cankao_num;
-            this.formData.select = res.data.data.choice + '卷';
-            this.formData.audit = res.data.data.examine == 0 ? '人工审核' : '电脑审核';
-            res.data.data.s_type.forEach((ele,index) =>{
-              this.formData.selects[index] = ele + '卷'
+          if(this.currentIndex == 0){
+            this.axios.get('/admin/issue/editIssue?id='+row.id).then(res =>{
+              this.formData.name  = res.data.data.title;
+              // this.formData.date = res.data.data.kk_time;
+              // this.formData.time = res.data.data.kssc_time;
+              // this.formData.stuNum = res.data.data.cankao_num;
+              this.formData.select = res.data.data.choice + '卷';
+              this.formData.audit = res.data.data.examine == 0 ? '人工审核' : '电脑审核';
+              res.data.data.s_type.forEach((ele,index) =>{
+                this.formData.selects[index] = ele + '卷'
+              })
+              this.options2 = this.formData.selects
             })
-            this.options2 = this.formData.selects
-          })
+          }else{
+            this.axios.get('/admin/paper/editIssue?id='+row.id).then(res =>{
+              this.formData.name  = res.data.data.title;
+              this.formData.select = res.data.data.choice + '卷';
+              this.formData.audit = res.data.data.examine == 0 ? '人工审核' : '电脑审核';
+              res.data.data.s_type.forEach((ele,index) =>{
+                this.formData.selects[index] = ele + '卷'
+              })
+              this.options2 = this.formData.selects
+            })
+          }
           this.dialogFormVisible2 = true;
         },
         // 保存设置
@@ -299,28 +328,42 @@
           const data = {
             id: this.id,
             title: this.formData.name,
-            kk_time: this.formData.date,
-            kssc_time: this.formData.time,
-            cankao_num: this.formData.stuNum,
+            // kk_time: this.formData.date,
+            // kssc_time: this.formData.time,
+            // cankao_num: this.formData.stuNum,
             choice: this.formData.select.slice(0,1),
-            examine: this.formData.audit == '人工审核' ? 0 : 1
+            // examine: this.formData.audit == '人工审核' ? 0 : 1
           }
-          this.axios.post('/admin/issue/editDoIssue',data).then(res =>{
-            this._getInfoData()
-            this.dialogFormVisible2 = false;
-            this.$message({
-              message: '设置成功',
-              type: 'success'
+          if(this.currentIndex == 0){
+            this.axios.post('/admin/issue/editDoIssue',data).then(res =>{
+              this._getInfoData()
+              this.dialogFormVisible2 = false;
+              this.$message({
+                message: '设置成功',
+                type: 'success'
+              })
+              if(this.radio == '是'){
+                this.dialogVisible3 = true;
+              }
             })
-            if(this.radio == '是'){
-              this.dialogVisible3 = true;
-            }
-          })
+          }else{
+            this.axios.post('/admin/paper/editDoIssue',data).then(res =>{
+              this._getInfoData()
+              this.dialogFormVisible2 = false;
+              this.$message({
+                message: '设置成功',
+                type: 'success'
+              })
+              if(this.radio == '是'){
+                this.dialogVisible3 = true;
+              }
+            })
+          }
         },
         // 修改考卷
         goToSetTopic(){
-          this.$emit('amendTopic',{id: this.id, s_type: this.selectValue.slice(0,1)})
-          this.dialogVisible3 = false;
+          this.$emit('amendTopic',{id: this.id, s_type: this.selectValue.slice(0,1),currentIndex:this.currentIndex})
+          this.dialogVisible3 = false; 
         },
         // 点击删除键
         deleteData(row){
@@ -330,16 +373,28 @@
         // 确认删除弹框
         isDelete(){
           this.dialogVisible = false;
-          this.axios.post('/admin/issue/deleteIssue?id='+this.id).then(res =>{
-            this.$message({
-              message: '删除成功',
-              type: 'success'
+          if(this.currentIndex == 0){
+            this.axios.post('/admin/issue/deleteIssue?id='+this.id).then(res =>{
+              this.$message({
+                message: '删除成功',
+                type: 'success'
+              })
+              this._getInfoData()
             })
-            this._getInfoData()
-          })
+          }else{
+            this.axios.post('/admin/paper/deleteIssue?id='+this.id).then(res =>{
+              this.$message({
+                message: '删除成功',
+                type: 'success'
+              })
+              this._getInfoData()
+            })
+          }
         },
         _getData(data){
-            data.forEach((ele,index) =>{
+            this.tableData = this.myTableData = [];
+            if(data.length){
+              data.forEach((ele,index) =>{
                     this.tableData[index] = {};
                     this.tableData[index].id = ele.id;
                     this.tableData[index].currentTopic = ele.abc
@@ -353,22 +408,38 @@
                     this.pages = this.tableData.length/6 * 10;
                     this.myTableData = this.tableData.slice(0,6);
                 })
+            }
         },
         _getInfoData(){
-          if(this.title == '模拟考卷列表'){
-              this.axios.get('/admin/issue/trueList?simulation=1').then(res =>{
-                this._getData(res.data.data)
-              })
-          }else if(this.title == '正式考卷列表'){
-              this.axios.get('/admin/issue/trueList?simulation=0').then(res =>{
-                this._getData(res.data.data)
-              })
-          }else if(this.title == '所有试卷列表'){
-              this.axios.get('/admin/issue/trueList').then(res =>{
-                this._getData(res.data.data)
-              })
+          if(this.currentIndex == 0){
+            if(this.title == '模拟考卷列表'){
+                this.axios.get('/admin/issue/trueList?simulation=1').then(res =>{
+                  this._getData(res.data.data)
+                })
+            }else if(this.title == '正式考卷列表'){
+                this.axios.get('/admin/issue/trueList?simulation=0').then(res =>{
+                  this._getData(res.data.data)
+                })
+            }else if(this.title == '所有试卷列表'){
+                this.axios.get('/admin/issue/trueList').then(res =>{
+                  this._getData(res.data.data)
+                })
+            }
+          }else{
+            if(this.title == '模拟考卷列表'){
+                this.axios.get('/admin/paper/trueList?simulation=1').then(res =>{
+                  this._getData(res.data.data)
+                })
+            }else if(this.title == '正式考卷列表'){
+                this.axios.get('/admin/paper/trueList?simulation=0').then(res =>{
+                  this._getData(res.data.data)
+                })
+            }else if(this.title == '所有试卷列表'){
+                this.axios.get('/admin/paper/trueList').then(res =>{
+                  this._getData(res.data.data)
+                })
+            }
           }
-          
         }
     },
     created(){

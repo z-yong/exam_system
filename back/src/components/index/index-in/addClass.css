@@ -100,4 +100,10 @@
 .add-class-wrapper .el-checkbox.is-bordered+.el-checkbox.is-bordered{
     margin-left: 0
 }
+.add-class-wrapper .el-dialog{
+    margin-top: 2vh !important;
+}
+.add-class-wrapper .el-input.el-input--suffix{
+    margin-right: 2vw;
+}
  
