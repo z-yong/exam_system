@@ -15,13 +15,17 @@
                 <el-table :data="myTableData" style="width: 100%">
                     <el-table-column prop="id" label="编号" min-width="10px">
                     </el-table-column>
-                    <el-table-column prop="name" label="班级名称" min-width="20px">
+                    <el-table-column prop="name" label="班级名称" min-width="15px">
                     </el-table-column>
-                    <el-table-column prop="examination" label="正式考卷" min-width="30px" >
+                    <el-table-column prop="time" label="班级创建时间" min-width="20px">
                     </el-table-column>
-                    <el-table-column prop="examination_mn" label="模拟考卷" min-width="30px" >
+                    <el-table-column prop="examination" label="正式技术卷" min-width="25px" >
                     </el-table-column>
-                    <el-table-column prop="time" label="创建时间" min-width="20px">
+                    <el-table-column prop="theory" label="正式理论卷" min-width="25px" >
+                    </el-table-column>
+                    <el-table-column prop="examination_mn" label="模拟技术卷" min-width="25px" >
+                    </el-table-column>
+                    <el-table-column prop="theory_mn" label="模拟理论卷" min-width="25px" >
                     </el-table-column>
                     <el-table-column label="操作" min-width="30px">
                         <template slot-scope="scope">
@@ -43,7 +47,7 @@
                         <el-option v-for="item in examinations" :key="item.title" :label="item.title" :value="item.id">
                         </el-option>
                     </el-select>
-                    <el-select style="marign-left:3vw" v-model="formData.examinationLilun" filterable placeholder="请选择理论试卷" @change='changeExamination'>
+                    <el-select style="marign-left:3vw" v-model="formData.theory" filterable placeholder="请选择理论试卷" @change='changeExaminationLilun'>
                         <el-option v-for="item in examinationsLilun" :key="item.title" :label="item.title" :value="item.id">
                         </el-option>
                     </el-select>
@@ -65,7 +69,7 @@
                         <el-option v-for="item in examination_mns" :key="item.title" :label="item.title" :value="item.id">
                         </el-option>
                     </el-select>
-                    <el-select v-model="formData.examination_mnLilun" filterable placeholder="请选择理论考卷"  @change='changeExaminationMn'>
+                    <el-select v-model="formData.theory_mn" filterable placeholder="请选择理论考卷"  @change='changeExaminationMnLilun'>
                         <el-option v-for="item in examination_mnsLilun" :key="item.title" :label="item.title" :value="item.id">
                         </el-option>
                     </el-select>
@@ -73,8 +77,8 @@
                 <el-form-item label="模拟技术卷开考时间" label-width="200px">
                     <el-date-picker v-model="formData.timeb" type="datetime" placeholder="选择日期时间"></el-date-picker>
                 </el-form-item>
-                <el-form-item label="模拟理论卷开考时间" label-width="200px">
-                    <el-date-picker v-model="formData.scb" type="datetime" placeholder="选择日期时间"></el-date-picker>
+                <el-form-item label="模拟技术卷考试时长(分钟)" label-width="200px">
+                    <el-input v-model="formData.scb" autocomplete="off" placeholder="输入考试时长"></el-input>
                 </el-form-item>
                 <el-form-item label="模拟理论卷开考时间" label-width="200px">
                     <el-date-picker v-model="formData.timed" type="datetime" placeholder="选择日期时间"></el-date-picker>
@@ -113,21 +117,6 @@ export default {
             id: 0,
             isAdd: true,
             className: '',
-            formData:{
-                examination: '',
-                examinationLilun: '',
-                examination_mn: '',
-                examination_mnLilun: '',
-                name: '',
-                timea: '',
-                timeb: '',
-                timec: '',
-                timed: '',
-                sca: '',
-                scb: '',
-                scc: '',
-                scd: '',
-            },
             disTitle: '添加班级',
             dialogFormVisible: false,
             dialogVisible2: false,
@@ -138,7 +127,24 @@ export default {
             examinationsLilun: [],
             examination_mnsLilun: [],
             zhengshiID: 0,
-            moniID: 0
+            moniID: 0,
+            zhengshiLilunID: 0,
+            moniLilunID: 0,
+            formData:{
+                examination: '',
+                theory: '',
+                examination_mn: '',
+                theory_mn: '',
+                name: '',
+                timea: '',
+                timeb: '',
+                timec: '',
+                timed: '',
+                sca: '',
+                scb: '',
+                scc: '',
+                scd: '',
+            }
         }
     },
     methods: {
@@ -154,7 +160,6 @@ export default {
                 this.id = row.id;
                 this.axios.get('/admin/user/getClassId?id='+row.id).then(res =>{
                     this.disTitle = '修改班级';
-                    console.log(res)
                     this.formData = res.data.data;
                     this.zhengshiID = res.data.data.examination_id;
                     this.moniID = res.data.data.examination_mn_id;
@@ -176,13 +181,13 @@ export default {
         },
         // 确认添加班级/编辑班级
         addClassTrue(){
+            const data = this.formData;
+            data.examination = this.zhengshiID;
+            data.examination_mn = this.moniID;
+            data.theory = this.zhengshiLilunID;
+            data.theory_mn = this.moniLilunID;
             if(this.disTitle == '修改班级'){
-                const data = {
-                    id: this.id,
-                    name: this.formData.name,
-                    examination: this.zhengshiID,
-                    examination_mn: this.moniID
-                }
+                data.id = this.id;
                 this.axios.post('/admin/user/modifyClass',data).then(res =>{
                     this.$message({
                         message: res.data.msg,
@@ -193,11 +198,6 @@ export default {
                 })
             }else{
                 if(!this.formData.name) return this.$message({message: '请输入班级名称！',type: 'error'})
-                const data = {
-                    name: this.formData.name,
-                    examination: this.zhengshiID,
-                    examination_mn: this.moniID
-                }
                 this.axios.post('/admin/user/addClass',data).then(res =>{
                     this.$message({
                         message: res.data.msg,
@@ -232,8 +232,13 @@ export default {
             this.zhengshiID = e;
         },
         changeExaminationMn(e){
-            console.log(e)
             this.moniID = e;
+        },
+        changeExaminationLilun(e){
+            this.zhengshiLilunID = e;
+        },
+        changeExaminationMnLilun(e){
+            this.moniLilunID = e;
         },
         // 点击搜索
         searchData(value){

@@ -46,7 +46,7 @@
                      :style="{background:currentIndex == mi ? '#0070d8' : '',color: currentIndex == mi ? '#fff' : '',opacity: currentIndex == mi ? '0.7' : ''}">{{menu}}</div>
             </div>
             <div class="table">
-                <p class="table-title">{{title}}{{currentIndex == 0 ? '(技术卷)' : '(理论卷)'}}</p>
+                <p class="table-title">{{title}}{{currentIndex == 0 ? '(技能卷)' : '(理论卷)'}}</p>
                 <el-table :data="myTableData" style="width: 100%">
                     <el-table-column prop="serial" label="序号" min-width="10px">
                     </el-table-column>
@@ -201,7 +201,7 @@
         dialogFormVisible2: false,
         dialogVisible3: false,
         currentIndex: 0,
-        menuList: ['技术卷','理论卷'],
+        menuList: ['技能卷','理论卷'],
       }
     },
     methods: {

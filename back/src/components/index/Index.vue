@@ -47,6 +47,10 @@
                                 <i class="iconfont circle">&#xe6b7;</i>
                                 正式考卷
                             </el-menu-item>
+                            <!-- <el-menu-item index="2-3" v-if="isff">
+                                <i class="iconfont circle">&#xe6b7;</i>
+                                批阅理论卷
+                            </el-menu-item> -->
                         </el-submenu>
                         <el-submenu index="3" v-if="isG">
                             <template slot="title">
@@ -61,10 +65,10 @@
                                 <i class="iconfont circle">&#xe6b7;</i>
                                 班级管理
                             </el-menu-item>
-                            <el-menu-item index="3-3" v-if="isll">
+                            <!-- <el-menu-item index="3-3" v-if="isll">
                                 <i class="iconfont circle">&#xe6b7;</i>
                                 学生反馈
-                            </el-menu-item>
+                            </el-menu-item> -->
                         </el-submenu>
                         <el-submenu index="4" v-if="isJ">
                             <template slot="title">
@@ -121,7 +125,7 @@
                 <z-table v-if="show =='table'" :tableData='tableData' :isQual='isQual' @lookErr='gotoErr($event)'></z-table>
                 <z-mis v-if="show == 'mis'" :id="id" @leaveMis='backTable($event)'></z-mis>
                 <z-set-topic v-if="show == 'setTopic'" :topicTitle='topicTitle' :topicType='s_type' ref="setTopic" :isGetInfo='isGetInfo' :topicID='topicID' :topicName='topicName' :outline='outline' @gotoTopicTable='gotoTopicTable($event)' :topicIndex='topicIndex'></z-set-topic>
-                <!-- <z-set-theoryTopic v-if="show=='setTheoryTopic'"/> -->
+                <!-- <z-theory v-if="show=='setTheoryTopic'"/> -->
                 <z-simu v-if="show =='simu'" :isOper='isOper' @studentShow='studentShow' :title="isSimuTitle" @addTopic='addTopic($event)' @amendTopic='amendTopic($event)'></z-simu>
                 <z-student v-if="show =='student'" :classID='classID' @seeStuPer='seeStuPer($event)'></z-student>
                 <z-feedback v-if="show =='feedback'"></z-feedback>
@@ -129,8 +133,9 @@
                 <z-add-class v-if="show =='addClass'" @seeStudent='seeStudent($event)'></z-add-class>
                 <z-set-up v-if="show == 'setUp'"></z-set-up>
                 <z-user-admin v-if="show == 'userAdmin'"/>
-                <z-stu-performancet v-if="show == 'stuPerformancet'" :id='stuPerID' @seeAnswer='seeAnswer($event)'/>
+                <z-stu-performancet v-if="show == 'stuPerformancet'" :id='stuPerID' @correct='getCorrectData($event)' @seeAnswer='seeAnswer($event)'/>
                 <z-stu-answer v-if="show == 'answer'" :answerData='answerData'/>
+                <z-coorect v-if="show=='correct'" :ids='correctMess' @seeStuPer='seeStuPer($event)'/>
             </div>
         </div>
         <el-dialog
@@ -163,7 +168,7 @@ import addClass from './index-in/addClass'
 import userAdmin from './index-in/userAdmin'
 import stuPerformancet from './index-in/stuPerformancet'
 import stuAnswer from './index-in/anwser'
-import setTheoryTopic from './index-in/setTheoryTopic'
+import coorect from './index-in/correctTopic'
 
 export default {
     components: {
@@ -171,7 +176,6 @@ export default {
         "z-table": table,
         "z-mis": mis,
         "z-set-topic": setTopic,
-        "z-set-theoryTopic": setTheoryTopic,
         "z-simu": simu,
         "z-student": student,
         "z-set-up": setUp,
@@ -180,7 +184,8 @@ export default {
         "z-feedback": feedback,
         "z-user-admin": userAdmin,
         "z-stu-performancet": stuPerformancet,
-        "z-stu-answer": stuAnswer
+        "z-stu-answer": stuAnswer,
+        "z-coorect": coorect
     },
     // 用于刷新页面
     provide(){
@@ -213,6 +218,7 @@ export default {
             classID: 0,
             stuPerID: 0,
             answerData: '',
+            correctMess: {},
             isTextShow: false,
             isRouterAlive: true,//用于刷新
             isQual: true,//确认是不是查看错题组件
@@ -252,8 +258,12 @@ methods: {
             console.log(e)
         },
         seeStuPer(e){
-            this.stuPerID = e;
+            this.stuPerID = parseInt(e);
             this._showPage('stuPerformancet')
+        },
+        getCorrectData(e){
+            this.correctMess = e;
+            this._showPage('correct')
         },
         // 监听考卷管理页面添加B卷
         addTopic(e){
@@ -340,10 +350,10 @@ methods: {
                         icon: '&#xe6f5;',
                         name: '班级管理'
                     },
-                    {
-                        icon: '&#xe61b;',
-                        name: '学生反馈'
-                    }
+                    // {
+                    //     icon: '&#xe61b;',
+                    //     name: '学生反馈'
+                    // }
                 ]
                 this.currentIndex = 0;
                 this.currentMenuIndex = 3
@@ -409,9 +419,6 @@ methods: {
                     this.isOper = false;
                     this.reload(false);
                     this._showPage('simu');
-                }else if(index == 3){//理论出卷
-                    this.reload(false);
-                    this._showPage('setTheoryTopic');
                 }
             }else if(this.currentMenuIndex == 3){//如果在学生管理
                 if(index == 1){
@@ -556,10 +563,10 @@ methods: {
                         icon: '&#xe6f5;',
                         name: '班级管理'
                     },
-                    {
-                        icon: '&#xe61b;',
-                        name: '学生反馈'
-                    }
+                    // {
+                    //     icon: '&#xe61b;',
+                    //     name: '学生反馈'
+                    // }
                 ]
                 this._showPage('addStu')          
                 this.currentIndex = 1;
@@ -578,10 +585,10 @@ methods: {
                         icon: '&#xe6f5;',
                         name: '班级管理'
                     },
-                    {
-                        icon: '&#xe61b;',
-                        name: '学生反馈'
-                    }
+                    // {
+                    //     icon: '&#xe61b;',
+                    //     name: '学生反馈'
+                    // }
                 ]
                 this._showPage('addClass')       
                 this.currentIndex = 2;
@@ -600,10 +607,10 @@ methods: {
                         icon: '&#xe6f5;',
                         name: '班级管理'
                     },
-                    {
-                        icon: '&#xe61b;',
-                        name: '学生反馈'
-                    }
+                    // {
+                    //     icon: '&#xe61b;',
+                    //     name: '学生反馈'
+                    // }
                 ]
                 this._showPage('feedback')         
                 this.currentIndex = 3;
@@ -664,7 +671,6 @@ methods: {
             this.isRouterAlive = false
             this.$nextTick(() =>{
                 this.isRouterAlive = true
-                // location.reload() //不要使用这种方法
                 const reload = document.getElementById('reload');
                 let speed = 0;
                if(circle){

@@ -358,7 +358,7 @@ export default {
     data(){
         return {
             currentIndex: 0,
-            menuList: ['技 术','理 论'],
+            menuList: ['技 能','理 论'],
             fixed: false,
             isAllShow: false,
             absolute: true,

@@ -1,0 +1,38 @@
+.correct-wrapper{
+    padding: 2vw;
+}
+.correct-wrapper .topic-box{
+    background: #fff;
+    padding: 2vh 2vw;
+}
+.topic-box .topic-item{
+    border-bottom: 4px solid #eee;
+    padding: 2vh 0;
+}
+.topic-box .answer{
+    padding: 1vh 0;
+}
+.answer p{
+    padding-left: 2vw;
+    margin-top: 1vh;
+}
+.topic-box .difficulty span{
+    margin-right: 1vw;
+}
+.fraction{
+    margin-top: 1vh;
+    padding: 1vh 0;
+}
+.fraction input{
+    padding: 0.5vh 0.2vw;
+}
+.correct-wrapper .submit{
+    margin: 3vh 5vw;
+}
+.correct-wrapper .submit span{
+    display: inline-block;
+    padding: 1vh 1.5vw;
+    color: #fff;
+    background: #409EFF;
+    cursor: pointer;
+}

@@ -16,9 +16,9 @@
     color: #111;
 }
 .add-class-wrapper .add-class-box .search{
-    padding: 3vh 1vw;
+    padding: 1.5vh 1vw;
     background: #ffff;
-    border-left: 3px solid #1362cc
+    border-left: 4px solid #1362cc
 }
 .add-class-wrapper .search .el-select{
     margin-left: 1vw

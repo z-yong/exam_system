@@ -3,6 +3,10 @@
         <div class="stu-per">
             <div class="per-table">
                 <p class="table-title">{{name}}的历史考卷列表</p>
+                <div style="display:flex;align-items: center;background:#fff;border-bottom:1px solid #eee;margin-top:2vh">
+                    <div v-for="(menu,mi) in menuList" :key="mi" style="padding:1.2vh 2vw;cursor: pointer;border:1px solid #f7f7f7;" @click="changeMenu(mi)"
+                        :style="{background:currentIndex == mi ? '#0070d8' : '',color: currentIndex == mi ? '#fff' : '',opacity: currentIndex == mi ? '0.7' : ''}">{{menu}}</div>
+                </div>
                 <template>
                     <el-table :highlight-current-row="true"
                         :data="myTableData" style="width: 100%">
@@ -25,10 +29,11 @@
                                 </div>
                                 <div v-else>缺考</div>
                             </template>
-                        </el-table-column>
+                         </el-table-column>
                         <el-table-column label="操作" min-width="15px">
                             <template slot-scope="scope">
-                                <el-button type="text" size="small" @click="seePerformancet(scope.row)"><i class="iconfont">&#xe738;</i>查看答题卡</el-button>
+                                <el-button v-if="currentIndex == 0" type="text" size="small" @click="seePerformancet(scope.row)"><i class="iconfont">&#xe738;</i>查看答题卡</el-button>
+                                <el-button v-if="currentIndex == 1" type="text" size="small" @click="correctTopic(scope.row)"><i class="iconfont">&#xe64b;</i>批改试卷</el-button>
                             </template>
                         </el-table-column>
                     </el-table> 
@@ -53,16 +58,27 @@ export default {
         id: {
             type: Number
         }
-    },
+    }, 
     data(){
         return{
+            menuList: ['技能卷','理论卷'],
+            currentIndex: 0,
             tableData: [],
             myTableData: [],
             pages: 1,
             name: ''
+
         }
     },
     methods:{
+        changeMenu(index){
+            this.currentIndex = index;
+            if(index == 0){
+                this._getOfficialData();
+            }else{
+                this._getTheoryData()
+            }
+        },
         prevPage(){
 
         },
@@ -82,19 +98,40 @@ export default {
                     type: 'error'
                 })
             }
+        },
+        correctTopic(row){
+            const data = {
+                u_id: row.u_id,
+                s_type: row.s_type,
+                s_id: row.s_id
+            }
+            this.$emit('correct',data)
+        },
+        _getOfficialData(){
+            this.axios.post('/admin/user/get_user_issue',{u_id:this.id}).then(res =>{
+                this.name = res.data.msg;
+                res.data.data.forEach((ele,index) =>{
+                        ele.serial = index+1
+                    })
+                this.tableData = res.data.data;
+                this.pages =  Math.ceil(this.tableData.length*10/6);
+                this.myTableData = this.tableData.slice(0,6)
+            })
+        },
+        _getTheoryData(){
+            this.axios.post('/admin/paper/get_answer_list',{id: this.id}).then(res =>{
+                console.log(res)
+                res.data.data.forEach((ele,index) =>{
+                    ele.serial = index+1
+                })
+                this.tableData = res.data.data;
+                this.pages =  Math.ceil(this.tableData.length*10/6);
+                this.myTableData = this.tableData.slice(0,6)
+            })
         }
     },
     created(){
-        this.axios.post('/admin/user/get_user_issue',{u_id:this.id}).then(res =>{
-            console.log(res)
-            this.name = res.data.msg;
-            res.data.data.forEach((ele,index) =>{
-                    ele.serial = index+1
-                })
-            this.tableData = res.data.data;
-            this.pages =  Math.ceil(this.tableData.length*10/6);
-            this.myTableData = this.tableData.slice(0,6)
-        })
+        this._getOfficialData()
     }
 }
 </script>

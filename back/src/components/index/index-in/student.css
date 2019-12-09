@@ -12,9 +12,9 @@
     background: #fff;
     font-size: 15px;
     color: #111;
-    padding: 3vh 1vw;
+    padding: 1.5vh 1vw;
     background: #ffff;
-    border-left: 3px solid #1362cc
+    border-left: 4px solid #1362cc
 }
 .stu-wrapper .search .el-input{
     margin-left: 2vw;
