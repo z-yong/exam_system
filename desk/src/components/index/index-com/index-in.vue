@@ -8,8 +8,8 @@
                 <p class="title-name">模拟考试</p>
                 <p class="title-desc">根据最新大纲的考察要求为你自动生成的模拟考卷</p>
                 <div class="btn-box">
-                    <div @click="simuExam" class="action-btn">技术测试</div>
-                    <div class="action-btn">理论测试</div>
+                    <div class="action-btn" @click="simuExam">技术测试</div>
+                    <div class="action-btn" @click="theroy_mnExam">理论测试</div>
                 </div>
             </div>
         </div>
@@ -21,8 +21,8 @@
                 <p class="title-name">正式考试</p>
                 <p class="title-desc">根据最新大纲的考察要求为你自动生成的正式考卷</p>
                 <div class="btn-box">
-                    <div @click="officialExam" class="action-btn">技术测试</div>
-                    <div class="action-btn">理论测试</div>
+                    <div class="action-btn" @click="officialExam">技术测试</div>
+                    <div class="action-btn" @click="theroyExam">理论测试</div>
                 </div>
             </div>
         </div>
@@ -107,23 +107,71 @@ export default {
         }
     },
     methods: {
-        simuExam(){
+        simuExam(){//模拟技术
+            if(localStorage.getItem('startTime')){
+                this.$message({
+                    message: `您正在进行${localStorage.getItem('title')}考试`
+                })
+                return
+            }
             this.axios.get('/index/index/shijuantimu?zt=2').then(res =>{
                 if(res.data.code == 400){
                     this.dialogVisible = true;
                 }else{
                     localStorage.setItem('title',res.data.msg);
-                    this.$router.push({path: '/examing/0',});
+                    localStorage.setItem('exam','simu')
+                    this.$router.push({path: '/examing/0'});
                 }
             })
         },
-        officialExam(){    
+        officialExam(){  //正式技术 
+            if(localStorage.getItem('startTime')){
+                this.$message({
+                    message: `您正在进行${localStorage.getItem('title')}考试`
+                })
+                return
+            }
             this.axios.get('/index/index/shijuantimu?zt=1').then(res =>{
                 if(res.data.code == 400){
                     this.dialogVisible = true;
                 }else{
+                    localStorage.setItem('exam','official')
                     localStorage.setItem('title',res.data.msg);
                     this.$router.push({path: '/examing/1'});
+                }
+            })
+        },
+        theroy_mnExam(){//模拟理论
+            if(localStorage.getItem('startTime')){
+                this.$message({
+                    message: `您正在进行${localStorage.getItem('title')}考试`
+                })
+                return
+            }
+            this.axios.get('/index/index/shijuantimu_a?zt=2').then(res =>{
+                if(res.data.code == 400){
+                    this.dialogVisible = true;
+                }else{
+                    localStorage.setItem('title',res.data.data.issue.title);
+                    localStorage.setItem('exam','theroy_mn');
+                    this.$router.push({path: '/index/theory/0'});
+                }
+            })
+        },
+        theroyExam(){//正式理论
+            if(localStorage.getItem('startTime')){
+                this.$message({
+                    message: `您正在进行${localStorage.getItem('title')}考试`
+                })
+                return
+            }
+            this.axios.get('/index/index/shijuantimu_a?zt=1').then(res =>{
+                if(res.data.code == 400){
+                    this.dialogVisible = true;
+                }else{
+                    localStorage.setItem('title',res.data.data.issue.title);
+                    localStorage.setItem('exam','theroy')
+                    this.$router.push({path: '/index/theory/1'});
                 }
             })
         }

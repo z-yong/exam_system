@@ -164,6 +164,7 @@ export default {
                         message: '登陆成功',
                         type: 'success'
                     })
+                    localStorage.clear()
                     this.$router.push('/index')
                 }else if(res.data.code == 400){
                     this.$message({

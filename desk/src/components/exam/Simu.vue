@@ -38,13 +38,13 @@
                         </div>
                         <div v-if="topicShow" class="topic-sub">
                             <div v-if="condition[z_index].subject[t_index].type == '1'" class="selects">
-                                <p class="select-item"><el-radio label="A" v-model="radio" @change="changeRadio($event)">A</el-radio><span>{{condition[z_index].subject[t_index].a}}</span></p>
-                                <p class="select-item"><el-radio label="B" v-model="radio" @change="changeRadio($event)">B</el-radio><span>{{condition[z_index].subject[t_index].b}}</span></p>
-                                <p class="select-item"><el-radio label="C" v-model="radio" @change="changeRadio($event)">C</el-radio><span>{{condition[z_index].subject[t_index].c}}</span></p>
-                                <p class="select-item"><el-radio label="D" v-model="radio" @change="changeRadio($event)">D</el-radio><span>{{condition[z_index].subject[t_index].d}}</span></p>
+                                <p class="select-item"><el-radio label="A" disabled v-model="radio" @change="changeRadio($event)">A</el-radio><span>{{condition[z_index].subject[t_index].a}}</span></p>
+                                <p class="select-item"><el-radio label="B" disabled v-model="radio" @change="changeRadio($event)">B</el-radio><span>{{condition[z_index].subject[t_index].b}}</span></p>
+                                <p class="select-item"><el-radio label="C" disabled v-model="radio" @change="changeRadio($event)">C</el-radio><span>{{condition[z_index].subject[t_index].c}}</span></p>
+                                <p class="select-item"><el-radio label="D" disabled v-model="radio" @change="changeRadio($event)">D</el-radio><span>{{condition[z_index].subject[t_index].d}}</span></p>
                             </div>
                             <div v-if="condition[z_index].subject[t_index].type == '2'" class="selects">
-                                <el-checkbox-group v-model="check" @change="changeCheck(e)">
+                                <el-checkbox-group v-model="check" @change="changeCheck(e)" disabled>
                                     <p class="select-item"><el-checkbox label="A"></el-checkbox><span>{{condition[z_index].subject[t_index].a}}</span></p>
                                     <p class="select-item"><el-checkbox label="B"></el-checkbox><span>{{condition[z_index].subject[t_index].b}}</span></p>
                                     <p class="select-item"><el-checkbox label="C"></el-checkbox><span>{{condition[z_index].subject[t_index].c}}</span></p>
@@ -86,7 +86,7 @@
             :before-close="handleClose">
             <span>{{hint}}</span>
             <span slot="footer" class="dialog-footer">
-                <el-button v-if="cancelShow" @click="dialogVisible = false">取 消</el-button>
+                <el-button v-if="cancelShow" @click="quxiao">取 消</el-button>
                 <el-button type="primary" @click='leaveTrue'>确 定</el-button>
             </span>
         </el-dialog>
@@ -149,6 +149,12 @@ export default {
         }
     },
     methods: {
+        quxiao(){
+            this.dialogVisible = false;
+            setTimeout(() =>{
+                this.hint = '考试未结束，无法查看其他页面!'
+            },500)
+        },
         // 点击顶部菜单项
         clickTopMenu(index){
             this.currentIndex = index;
@@ -238,7 +244,7 @@ export default {
                 }
                this.axios.post('/index/index/post_issue_answer',data).then(res =>{
                     clearInterval(this.timer)
-                    clearInterval(this.timer1)
+                    // clearInterval(this.timer1)
                     localStorage.removeItem('minute');
                     localStorage.removeItem('seconds');
                     localStorage.removeItem('startTime');
@@ -266,7 +272,7 @@ export default {
         // 设置倒计时
         _changeCountDown(minute,seconds){
             minute = parseInt(minute);
-            seconds = parseInt(seconds)
+            seconds = parseInt(seconds);
             if(this.timer == ''){
                  this.timer = setInterval(() =>{
                     if(!JSON.parse(localStorage.getItem('leave'))){
@@ -289,7 +295,7 @@ export default {
                         this.countDown = stringMinute + ':' + stringSeconds;
                         // 每次都要进行存储
                         localStorage.setItem('minute',minute);
-                        localStorage.setItem('seconds',seconds)
+                        localStorage.setItem('seconds',seconds);
                         if(minute == 0 && seconds == 0){
                             clearInterval(this.timer);
                             localStorage.clear()
@@ -351,9 +357,9 @@ export default {
                     this.topicShow = true;
                     this.id = this.condition[this.z_index].subject[this.t_index].id;
                 }
-                setInterval(() =>{
-                    this._getAnswer()
-                },3000)
+                // setInterval(() =>{
+                //     this._getAnswer()
+                // },3000)
                 console.log(this.ids)
             }
         }
@@ -386,6 +392,7 @@ export default {
         }
     },
     created(){
+        console.log(145)
         const data = this.$route.query;
         this.s_id = data.topicID;
         this.type = data.indexPath;

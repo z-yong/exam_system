@@ -10,14 +10,14 @@
                     <i class="iconfont">&#xe654;</i>
                     <span>考试结果</span>
                 </li>
-                <li @click="goToError">
+                <!-- <li @click="goToError">
                     <i class="iconfont">&#xe693;</i>
                     <span>我的错题</span>
                 </li>
                 <li @click="goToQua">
                     <i class="iconfont">&#xe619;</i>
                     <span>我的反馈</span>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

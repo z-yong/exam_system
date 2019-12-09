@@ -113,13 +113,11 @@ export default {
     }, 
     methods: {
         goToSimu(){
-           
             let enclosure = [];
             let condition = [];
             let id = 0;
-            if(this.id == 0){ 
+            if(this.id == 0){ //模拟技术
                 this.axios.get('/index/index/StartExamMn').then(res =>{
-                    localStorage.setItem('exam','simu')
                     enclosure = res.data.data.enclosure;
                     this.time = res.data.data.kssc_time;
                     const date = this._getStartTime()
@@ -129,10 +127,9 @@ export default {
                     window.open(href, '_blank');
                }).catch(err =>{
                     console.log(err)
-                })
-            }else if(this.id == 1){ 
+                }) 
+            }else if(this.id == 1){ //正式技术
                 this.axios.get('/index/index/StartExam').then(res =>{
-                    localStorage.setItem('exam','official')
                     this.time = res.data.data.kssc_time;
                     const date = this._getStartTime()
                     enclosure = res.data.data.enclosure;

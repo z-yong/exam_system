@@ -14,9 +14,6 @@
     user-select: none;
     color: #666
 }
-.per-wrapper ul li:nth-last-child(1){
-    border-bottom: none
-}
 .per-wrapper ul li i{
     color: #1362cc;
     font-size: 20px;

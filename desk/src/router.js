@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from './components/Login'
 import Index from './components/index/Index'
 import Simu from './components/exam/Simu'
+import theory from './components/exam/theory'
 import Examing from './components/exam/Examing'
 import Anwser from './components/exam/Anwser'
 import Examend from './components/exam/Examend'
@@ -87,7 +88,15 @@ export default new Router({
           name: 'Simu',
           component: Simu,
           meta: {
-            title: '试卷内容'
+            title: '技术卷'
+          }
+        },
+        {
+          path: '/index/theory/:id',
+          name: 'theory',
+          component: theory,
+          meta: {
+            title: '理论卷'
           }
         }
       ]
@@ -102,7 +111,7 @@ export default new Router({
       name: 'Anwser',
       component: Anwser,
       meta: {
-        title: '答题卡'
+        title: '技术卷答题卡'
       }
     },
     {
