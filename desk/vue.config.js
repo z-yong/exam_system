@@ -1,3 +1,4 @@
+require('babel-polyfill')//兼容ie
 module.exports = {
     // publicPath: '/', //根目录
     publicPath:  process.env.NODE_ENV === 'production' ? '/examdesk/' : '/',

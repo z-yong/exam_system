@@ -88,7 +88,7 @@ export default new Router({
           name: 'Simu',
           component: Simu,
           meta: {
-            title: '技术卷'
+            title: '技能卷'
           }
         },
         {
@@ -111,7 +111,7 @@ export default new Router({
       name: 'Anwser',
       component: Anwser,
       meta: {
-        title: '技术卷答题卡'
+        title: '技能卷答题卡'
       }
     },
     {

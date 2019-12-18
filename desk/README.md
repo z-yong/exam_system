@@ -4,6 +4,7 @@ cnpm install vue-amap --s
 cnpm install axios
 cnpm install vuex  --save
 cnpm install vuex-along --save
+npm i babel-polyfill --save-dev //兼容ie9
 ## Project setup
 ```
 npm install

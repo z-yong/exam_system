@@ -116,26 +116,31 @@ export default {
             let enclosure = [];
             let condition = [];
             let id = 0;
-            if(this.id == 0){ //模拟技术
-                this.axios.get('/index/index/StartExamMn').then(res =>{
+            const reportID = localStorage.getItem('reportID');
+            if(this.id == 0){ //模拟
+                this.axios.get('/index/index/StartExamMn?id='+reportID).then(res =>{
                     enclosure = res.data.data.enclosure;
                     this.time = res.data.data.kssc_time;
                     const date = this._getStartTime()
                     condition = JSON.stringify(res.data.data.condition);
-                    id = res.data.data.id//{Time: date, indexPath: indexPath[0], id: index, topicID: this.id}
-                    const { href } = this.$router.resolve({path: '/index/simu',query: {menuIndex: ["1"],Time: date,indexPath: 1, isMenuShow: true ,enclosure, condition, topicID:id}})
+                    id = res.data.data.id;
+                    const topicsMess = {menuIndex: ["1"],Time: date,indexPath: 1, isMenuShow: true ,enclosure, condition, topicID:id};
+                    localStorage.setItem('topicMess', JSON.stringify(topicsMess))
+                    const { href } = this.$router.resolve({name: 'Simu'})
                     window.open(href, '_blank');
                }).catch(err =>{
                     console.log(err)
                 }) 
-            }else if(this.id == 1){ //正式技术
-                this.axios.get('/index/index/StartExam').then(res =>{
+            }else if(this.id == 1){ //正式
+                this.axios.get('/index/index/StartExam?id='+reportID).then(res =>{ 
                     this.time = res.data.data.kssc_time;
                     const date = this._getStartTime()
                     enclosure = res.data.data.enclosure;
                     condition = JSON.stringify(res.data.data.condition);
                     id = res.data.data.id;
-                    const { href } = this.$router.resolve({path: '/index/simu',query: {menuIndex: ["1"],Time: date,indexPath: 1, isMenuShow: true ,enclosure, condition ,topicID:id}})
+                    const topicsMess = {menuIndex: ["1"],Time: date,indexPath: 1, isMenuShow: true ,enclosure, condition ,topicID:id};
+                    const { href } = this.$router.resolve({path: '/index/simu'});
+                    localStorage.setItem('topicMess',JSON.stringify(topicsMess));
                     window.open(href, '_blank');
                 }).catch(err =>{
                     console.log(err)
@@ -144,27 +149,33 @@ export default {
         },
         goToAnwser(){
             let condition = [];
+            let id;
+            const reportID = localStorage.getItem('reportID');
             if(this.id == 0){
-                this.axios.get('/index/index/StartExamMn').then(res =>{
-                    console.log(res)
+                this.axios.get('/index/index/StartExamMn?id='+reportID).then(res =>{
+                    id = res.data.data.id;
                     this.time = res.data.data.kssc_time;
                     const date = this._getStartTime();
                     condition = JSON.stringify(res.data.data.condition);
                     const type = 0;
-                    const href  = this.$router.resolve({path: '/anwser',query: {Time: date,countDown: this.time,type,condition}});  
-                    window.open(href.href, '_blank');
+                    const anwserMess = { Time: date,countDown: this.time,type,condition, topicID:id };
+                    localStorage.setItem('anwserMess',JSON.stringify(anwserMess));
+                    const { href } = this.$router.resolve({path: '/anwser'});
+                    window.open(href, '_blank');
                 }).catch(err =>{
                     console.log(err)
                 })
             }else if(this.id == 1){
-                this.axios.get('/index/index/StartExam').then(res =>{
-                    console.log(res)
+                this.axios.get('/index/index/StartExam?id='+reportID).then(res =>{
+                    id = res.data.data.id;
                     this.time = res.data.data.kssc_time;
                     const date = this._getStartTime();
                     condition = JSON.stringify(res.data.data.condition);
                     const type = 1;
-                    const href  = this.$router.resolve({path: '/anwser',query: {Time: date,countDown: this.time,type,condition}});  
-                    window.open(href.href, '_blank');
+                    const anwserMess = {Time: date,countDown: this.time,type,condition, topicID:id};
+                    localStorage.setItem('anwserMess',JSON.stringify(anwserMess));
+                    const { href } = this.$router.resolve({path: '/anwser'});  
+                    window.open( href, '_blank');
                 }).catch(err =>{
                     console.log(err)
                 })
@@ -180,7 +191,7 @@ export default {
                 let minutes = date.getMinutes();
                 let seconds = date.getSeconds();
                 let endHours = endDate.getHours();
-                let endMinutes = endDate.getMinutes();
+                let endMinutes = endDate.getMinutes(); 
                 let endSeconds = endDate.getSeconds();
                 if(hours < 10)  hours = '0' + hours
                 if(minutes < 10) minutes = '0' + minutes

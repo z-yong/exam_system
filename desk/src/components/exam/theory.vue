@@ -24,18 +24,21 @@
             <div class="topic">
                 <div v-if="topicShow && topics.length" class="topic-item">
                     <div class="topic-content-box">
-                        <div class="" v-html="topics[currentIndex].title">
-                            {{topics[currentIndex].title}}
+                        <div style="display: flex">
+                            <div class="" v-html="topics[currentIndex].title">
+                                {{topics[currentIndex].title}}
+                            </div>
+                            <div style="margin-left:6px">({{topics[currentIndex].fraction}}分)</div>
                         </div>
                         <div class="topic-sub">
                             <div v-if="topics[currentIndex].type == '1'" class="selects">
-                                <p class="select-item"><el-radio label="A" v-model="answer[currentIndex].radio" @change="changeRadio($event)">A</el-radio><span>{{topics[currentIndex].a}}</span></p>
-                                <p class="select-item"><el-radio label="B" v-model="answer[currentIndex].radio" @change="changeRadio($event)">B</el-radio><span>{{topics[currentIndex].b}}</span></p>
-                                <p class="select-item"><el-radio label="C" v-model="answer[currentIndex].radio" @change="changeRadio($event)">C</el-radio><span>{{topics[currentIndex].c}}</span></p>
-                                <p class="select-item"><el-radio label="D" v-model="answer[currentIndex].radio" @change="changeRadio($event)">D</el-radio><span>{{topics[currentIndex].d}}</span></p>
+                                <p class="select-item"><el-radio label="A" v-model="answer[currentIndex].radio" @change="changeRadio(answer[currentIndex].radio)">A</el-radio><span>{{topics[currentIndex].a}}</span></p>
+                                <p class="select-item"><el-radio label="B" v-model="answer[currentIndex].radio" @change="changeRadio(answer[currentIndex].radio)">B</el-radio><span>{{topics[currentIndex].b}}</span></p>
+                                <p class="select-item"><el-radio label="C" v-model="answer[currentIndex].radio" @change="changeRadio(answer[currentIndex].radio)">C</el-radio><span>{{topics[currentIndex].c}}</span></p>
+                                <p class="select-item"><el-radio label="D" v-model="answer[currentIndex].radio" @change="changeRadio(answer[currentIndex].radio)">D</el-radio><span>{{topics[currentIndex].d}}</span></p>
                             </div>
                             <div v-if="topics[currentIndex].type == '2'" class="selects">
-                                <el-checkbox-group v-model="answer[currentIndex].check" @change="changeCheck">
+                                <el-checkbox-group v-model="answer[currentIndex].check" @change="changeCheck(answer[currentIndex].check)">
                                     <p class="select-item"><el-checkbox label="A"></el-checkbox><span>{{topics[currentIndex].a}}</span></p>
                                     <p class="select-item"><el-checkbox label="B"></el-checkbox><span>{{topics[currentIndex].b}}</span></p>
                                     <p class="select-item"><el-checkbox label="C"></el-checkbox><span>{{topics[currentIndex].c}}</span></p>
@@ -45,18 +48,13 @@
                                 </el-checkbox-group>
                             </div>
                             <div v-if="topics[currentIndex].type == '3'" class="selects">
-                                <el-input @input="changeGap"
-                                    type="number"
-                                    placeholder="请输入答案"
-                                    v-model="answer[currentIndex].gap">
-                                </el-input>
+                                <div v-for="(t) in topics[currentIndex].answer" :key="t" style="margin-top:2vh;width:80%">
+                                    <el-input @input="changeGap" type="" placeholder="请输入答案" v-model="answer[currentIndex].gap[t-1]"></el-input>
+                                </div>
                             </div>
                             <div v-if="topics[currentIndex].type == '4'" class="selects">
-                                <el-input @input="changeGap"
-                                    type="textarea"
-                                    :rows="5"
-                                    placeholder="请输入答案"
-                                    v-model="answer[currentIndex].jianda">
+                                <el-input @input="changeJianda" type="textarea" :rows="5" placeholder="请输入答案"
+                                          v-model="answer[currentIndex].jianda">
                                 </el-input>
                             </div>
                             <p class="difficulty">题型：<span>{{type}}</span></p>
@@ -73,21 +71,10 @@
                          :class="currentIndex == i ? 'select' : ''">{{i+1}}</div>
                 </div>
                 <div class="submit" @click="submitAnswer">提交答卷</div>
-                <!-- <div class="gap">
-                    <el-form-item v-if="ruleForm['topics'][index]['topicType'] == '填空题'" label="正确答案">
-                        <el-input v-model="ruleForm['topics'][index]['gap']" @input="change($event)"></el-input>
-                        <span class="gap-desc">精确到 0.1</span>
-                    </el-form-item>
-                </div> -->
-                <!--  -->
             </div>
         </div>
         <!-- 对话框 -->
-        <el-dialog
-            title="温馨提示"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :before-close="handleClose">
+        <el-dialog title="温馨提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
             <span>{{hint}}</span>
             <span slot="footer" class="dialog-footer">
                 <el-button v-if="cancelShow" @click="quxiao">取 消</el-button>
@@ -130,30 +117,48 @@ export default {
             },500)
         },
         changeRadio(e){
+            this.$forceUpdate();
             const t_id = this.topics[this.currentIndex].id;
             this.axios.post('/index/index/post_answer_a',{user_answer: e,t_id}).then(res =>{
                 console.log(res)
             })
         },
         changeCheck(e){
+            this.$forceUpdate();
             const t_id = this.topics[this.currentIndex].id;
             this.axios.post('/index/index/post_answer_a',{user_answer: e,t_id}).then(res =>{
                 console.log(res)
             })
         },
-        changeGap(e){
+        changeGap(){
+            this.$forceUpdate()
             const t_id = this.topics[this.currentIndex].id;
-            this.axios.post('/index/index/post_answer_a',{user_answer: e,t_id}).then(res =>{
+            const arr = [];
+            for(let i = 0; i < this.topics[this.currentIndex].answer; i++){
+                if(this.answer[this.currentIndex].gap[i]){
+                     arr[i] = this.answer[this.currentIndex].gap[i];
+                }else{
+                    arr[i] = '';
+                }
+            }
+            this.axios.post('/index/index/post_answer_a',{user_answer: arr,t_id}).then(res =>{
+                console.log(res)
+            })
+        },
+        changeJianda(){
+            this.$forceUpdate();
+            const t_id = this.topics[this.currentIndex].id;
+            this.axios.post('/index/index/post_answer_a',{user_answer: this.answer[this.currentIndex].jianda,t_id}).then(res =>{
                 console.log(res)
             })
         },
         lastTopic(){
             this.currentIndex --;
-            this._changType()
+            this._changType();
         },
         nextTopic(){
             this.currentIndex ++;
-            this._changType()
+            this._changType();
         },
         selectTopic(index){
             this.currentIndex = index;
@@ -165,8 +170,8 @@ export default {
                 const seconds = localStorage.getItem('seconds');
                 this.hint = `距离考试结束还有${minute}分钟${seconds}秒，确认提交答卷吗？`;
                 this.cancelShow = true;
-                this.allow = true
-                this.dialogVisible = true
+                this.allow = true;
+                this.dialogVisible = true;
             }
         },
         leaveTrue(){
@@ -177,21 +182,18 @@ export default {
                 const examTime = parseInt(this.examTime);
                 if(seconds > 0){
                     const min = examTime - minute - 1;
-                    time = min*60 + (60 - seconds)
+                    time = min*60 + (60 - seconds);
                 }else{
                     const min = examTime - minute;
-                    time = min*60
+                    time = min*60;
                 }
                 const data = {
                     s_id:  this.s_id,
                     time
                 }
                this.axios.post('/index/index/post_issue_answer_a',data).then(res =>{
-                    clearInterval(this.timer)
-                    localStorage.removeItem('minute');
-                    localStorage.removeItem('seconds');
-                    localStorage.removeItem('startTime');
-                    localStorage.removeItem('endTime');
+                    clearInterval(this.timer);
+                    localStorage.clear();
                     localStorage.setItem('leave',true);
                     this.dialogVisible = false;
                     this.isLeave = true;
@@ -199,7 +201,7 @@ export default {
                         message: res.data.msg,
                         type: 'success'
                     })
-                    this.$router.push({name: 'Index'})
+                    this.$router.push({name: 'Index'});
                })
             }else{
                 this.dialogVisible = false;
@@ -211,25 +213,25 @@ export default {
             let seconds ;
             if(localStorage.getItem('seconds')){
                 minute = localStorage.getItem('minute');
-                seconds = localStorage.getItem('seconds')
+                seconds = localStorage.getItem('seconds');
             }else{
                 minute = parseInt(this.countDown);
-                seconds = 0
-                localStorage.setItem('minute',minute)
-                localStorage.setItem('seconds',seconds)
+                seconds = 0;
+                localStorage.setItem('minute',minute);
+                localStorage.setItem('seconds',seconds);
             }
             this._changeCountDown(minute,seconds);
         },
         handleClose(){},
         _changType(){
             if(this.topics[this.currentIndex].type == 1){
-                this.type = '单选题'
+                this.type = '单选题';
             }else if(this.topics[this.currentIndex].type == 2){
-                this.type = '多选题'
-            }else if(this.topics[this.currentIndex].type == 2){
-                this.type = '填空题'
+                this.type = '多选题';
+            }else if(this.topics[this.currentIndex].type == 3){
+                this.type = '填空题';
             }else{
-                this.type = '简答题'
+                this.type = '简答题';
             }
         },
         // 设置倒计时
@@ -245,15 +247,15 @@ export default {
                         }
                         seconds = seconds - 1;
                         let stringSeconds = seconds;
-                        let stringMinute = minute
+                        let stringMinute = minute;
                         if(stringSeconds < 10){
-                            stringSeconds = '0' + stringSeconds
+                            stringSeconds = '0' + stringSeconds;
                         }
                         if(stringSeconds == 60){
-                            stringSeconds = '00'
+                            stringSeconds = '00';
                         }
                         if(stringMinute < 10){
-                            stringMinute = '0' + stringMinute
+                            stringMinute = '0' + stringMinute;
                         }
                         this.countDown = stringMinute + ':' + stringSeconds;
                         // 每次都要进行存储
@@ -261,20 +263,18 @@ export default {
                         localStorage.setItem('seconds',seconds);
                         if(minute == 0 && seconds == 0){
                             clearInterval(this.timer);
-                            localStorage.clear()
+                            localStorage.clear();
                             this.hint = '时间已到,点击确认提交答卷';
                             this.allow = true;
                             this.dialogVisible = true;
                         }
                     }else{
-                        clearInterval(this.timer)
+                        clearInterval(this.timer);
                     }
                 },1000)
             }
         },
           _getStartTime(){
-            let startTime = '';
-            let endTime = '';
             if(!localStorage.getItem('startTime')){
                 const date = new Date();
                 const endDate = new Date(date.getTime() + parseFloat(this.countDown)*60*1000);
@@ -284,12 +284,12 @@ export default {
                 let endHours = endDate.getHours();
                 let endMinutes = endDate.getMinutes();
                 let endSeconds = endDate.getSeconds();
-                if(hours < 10)  hours = '0' + hours
-                if(minutes < 10) minutes = '0' + minutes
-                if(seconds < 10) seconds = '0' + seconds
-                if(endHours < 10) endHours = '0' + endHours
-                if(endMinutes < 10) endMinutes = '0' + endMinutes
-                if(endSeconds < 10) endSeconds = '0' + endSeconds
+                if(hours < 10)  hours = '0' + hours;
+                if(minutes < 10) minutes = '0' + minutes;
+                if(seconds < 10) seconds = '0' + seconds;
+                if(endHours < 10) endHours = '0' + endHours;
+                if(endMinutes < 10) endMinutes = '0' + endMinutes;
+                if(endSeconds < 10) endSeconds = '0' + endSeconds;
                 this.startTime = hours + ':' + minutes + ':' + seconds;
                 this.endTime = endHours + ':' + endMinutes + ':' + endSeconds;
             }else{
@@ -300,7 +300,10 @@ export default {
     },
     created(){
         if(this.id == 0){
-            this.axios.get('/index/index/shijuantimu_a?zt=2').then(res =>{
+            const data = {
+                zt: 2, jl: 2
+            } 
+            this.axios.post('/index/index/shijuantimu', data).then(res =>{
                 const data = res.data.data;
                 this.s_id = data.id;
                 this.countDown = data.kssc_time;
@@ -312,10 +315,10 @@ export default {
                     }else if(ele.type == 2){
                         this.answer[index] = {id:ele.id,check: []}
                     }else if(ele.type == 3){
-                        this.answer[index] = {id:ele.id,gap: ''}
+                        this.answer[index] = {id:ele.id,gap: []}
                     }else{
-                        this.answer[index] = {id:ele.id,radio: ''}
-                    }
+                        this.answer[index] = {id:ele.id,jianda: ''}
+                     }
                 })
                 this.len = this.topics.length
                 this.topicShow = true;
@@ -324,7 +327,10 @@ export default {
                 this._getStartTime();
             })
         }else if(this.id == 1){
-            this.axios.get('/index/index/shijuantimu_a?zt=1').then(res =>{
+            const data = {
+                zt: 1, jl: 2
+            } 
+            this.axios.post('/index/index/shijuantimu', data).then(res =>{
                 const data = res.data.data;
                 this.s_id = data.id;
                 this.countDown = data.kssc_time;
@@ -336,12 +342,12 @@ export default {
                     }else if(ele.type == 2){
                         this.answer[index] = {id:ele.id,check: []}
                     }else if(ele.type == 3){
-                        this.answer[index] = {id:ele.id,gap: ''}
+                        this.answer[index] = {id:ele.id,gap: []}
                     }else{
                         this.answer[index] = {id:ele.id,radio: ''}
                     }
                 })
-                this.len = this.topics.length
+                this.len = this.topics.length;
                 this.topicShow = true;
                 this._changType();
                 this.setInterTime();
@@ -357,9 +363,9 @@ export default {
         if(!this.isLeave){
             this.allow = false;
             this.dialogVisible = true;
-            next(false)
+            next(false);
         }else{
-            next()
+            next();
         }
     },
 }

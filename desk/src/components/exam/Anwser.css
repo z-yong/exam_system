@@ -49,7 +49,7 @@
     height: 7vh;
     line-height: 7vh;
     font-weight: 600;
-    border-bottom: 3px solid #0070d8
+    border-bottom: 3px solid #0070d8;
 }
 .answer-header .count-down{
     font-size: 20px;
@@ -58,14 +58,16 @@
     background: #f6d4d4;
     height: 5vh;
     padding: 0 20px;
-    line-height: 5vh
+    line-height: 5vh;
+    display: inline-block;
 }
 .answer-header .current-state{
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     width: 24%;
-    text-align: center
+    text-align: center;
+    margin-top: 1.5vh;
 }
 .current-state .start .start-desc,
 .current-state .end .end-desc{
@@ -103,7 +105,7 @@
 }
 .answer-wrapper .topic-item .item-mess{
     display: flex;
-    align-items: center
+    padding-right: 20px;
 }
 .answer-wrapper .topic-item .item-mess .span{
     margin-left: .5em
@@ -127,11 +129,11 @@
     position: absolute;
     height: 100%;
     right: -2px;
-    top: 5vh
+    top: 0vh
 }
 .answer-wrapper .topic .topic-item .item-line img{
     width: 10px;
-    height: 88%;
+    height: 100%;
 }
 .answer-wrapper .topic .topic-content-ul li{
     padding: 20px 0;
@@ -151,10 +153,9 @@
     margin: 2vh 0;
 }
 .answer-wrapper .topic .topic-content-ul li .gap-anw{
-    width: 80%;
-    height: 10vh;
+    width: 60%;
     padding: 1vh;
-    margin: 1vh 0;
+    margin: 1vh 2vw;
 }
 .answer-wrapper .topic .submit{
     width: 6vw;

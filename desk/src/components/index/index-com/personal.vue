@@ -77,6 +77,7 @@ export default {
         }
     },
     created(){
+        localStorage.setItem('leave',false);
     }
 }
 </script>

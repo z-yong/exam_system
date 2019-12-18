@@ -13,42 +13,23 @@
                 <div v-if="isMenuShow" class="menu-left" :class="fixed ? 'fixed' : ''" id="menuLeft">
                     <el-row class="tac">
                         <el-col :span="24">
-                            <el-menu unique-opened
-                                     class="el-menu-vertical-demo"
-                                     @select="currentMenu" @open='openMenu'
-                                     background-color="#fff"
-                                     text-color="#0070d8"
-                                     active-text-color="#fff">
-                                <el-menu-item index="1">
-                                    <i class="el-icon-s-opportunity"></i>
-                                    <span slot="title">基本想定</span>
-                                </el-menu-item>
+                            <el-menu unique-opened class="el-menu-vertical-demo" @select="currentMenu" @open='openMenu' background-color="#fff"
+                                     text-color="#0070d8" active-text-color="#fff" :default-openeds="menuIndexArr">
+                                <el-menu-item index="1"><i class="el-icon-s-opportunity"></i><span slot="title">基本想定</span></el-menu-item>
                                 <el-submenu index="2">
-                                    <template slot="title">
-                                        <i class="el-icon-s-grid" style="color:#0070d8"></i>
-                                        <span>全部附件</span>
-                                    </template>
-                                    <el-menu-item v-for="(enclo,i) in enclosure" :key="i" :index='enclo.id'><i class="iconfont">&#xe6b7;</i>
-                                        附件{{i+1}}
-                                        <span class="enclo-text">({{enclo.title}})</span>
+                                    <template slot="title"><i class="el-icon-s-grid" style="color:#0070d8"></i><span>全部附件</span></template>
+                                    <el-menu-item v-for="(enclo,i) in enclosure" :key="i" :index='enclo.id.toString()'>
+                                        <i class="iconfont">&#xe6b7;</i>
+                                        附件{{i+1}}<span class="enclo-text">({{enclo.title}})</span>
                                     </el-menu-item>
                                 </el-submenu>
                                 <el-submenu index="3">
-                                    <template slot="title">
-                                        <i class="el-icon-s-operation" style="color:#0070d8"></i>
-                                        <span>作业条件</span>
-                                    </template>
-                                    <el-submenu v-for="(con,ic) in condition" :key="ic" index='3-1'>
-                                        <template slot="title">
-                                            <i class="el-icon-s-operation" style="color:#0070d8"></i>
-                                            <span>作业条件{{ic+1}}</span>
-                                        </template>
-                                        <el-menu-item :index="ic+'&content'">
-                                            <i class="iconfont">&#xe6b7;</i>
-                                            条件详情
-                                        </el-menu-item>
-                                        <el-menu-item v-for="(sub,ii) in con.subject" :key="ii" :index="ic+'&'+ii"><i class="iconfont">&#xe6b7;</i>
-                                            第{{ii+1}}题
+                                    <template slot="title"><i class="el-icon-s-operation" style="color:#0070d8"></i><span>作业条件</span></template>
+                                    <el-submenu v-for="(con,ic) in condition" :key="ic" :index="'3-'+(ic+1)">
+                                        <template slot="title"><i class="el-icon-s-operation" style="color:#0070d8"></i><span>作业条件{{ic+1}}</span></template>
+                                        <el-menu-item :index="ic+'&content'"><i class="iconfont">&#xe6b7;</i>条件详情</el-menu-item>
+                                        <el-menu-item v-for="(sub,ii) in con.subject" :key="ii" :index="ic+'&'+ii">
+                                            <i class="iconfont">&#xe6b7;</i>第{{ii+1}}题
                                             <!-- <span class="sub-text">({{sub.title}})</span> -->
                                         </el-menu-item>
                                     </el-submenu>
@@ -202,10 +183,9 @@ export default {
             }
             const exam = localStorage.getItem('exam');
             let enclosure = [];
-            let condition = [];
+            let condition = []; 
             if(exam == 'simu'){
                 this.axios.get('/index/index/StartExamMn').then(res =>{
-                    localStorage.setItem('exam','simu');
                     enclosure = res.data.data.enclosure;
                     condition = res.data.data.condition;
                     this.enclosure = enclosure;
@@ -222,7 +202,6 @@ export default {
                 })
             }else if(exam == 'official'){
                 this.axios.get('/index/index/StartExam').then(res =>{
-                    localStorage.setItem('exam','official')
                     enclosure = res.data.data.enclosure;
                     condition = res.data.data.condition;   
                     this.enclosure = enclosure;
@@ -241,13 +220,12 @@ export default {
         }
     },
     created(){
-        this._controlScroll();
         this._getUserName();
         this._getExamingData();
         this._goMenuMess();
+        this._controlScroll();
         // 设置一把公共锁 当学生离开试卷页面或者答题卡页面时即解锁
         localStorage.setItem('leave',false);
-
         const href = window.location.href;
         const index = href.indexOf('?') + 1;
         if(index > 0){

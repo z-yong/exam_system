@@ -8,6 +8,7 @@
 .wrapper .index-main{
     display: flex;
     justify-content: space-between;
+    width: 100%;
     height: 100%;
 }
 .wrapper .index-main .fixed{
@@ -20,6 +21,7 @@
 }
 .index-main .content-left{
     width: 20%;
+    display: inline-block;
     height: 100%;
 }
 .content-left .user-mess{
@@ -83,7 +85,7 @@
     color: #fff;
 }
 .index-main .content-right{
-    width: 80%;
+    min-width: 80%;
     height: 125vh;
 }
 .menu-left .el-menu.el-menu--inline .el-menu-item .enclo-text,

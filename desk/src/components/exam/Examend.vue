@@ -54,7 +54,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="btn" @click="seeError">查看错题</div>
+            <!-- <div class="btn" @click="seeError">查看错题</div> -->
         </div>
     </div>
 </template>

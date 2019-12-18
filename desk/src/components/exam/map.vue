@@ -6,13 +6,12 @@
                 <img @click.stop="magImg" src="../../assets/img/magnify.png" alt="">
                 <img @click.stop="shrImg" src="../../assets/img/shrink.png" alt="">
             </div> -->
-            <div :id="isMapShow ? '' : mapID" style="width:auto; height:50vh"></div>
+            <div :id="mapID" style="width:auto; height:50vh"></div>
         </div>
         <!-- 大地图 -->
         <div class="map-box">
             <el-dialog title="全国地图" :visible.sync="isMapShow" width="90vw">
-                <!-- <img src="../../assets/img/map.png" alt="" width="100%"> -->
-                <div id='container-big' style="width:100%; height:auto"></div>
+                <div :id ="bigMapID" style="width:100%; height:90vh"></div>
             </el-dialog>
         </div>
     </div>
@@ -67,21 +66,58 @@ export default {
         return {
             isMapShow: false,
             size: 10,
-            mapID: 'container' 
+            mapID: 'container',
+            bigMapID: 'big-container',
+            mapEvents: {
+                init(o) {
+                    let marker = new AMap.Marker({ //点图标
+                        position: [121.59996, 31.197646]
+                    });
+                    marker.setMap(o);
+                    o.plugin(["AMap.Walking "], function() {
+                        var driving = new AMap.Walking({
+                            map: o,
+                            showTraffic: false,//去掉实时路况
+                            autoFitView: true, 
+                            // 驾车路线规划策略，AMap.DrivingPolicy.LEAST_TIME是最快捷模式
+                            policy: AMap.DrivingPolicy.LEAST_TIME
+                        })
+                        o.addControl(driving);
+                    })
+                }
+            }
         }
     },
     methods: {
         init (id) {
             let map = new AMap.Map(id, {
-                center: [116.397428, 39.90923],
+                center: [117.2312320000, 31.8407410000],
                 resizeEnable: true,
                 zoom: 10
+            });
+            var marker = new AMap.Marker({
+                position:[117.2312320000, 31.8407410000]//位置
             })
+            map.add(marker);//添加到地图
+            // map.plugin('AMap.DragRoute', function () {
+            //     // path 是驾车导航的起、途径和终点，最多支持16个途经点
+            //     var path = []
+
+            //     path.push([117.2312320000, 31.8407410000])
+            //     path.push([116.321354, 39.896436])
+            //     path.push([116.407012, 39.992093])
+
+            //     var route = new AMap.DragRoute(map, path, AMap.DrivingPolicy.LEAST_FEE)
+            //     // 查询导航路径并开启拖拽导航
+            //     route.search()
+            // })
         },
         // 弹出地图
         openMap() {
             this.isMapShow = true;
-            this.init('container-big')
+            this.$nextTick(() =>{
+                this.init(this.bigMapID);
+            })
         },
         magImg(){
             this.$nextTick(()=>{
@@ -99,6 +135,9 @@ export default {
         }
     },
     mounted(){
+        this.init(this.mapID)
+    },
+    created(){
         this.init(this.mapID)
     }
 }

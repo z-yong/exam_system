@@ -6,30 +6,39 @@
                     <img src="../../../assets/img/simulate.png" alt="">
                 </div>
                 <p class="title-name">模拟考试</p>
-                <p class="title-desc">根据最新大纲的考察要求为你自动生成的模拟考卷</p>
+                <!-- <p class="title-desc">根据最新大纲的考察要求为你自动生成的模拟考卷</p> -->
+                <div class="exam-data">
+                    <p class="">技能卷开考日期：{{examData.mnjn_time || '暂无考试'}}</p>
+                    <p class="" style="margin-left:2em">技能卷名称：{{examData.mnjn_title}}</p>
+                    <p class="">理论卷开考日期：{{examData.mnll_time || '暂无考试'}}</p>
+                    <p class="" style="margin-left:2em">理论卷名称：{{examData.mnll_title}}</p>
+                </div>
                 <div class="btn-box">
-                    <div class="action-btn" @click="simuExam">技术测试</div>
+                    <div class="action-btn" @click="simuExam">技能测试</div>
                     <div class="action-btn" @click="theroy_mnExam">理论测试</div>
                 </div>
             </div>
         </div>
-        <div class="exam-box due">
+        <div class="exam-box due"> 
             <div class="exam-content">
                 <div class="img">
                     <img src="../../../assets/img/exam.png" alt="">
                 </div>
                 <p class="title-name">正式考试</p>
-                <p class="title-desc">根据最新大纲的考察要求为你自动生成的正式考卷</p>
+                <!-- <p class="title-desc">根据最新大纲的考察要求为你自动生成的正式考卷</p> -->
+                <div class="exam-data">
+                    <p class="">技能卷开考日期：{{examData.zsjn_time || '暂无考试'}}</p>
+                    <p class="" style="margin-left:2em">技能卷名称：{{examData.zsjn_title}}</p>
+                    <p class="">理论卷开考日期：{{examData.zsll_time || '暂无考试'}}</p>
+                    <p class="" style="margin-left:2em">理论卷名称：{{examData.zsll_title}}</p>
+                </div>
                 <div class="btn-box">
-                    <div class="action-btn" @click="officialExam">技术测试</div>
+                    <div class="action-btn" @click="officialExam">技能测试</div>
                     <div class="action-btn" @click="theroyExam">理论测试</div>
                 </div>
             </div>
         </div>
-        <el-dialog
-            title="温馨提示"
-            :visible.sync="dialogVisible"
-            width="30%">
+        <el-dialog title="温馨提示" :visible.sync="dialogVisible" width="30%">
             <span>暂无考试!</span>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click='dialogVisible = false'>确 定</el-button>
@@ -50,9 +59,19 @@
         background: #fff;
     }
     .wrapper .exam-box .exam-content{
-        width: 50%;
+        width: 20%;
         margin: auto;
         text-align: center
+    }
+    .exam-data{
+        text-align: left;
+        color: #555;
+        margin-top: 1vh;
+        margin-left: 1vw;
+        font-size: 14px;
+    }
+    .exam-data p{
+        margin-top: 3px;
     }
     .exam-content .img img{
         width: 60px;
@@ -66,7 +85,7 @@
     }
     .exam-content .title-desc{
         font-size: 11px;
-        color: #888;
+        color: #888; 
         margin-top: 8px;
     }
     .btn-box{
@@ -103,52 +122,64 @@
 export default {
     data(){
         return {
-            dialogVisible: false
+            dialogVisible: false,
+            examData: {}
         }
     },
     methods: {
         simuExam(){//模拟技术
-            if(localStorage.getItem('startTime')){
+            if(localStorage.getItem('exam') && localStorage.getItem('exam') !== 'simu'){
                 this.$message({
                     message: `您正在进行${localStorage.getItem('title')}考试`
                 })
                 return
             }
-            this.axios.get('/index/index/shijuantimu?zt=2').then(res =>{
+            const data = { 
+                zt: 2, jl: 1
+            }
+            this.axios.post('/index/index/shijuantimu', data).then(res =>{
                 if(res.data.code == 400){
                     this.dialogVisible = true;
                 }else{
-                    localStorage.setItem('title',res.data.msg);
+                    localStorage.setItem('title',res.data.data.title);
                     localStorage.setItem('exam','simu')
+                    localStorage.setItem('reportID', res.data.data.id);//成绩id
                     this.$router.push({path: '/examing/0'});
                 }
-            })
+            }) 
         },
         officialExam(){  //正式技术 
-            if(localStorage.getItem('startTime')){
+            if(localStorage.getItem('exam') && localStorage.getItem('exam') !== 'official'){
                 this.$message({
                     message: `您正在进行${localStorage.getItem('title')}考试`
                 })
                 return
             }
-            this.axios.get('/index/index/shijuantimu?zt=1').then(res =>{
+            const data = {
+                zt: 1, jl: 1
+            }
+            this.axios.post('/index/index/shijuantimu', data).then(res =>{
                 if(res.data.code == 400){
                     this.dialogVisible = true;
                 }else{
                     localStorage.setItem('exam','official')
-                    localStorage.setItem('title',res.data.msg);
+                    localStorage.setItem('title',res.data.data.title);
+                    localStorage.setItem('reportID', res.data.data.id);//成绩id
                     this.$router.push({path: '/examing/1'});
                 }
             })
         },
         theroy_mnExam(){//模拟理论
-            if(localStorage.getItem('startTime')){
+            if(localStorage.getItem('exam') && localStorage.getItem('exam') !== 'theroy_mn'){
                 this.$message({
                     message: `您正在进行${localStorage.getItem('title')}考试`
                 })
                 return
             }
-            this.axios.get('/index/index/shijuantimu_a?zt=2').then(res =>{
+            const data = {
+                zt: 2, jl: 2
+            }
+            this.axios.post('/index/index/shijuantimu', data).then(res =>{
                 if(res.data.code == 400){
                     this.dialogVisible = true;
                 }else{
@@ -159,22 +190,30 @@ export default {
             })
         },
         theroyExam(){//正式理论
-            if(localStorage.getItem('startTime')){
+            if(localStorage.getItem('exam') && localStorage.getItem('exam') !== 'theroy'){
                 this.$message({
                     message: `您正在进行${localStorage.getItem('title')}考试`
                 })
                 return
             }
-            this.axios.get('/index/index/shijuantimu_a?zt=1').then(res =>{
+            const data = {
+                zt: 1, jl: 2
+            } 
+            this.axios.post('/index/index/shijuantimu', data).then(res =>{
                 if(res.data.code == 400){
                     this.dialogVisible = true;
                 }else{
                     localStorage.setItem('title',res.data.data.issue.title);
-                    localStorage.setItem('exam','theroy')
+                    localStorage.setItem('exam','theroy');
                     this.$router.push({path: '/index/theory/1'});
                 }
             })
         }
-    }
+    },
+    mounted(){
+        this.axios.get('/index/index/index').then(res =>{
+            this.examData = res.data.data;
+        })
+    } 
 }
 </script>

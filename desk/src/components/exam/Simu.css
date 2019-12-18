@@ -41,19 +41,22 @@
 }
 .simu-header .count-down{
     font-size: 20px;
+    display: inline-block;
     font-weight: 600;
     color: #d22d2d;
     background: #f6d4d4;
     height: 6vh;
     padding: 0 20px;
-    line-height: 6vh
+    line-height: 6vh;
 }
 .simu-header .current-state{
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     width: 20%;
-    text-align: center
+    text-align: center;
+    float: right;
+    margin-top: 1vh;
 }
 .current-state .start .start-desc,
 .current-state .end .end-desc{
@@ -98,11 +101,11 @@
     position: absolute;
     height: 100%;
     right: -2px;
-    top: 6vh
+    top: 5vh
 }
 .topic .topic-item .item-line img{
     width: 10px;
-    height: 95%;
+    height: 87%;
 }
 .topic-item .item-name{
     height: 5vh;
@@ -113,14 +116,14 @@
     font-size: 14px;
 }
 .topic-item .topic-content-box{
-    padding: 2vh 3vw 3vh
+    padding: 2vh 3vw 3vh;
 }
 .topic-content-box .topic-content{
     padding: 5vh 0;
-    border-bottom: 1px solid #eee
+    border-bottom: 1px solid #eee;
 }
 .topic-content-box .topic-content:nth-last-of-type(2){
-    border: none
+    border: none;
 }
 .topic .submit{
     width: 6vw;
@@ -140,7 +143,7 @@
 .topic-sub .difficulty{
     font-size: 14px;
     color: #777;
-    margin-top: 2vh
+    margin: 2vh 0.7vw;
 }
 /* .topic-sub .selects{
     padding: 1vw
@@ -153,4 +156,11 @@
 .topic-sub .selects .select-item span{
     display: inline-block;
     margin-left: 0.5em
+}
+.simu-wrapper .el-radio__input.is-disabled+span.el-radio__label,
+.simu-wrapper .el-checkbox__input.is-disabled+span.el-checkbox__label{
+    color: #444444 !important;
+}
+.simu-wrapper .el-radio{
+    margin-right: 5px !important;
 }

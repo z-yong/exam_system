@@ -7,7 +7,7 @@
                 <div class="accessory">
                     答题卡
                 </div>
-                <div class="count-down">{{countDown}}</div>
+                <span class="count-down">倒计时:{{countDown}}</span>
                 <div class="current-state">
                     <div class="start">
                         <p class="start-desc">开始时间</p>
@@ -26,60 +26,71 @@
         </div>
         <div class="topic-box">
             <div class="topic">
-                <div v-if="radioTopics.length" class="topic-item">
-                    <!-- <div class="item-name">单选题</div> -->
-                    <div class="topic-content-wrapper">
-                        <ul class="topic-content-ul">
-                            <li v-for="(dan,di) in radioTopics" :key="di">
-                                <div class="item-mess"><p style="margin-right:1vh;font-weight:600">{{dan.serial}}</p><div v-html="dan.title">{{dan.title}} </div><span class="span">({{radioData[di].fraction}}分)</span></div>
-                                <el-radio-group v-model="radioData[di]['user_answer']" @change="changeRadio(radioData[di])">
-                                    <el-radio label="A">A</el-radio>
-                                    <el-radio label="B">B</el-radio>
-                                    <el-radio label="C">C</el-radio>
-                                    <el-radio label="D">D</el-radio>
-                                </el-radio-group>
-                                <p class="item-desc" @click="goToSimu(dan.id,dan.serial)">作业条件{{dan.serial}}</p>
-                            </li>
-                        </ul>
-                        <div class="item-line">
-                            <img src='../../assets/img/line2.png' alt="">
+                <!-- 题目分类 -->
+                <div v-for="(item, index) in topicData" :key="index">
+                    <div v-if="item.type == 1" class="topic-item">
+                        <div class="topic-content-wrapper">
+                            <ul class="topic-content-ul">
+                                <li>
+                                    <div class="item-mess"><p style="margin-right:1vh;font-weight:600;min-width:1.5vw">{{item.serial}}({{answerData[index].fraction}}分)</p>
+                                        <!-- <div v-html="item.title">{{item.title}} </div><span class="span">({{answerData[index].fraction}}分)</span> -->
+                                    </div>
+                                    <el-radio-group v-model="answerData[index]['user_answer']" @change="changeRadio(answerData[index])">
+                                        <el-radio label="A">A</el-radio>
+                                        <el-radio label="B">B</el-radio>
+                                        <el-radio label="C">C</el-radio>
+                                        <el-radio label="D">D</el-radio>
+                                    </el-radio-group>
+                                    <p class="item-desc" @click="goToSimu(item.id,item.serial)">作业条件{{item.serial}}</p>
+                                </li>
+                            </ul>
+                            <div class="item-line">
+                                <img src='../../assets/img/line2.png' alt="">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div v-if="checkTopics.length" class="topic-item">
-                    <!-- <div class="item-name">多选题</div> -->
-                    <div class="topic-content-wrapper">
-                        <ul class="topic-content-ul">
-                            <li v-for="(duo,ui) in checkTopics" :key="ui">
-                                <div class="item-mess"><p style="margin-right:1vh;font-weight:600">{{duo.serial}}</p><div v-html="duo.title">{{duo.title}}</div><span class="span">({{checkData[ui].fraction}}分)</span></div>
-                                <el-checkbox-group v-model="checkData[ui]['user_answer']" @change="changeCheck(checkData[ui])">
-                                    <el-checkbox label="A">A</el-checkbox>
-                                    <el-checkbox label="B">B</el-checkbox>
-                                    <el-checkbox label="C">C</el-checkbox>
-                                    <el-checkbox label="D">D</el-checkbox>
-                                    <el-checkbox label="E">E</el-checkbox>
-                                    <el-checkbox label="F">F</el-checkbox>
-                                </el-checkbox-group>
-                                <p class="item-desc" @click="goToSimu(duo.id,duo.serial)">作业条件{{duo.serial}}</p>
-                            </li>
-                        </ul>
-                        <div class="item-line">
-                            <img src='../../assets/img/line2.png' alt="">
+                    <div v-if="item.type == 2" class="topic-item">
+                        <div class="topic-content-wrapper">
+                            <ul class="topic-content-ul">
+                                <li>
+                                    <div class="item-mess"><p style="margin-right:1vh;font-weight:600">{{item.serial}}({{answerData[index].fraction}}分)</p>
+                                        <!-- <div v-html="item.title">{{item.title}}</div><span class="span"></span> -->
+                                    </div>
+                                    <el-checkbox-group v-model="answerData[index]['user_answer']" @change="changeCheck(answerData[index])">
+                                        <el-checkbox label="A">A</el-checkbox>
+                                        <el-checkbox label="B">B</el-checkbox>
+                                        <el-checkbox label="C">C</el-checkbox>
+                                        <el-checkbox label="D">D</el-checkbox>
+                                        <el-checkbox v-if="topicData[index].e" label="E">E</el-checkbox>
+                                        <el-checkbox v-if="topicData[index].f" label="F">F</el-checkbox>
+                                        <el-checkbox v-if="topicData[index].g" label="F">G</el-checkbox>
+                                        <el-checkbox v-if="topicData[index].h" label="F">H</el-checkbox>
+                                    </el-checkbox-group>
+                                    <!-- <p class="item-desc" @click="goToSimu(item.id,item.serial)">作业条件{{item.serial}}</p> -->
+                                </li>
+                            </ul>
+                            <div class="item-line">
+                                <img src='../../assets/img/line2.png' alt="">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div v-if="gapTopics.length" class="topic-item">
-                    <!-- <div class="item-name">填空题</div> -->
-                    <div class="topic-content-wrapper">
-                        <ul class="topic-content-ul">
-                            <li v-for="(tian,ti) in gapTopics" :key="ti">
-                                <div class="item-mess"><p><p style="margin-right:1vh;font-weight:600">{{tian.serial}}</p><div v-html="tian.title">{{tian.title}}</div><span class="span">({{gapData[ti].fraction}}分)</span></div>
-                                <textarea class="gap-anw" type='number' placeholder="请输入答案" v-model="gapData[ti]['user_answer']" @input="changeGap(gapData[ti])"></textarea>
-                                <p class="item-desc tian" @click="goToSimu(tian.id,tian.serial)">作业条件{{tian.serial}}</p>
-                            </li>
-                        </ul>
-                        <div class="item-line">
-                            <img src='../../assets/img/line2.png' alt="">
+                    <div v-if="item.type == 3" class="topic-item">
+                        <div class="topic-content-wrapper">
+                            <ul class="topic-content-ul">
+                                <li>
+                                    <div class="item-mess"><p><p style="margin-right:1vh;font-weight:600">{{item.serial}}({{answerData[index].fraction}}分)</p>
+                                        <!-- <div v-html="item.title">{{item.title}}</div><span class="span"></span> -->
+                                    </div>
+                                    <div v-for="(inp, ii) in topicData[index].answer" :key='ii'>
+                                        <input class="gap-anw" type='' placeholder="请输入答案" 
+                                           v-model="answerData[index].user_answer[ii]" @input="changeGap(index)"/>
+                                    </div>
+                                    <p class="item-desc tian" @click="goToSimu(item.id,item.serial)">作业条件{{item.serial}}</p>
+                                </li>
+                            </ul>
+                            <div class="item-line">
+                                <img src='../../assets/img/line2.png' alt="">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -88,7 +99,7 @@
         </div>
         <div class="warm" v-if="isShow">
             <el-row>
-                <el-col :span="24" >
+                <el-col :span="24">
                     <el-card :body-style="{ padding: '20px 0px' }">
                     <img src="../../assets/img/clock.png" class="image">
                     <div style="padding: 14px;">
@@ -103,11 +114,7 @@
             </el-row>
         </div>
         <!-- 对话框 -->
-        <el-dialog
-            title="温馨提示"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :before-close="handleClose">
+        <el-dialog title="温馨提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
             <span>{{hint}}</span>
             <span slot="footer" class="dialog-footer">
                 <el-button v-if="cancelShow" @click="dialogVisible = false">取 消</el-button>
@@ -138,7 +145,7 @@ export default {
             fixed: false,
             color: '#fff',
             userName: localStorage.getItem('username'),
-            countDown: this.$route.query.countDown+':00',
+            countDown: '',
             isShow: false,
             dialogVisible: false,
             cancelShow: true,
@@ -154,7 +161,10 @@ export default {
             checkData: [],//多选答案
             gapData: [],//填空答案
             formData: [],//总的答案,
-            condition: []
+            condition: [],
+            anwserMess: {},
+            answerData: [],
+            topicData: []
         }
     },
     methods: {
@@ -170,8 +180,16 @@ export default {
                 console.log(res)
             })
         },
-        changeGap(e){
-            const data = {t_id: e.t_id, user_answer: e.user_answer};
+        changeGap(index){
+            const arr = [];
+            for(let i = 0; i < this.topicData[index].answer; i++){
+                if(this.answerData[index].user_answer[i]){
+                     arr[i] = this.answerData[index].user_answer[i];
+                }else{
+                    arr[i] = '';
+                }
+            }
+            const data = {t_id: this.answerData[index].t_id, user_answer: arr};
             this.axios.post('/index/index/post_answer',data).then(res =>{
                 console.log(res)
             })
@@ -187,6 +205,7 @@ export default {
             }
         },
         goToSimu(id,index){
+            console.log(id)
             let indexi, ii;
             let i = 0;
             for (const item of this.condition) {
@@ -203,7 +222,8 @@ export default {
             }
             const date = this._getStartTime()
             const condition = JSON.stringify(this.condition)
-            const { href } = this.$router.resolve({path: '/index/simu',query: {condition}})
+            localStorage.setItem('condition',condition)
+            const { href } = this.$router.resolve({path: '/index/simu'})
             window.open(href, '_blank');
             localStorage.setItem('i',indexi);
             localStorage.setItem('j',ii);
@@ -214,10 +234,10 @@ export default {
                 const seconds = localStorage.getItem('seconds');
                 let time = 0;
                 if(seconds > 0){
-                    const min = this.$route.query.countDown - minute - 1;
+                    const min = parseInt(this.anwserMess.countDown) - minute - 1;
                     time = min*60 + (60 - seconds)
                 }else{
-                    const min = this.$route.query.countDown - minute;
+                    const min = parseInt(this.anwserMess.countDown) - minute;
                     time = min*60
                 }
                 const data = {
@@ -314,10 +334,12 @@ export default {
             return [startTime,endTime];
         },
         _getInfoData(){
-            const type = this.$route.query.type;
+            this.answerData = [];
+            const type = this.anwserMess.type;
+            const reportID = localStorage.getItem('reportID');
             if(type == 0){//模拟
-                this.axios.get('/index/index/datika').then(res =>{
-                    res.data.data.forEach((ele,index) =>{
+                this.axios.get('/index/index/datika?id='+reportID).then(res =>{
+                    res.data.data.forEach((ele) =>{
                         if(ele.type == 1){
                             this.radioTopics.push(ele)
                         }else if(ele.type == 2){
@@ -327,23 +349,30 @@ export default {
                         }
                     })
                     this.id = res.data.msg;
-                    this.radioTopics.forEach((ele,index) =>{
+                    this.radioTopics.forEach((ele) =>{
                         this.radioData.push({t_id: ele.id, user_answer: '', fraction: ele.fraction})
                     })
-                    this.checkTopics.forEach((ele,index) =>{
+                    this.checkTopics.forEach((ele) =>{
                         this.checkData.push({t_id: ele.id, user_answer: [], fraction: ele.fraction})
                     })
-                    this.gapTopics.forEach((ele,index) =>{
-                        this.gapData.push({t_id: ele.id, user_answer: '', fraction: ele.fraction})
+                    this.gapTopics.forEach((ele) =>{
+                        this.gapData.push({t_id: ele.id, user_answer: [], fraction: ele.fraction})
                     })
-                     // 获取学生所填答案
-                    this.timer1 = setInterval(() =>{
-                        this._getAnswer()
-                    },3000)
+                    // 不分离
+                    this.topicData = res.data.data;
+                    this.topicData.forEach((ele) =>{
+                        if(ele.type == 1){
+                            this.answerData.push({t_id: ele.id, user_answer: '', fraction: ele.fraction})
+                        }else if(ele.type == 2){
+                            this.answerData.push({t_id: ele.id, user_answer: [], fraction: ele.fraction})
+                        }else{
+                            this.answerData.push({t_id: ele.id, user_answer: [], fraction: ele.fraction})
+                        }
+                    })
                 })
             }else if(type == 1){//正式
-                this.axios.get('/index/index/zsdatika').then(res =>{
-                    res.data.data.forEach((ele,index) =>{
+                this.axios.get('/index/index/zsdatika?id='+reportID).then(res =>{
+                    res.data.data.forEach((ele) =>{
                         if(ele.type == 1){
                             this.radioTopics.push(ele)
                         }else if(ele.type == 2){
@@ -353,19 +382,31 @@ export default {
                         }
                     })
                     this.id = res.data.msg;
-                    this.radioTopics.forEach((ele,index) =>{
+                    this.radioTopics.forEach((ele) =>{
                         this.radioData.push({t_id: ele.id, user_answer: '', fraction: ele.fraction})
                     })
-                    this.checkTopics.forEach((ele,index) =>{
+                    this.checkTopics.forEach((ele) =>{
                         this.checkData.push({t_id: ele.id, user_answer: [], fraction: ele.fraction})
                     })
-                    this.gapTopics.forEach((ele,index) =>{
+                    this.gapTopics.forEach((ele) =>{
                         this.gapData.push({t_id: ele.id, user_answer: '', fraction: ele.fraction})
                     })
+                    // 不分离
+                    this.topicData = res.data.data;
+                    console.log(this.topicData)
+                    this.topicData.forEach((ele) =>{
+                        if(ele.type == 1){
+                            this.answerData.push({t_id: ele.id, user_answer: '', fraction: ele.fraction})
+                        }else if(ele.type == 2){
+                            this.answerData.push({t_id: ele.id, user_answer: [], fraction: ele.fraction})
+                        }else{
+                            this.answerData.push({t_id: ele.id, user_answer: [], fraction: ele.fraction})
+                        }
+                    })
                      // 获取学生所填答案
-                    this.timer1 = setInterval(() =>{
-                        this._getAnswer()
-                    },3000)
+                    // this.timer1 = setInterval(() =>{
+                    //     this._getAnswer()
+                    // },3000)
                 })
             }
         },
@@ -400,13 +441,13 @@ export default {
     computed: {
         startTime(){
             if(!localStorage.getItem('startTime')){
-                localStorage.setItem('startTime',this.$route.query.Time[0])
+                localStorage.setItem('startTime',this.anwserMess.Time[0])
             }
             return localStorage.getItem('startTime')
         },
         endTime(){
              if(!localStorage.getItem('endTime')){
-                localStorage.setItem('endTime',this.$route.query.Time[1])
+                localStorage.setItem('endTime',this.anwserMess.Time[1])
             }
             return localStorage.getItem('endTime')
         }
@@ -427,8 +468,10 @@ export default {
        }
     },
     created(){
+        this.anwserMess = JSON.parse(localStorage.getItem('anwserMess'));
+        this.countDown = this.anwserMess.countDown;
         this._getInfoData();
-        this.condition = JSON.parse(this.$route.query.condition)
+        this.condition = JSON.parse(this.anwserMess.condition)
         this.$nextTick(()=>{
             const head = document.getElementById('head');
             const top = head.offsetTop;
@@ -459,4 +502,63 @@ export default {
         
     }
 }
+/**
+ * <div v-if="radioTopics.length" class="topic-item">
+                    <!-- <div class="item-name">单选题</div> -->
+                    <div class="topic-content-wrapper">
+                        <ul class="topic-content-ul">
+                            <li v-for="(dan,di) in radioTopics" :key="di">
+                                <div class="item-mess"><p style="margin-right:1vh;font-weight:600;min-width:1.5vw">{{dan.serial}}</p><div v-html="dan.title">{{dan.title}} </div><span class="span">({{radioData[di].fraction}}分)</span></div>
+                                <el-radio-group v-model="radioData[di]['user_answer']" @change="changeRadio(radioData[di])">
+                                    <el-radio label="A">A</el-radio>
+                                    <el-radio label="B">B</el-radio>
+                                    <el-radio label="C">C</el-radio>
+                                    <el-radio label="D">D</el-radio>
+                                </el-radio-group>
+                                <p class="item-desc" @click="goToSimu(dan.id,dan.serial)">作业条件{{dan.serial}}</p>
+                            </li>
+                        </ul>
+                        <div class="item-line">
+                            <img src='../../assets/img/line2.png' alt="">
+                        </div>
+                    </div>
+                </div>
+                <div v-if="checkTopics.length" class="topic-item">
+                    <!-- <div class="item-name">多选题</div> -->
+                    <div class="topic-content-wrapper">
+                        <ul class="topic-content-ul">
+                            <li v-for="(duo,ui) in checkTopics" :key="ui">
+                                <div class="item-mess"><p style="margin-right:1vh;font-weight:600">{{duo.serial}}</p><div v-html="duo.title">{{duo.title}}</div><span class="span">({{checkData[ui].fraction}}分)</span></div>
+                                <el-checkbox-group v-model="checkData[ui]['user_answer']" @change="changeCheck(checkData[ui])">
+                                    <el-checkbox label="A">A</el-checkbox>
+                                    <el-checkbox label="B">B</el-checkbox>
+                                    <el-checkbox label="C">C</el-checkbox>
+                                    <el-checkbox label="D">D</el-checkbox>
+                                    <el-checkbox label="E">E</el-checkbox>
+                                    <el-checkbox label="F">F</el-checkbox>
+                                </el-checkbox-group>
+                                <p class="item-desc" @click="goToSimu(duo.id,duo.serial)">作业条件{{duo.serial}}</p>
+                            </li>
+                        </ul>
+                        <div class="item-line">
+                            <img src='../../assets/img/line2.png' alt="">
+                        </div>
+                    </div>
+                </div>
+                <div v-if="gapTopics.length" class="topic-item">
+                    <!-- <div class="item-name">填空题</div> -->
+                    <div class="topic-content-wrapper">
+                        <ul class="topic-content-ul">
+                            <li v-for="(tian,ti) in gapTopics" :key="ti">
+                                <div class="item-mess"><p><p style="margin-right:1vh;font-weight:600">{{tian.serial}}</p><div v-html="tian.title">{{tian.title}}</div><span class="span">({{gapData[ti].fraction}}分)</span></div>
+                                <textarea class="gap-anw" type='number' placeholder="请输入答案" v-model="gapData[ti]['user_answer']" @input="changeGap(gapData[ti])"></textarea>
+                                <p class="item-desc tian" @click="goToSimu(tian.id,tian.serial)">作业条件{{tian.serial}}</p>
+                            </li>
+                        </ul>
+                        <div class="item-line">
+                            <img src='../../assets/img/line2.png' alt="">
+                        </div>
+                    </div>
+                </div>
+ */
 </script>

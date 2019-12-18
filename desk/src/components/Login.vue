@@ -1,8 +1,8 @@
 <template>
     <div class="wrapper" @keyup.enter="userLogin">
         <div class="container">
-            <div class="header">
-                <img src="../assets/img/LOGO.png" alt="">
+            <div class="header" style="font-weight:600;font-size:25px">
+                电子对抗作战计算考核软件
             </div>
             <div class="content">
                 <div class="content-left">
@@ -63,6 +63,9 @@
     .container .content .content-right{
         float: right;
         font-size: 16px;
+        background: url('../assets/img/img_left.png') no-repeat;
+        background-position: center;
+        background-size: cover;
     }
     .container .content .content-right .login-content{
         margin: 16vh auto;
@@ -78,14 +81,14 @@
         color: #888;
         font-size: 14px;
         padding: 5px 0;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
     .content .content-right input{
         height: 36px;
         width: 100%;
         text-indent: 0.5em;
         border: 1px solid #ccc;
-        margin: 8px 0
+        margin: 8px 0;
     }
     .content .content-right .isforget{
         font-size: 14px;
@@ -111,7 +114,7 @@
         text-align: center;
         cursor: pointer;
     }
-    .wrapper .content::before
+    .wrapper .content::before,
     .wrapper .content::after{
         content: "";
         display: block;
