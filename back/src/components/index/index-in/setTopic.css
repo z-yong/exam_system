@@ -190,12 +190,26 @@
     font-weight: 800;
     color: #000
 }
-.gap .el-form-item .el-input:nth-child(1){
-    width: 60%;
+.set-wrapper .issue-box .gap .el-form-item .el-form-item__content{
+    width: 80%;
 }
-.gap .el-form-item .el-input:nth-child(2){
-    width: 20%;
+.gap .el-form-item .el-input{
+    width: 30vw;
+    margin-right: 20px;
+    margin-bottom: 2vh;
+}
+.set-wrapper .issue-box .gap .el-form-item:nth-child(1) .el-form-item__label{
+    margin-top: -26vh;
+}
+.set-wrapper .issue-box .gap .el-form-item .el-radio{
     margin-left: 1vw;
+    margin-right: 10px;
+}
+.gap .el-form-item div{
+    display: inline-block;
+}
+.gap .el-form-item .el-input:nth-child(6){
+    width: 20%;
 }
 .gap .el-form-item .gap-desc{
     margin-left: 1vw;

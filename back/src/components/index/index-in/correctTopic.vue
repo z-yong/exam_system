@@ -1,6 +1,6 @@
 <template>
     <div class="correct-wrapper">
-        <div class="topic-box">
+        <div v-if="topicList.length" class="topic-box">
             <div class="topic-item" v-for="(item,index) in topicList" :key="index">
                 <div style="display: flex;align-items: center;">
                     <div>{{index+1}}、</div>
@@ -8,11 +8,17 @@
                 </div>
                 <div class="answer">
                     <span>学生答案:</span>
-                    <p>{{item.user_answer}}</p>
+                    <div v-if="item.automatic == 1">
+                        <span v-for="(gap, i) in item.user_answer" :key="i" style="margin-right:1vw">{{gap}}</span>
+                    </div>
+                    <div v-else>{{item.user_answer}}</div>
                 </div>
                 <div class="answer">
                     <span>标准答案:</span>
-                    <p>{{item.answer}}</p>
+                    <div v-if="item.automatic == 1">
+                        <span v-for="(ans, i) in item.answer" :key="i" style="margin-right:1vw">{{ans}}</span>
+                    </div>
+                    <div v-else>{{item.answer}}</div>
                 </div>
                 <div class="difficulty">
                     <span>难度: {{item.difficulty}}</span>
@@ -27,13 +33,16 @@
                 <span @click="submit">提交</span>
             </div>
         </div>
+        <div v-else>
+            此试卷无可批改的简答题
+        </div>
     </div>
 </template>
 <script>
 export default {
     props: {
         ids: {
-            type: Object
+            type: Object 
         }
     },
     data(){
@@ -76,11 +85,15 @@ export default {
             this.axios.post('/admin/paper/get_answer_content',this.ids).then(res =>{
                 if(res.data.code == 200){
                     this.topicList = res.data.data.filter(ele =>{
-                        return ele.type == 4
+                        return ele.type == 4 || ele.automatic == 1;
                     })
                     this.topicList.forEach((ele,index) =>{
-                        this.answerList[index] = {id:ele.id,score: ''}
+                        this.answerList[index] = {id:ele.daan_id,score: ele.score}
+                        if(ele.automatic && ele.automatic == 1){
+                            ele.user_answer = JSON.parse(ele.user_answer)
+                        }
                     })
+                    console.log(this.topicList)
                 }
             })
         }

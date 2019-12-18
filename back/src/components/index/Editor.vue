@@ -50,8 +50,7 @@ export default {
                     formData.append('filename', blobInfo.blob());
                     console.log(formData)
                     this.axios.post('/admin/issue/upload',formData).then(res =>{
-                        console.log(res)
-                        if(res.data['code']==200){
+                        if(res.data['code'] == 200){
                             success(res.data.msg)
                         }else{
                             failure('上传失败！')
@@ -82,7 +81,7 @@ export default {
     },
     mounted () {
         //配置的初始化
-        tinymce.init(this.init)
+        tinymce.init(this.init);
     },
     beforeDestroy() {
         //销毁

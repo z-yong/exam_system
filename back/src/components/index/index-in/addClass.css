@@ -45,7 +45,7 @@
     width: 100%;
     background: #fff;
     margin-top: 2vh;
-    padding-bottom: 3vh
+    padding-bottom: 3vh;
 }
 .add-class-wrapper .table .table-title{
     height: 7vh;
@@ -70,6 +70,18 @@
 .add-class-wrapper .el-button.el-button--text.el-button--small:nth-child(3) .iconfont{
     color: #33CC00;
     margin-right: 3px
+}
+.add-class-wrapper .el-button.el-button--text.el-button--small:nth-child(4) .iconfont{
+    color: #33CC00;
+    margin-right: 3px;
+}
+.add-class-wrapper .el-button.el-button--text.el-button--small:nth-child(5) .iconfont{
+    color: #33CC00;
+    margin-right: 3px;
+}
+.add-class-wrapper .el-button.el-button--text.el-button--small:nth-child(6) .iconfont{
+    color: #ffbdc7;
+    margin-right: 3px;
 }
 .add-class-wrapper .identity{
     display: inline-block;
@@ -100,10 +112,11 @@
 .add-class-wrapper .el-checkbox.is-bordered+.el-checkbox.is-bordered{
     margin-left: 0
 }
-.add-class-wrapper .el-dialog{
-    margin-top: 2vh !important;
-}
 .add-class-wrapper .el-input.el-input--suffix{
     margin-right: 2vw;
+}
+.add-class-wrapper .el-form-item .el-radio{
+    margin-left: 1vw;
+    margin-right: 10px !important;
 }
  

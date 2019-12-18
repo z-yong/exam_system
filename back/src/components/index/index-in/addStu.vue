@@ -18,7 +18,7 @@
                                 <el-input v-model="formInline.pass" placeholder="请输入内容"></el-input>
                             </el-form-item>
                             <el-form-item label="班级" prop="classGrade" label-width="100px">
-                                <el-select v-model="formInline.classGrade" filterable placeholder="请选择用户身份" @change='changeClass'>
+                                <el-select v-model="formInline.classGrade" filterable placeholder="请选择班级" @change='changeClass'>
                                     <el-option v-for="item in classGrades" :key="item.name" :label="item.name" :value="item.id">
                                     </el-option>
                                 </el-select>
@@ -30,26 +30,18 @@
                     </div>
                     <div class="to-lead">
                         <p class="add-box-title">批量导入：</p>
-                        <el-upload
-                            class="upload-demo"
-                            drag
-                            name='excel'
-                            show-file-list
-                            action="http://ksxt.90plus.cn/admin/user/addUserAll"
-                            multiple
-                            :on-preview='clickFile'
-                            :on-success='uploadSucceed'>
+                        <el-upload class="upload-demo" drag name='excel' show-file-list multiple :on-success='uploadSucceed'
+                                   :on-preview='clickFile' action="http://ksxt.90plus.cn/admin/user/addUserAll">
                             <i class="el-icon-upload"></i>
                             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                            <!-- <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div> -->
+                            <div class="el-upload__tip" slot="tip">只能上传xlsx文件</div>
                         </el-upload>
                     </div>
                 </div>
             </div>
         </div>
 </template>
-<style src='./addStu.css' scoped>
-</style>
+<style src='./addStu.css' scoped></style>
 <script>
 export default {
     data(){
@@ -66,7 +58,7 @@ export default {
                     {required: true, message: '请输入登录密码',trigger: 'blur'}
                 ],
                 classGrade: [
-                    {required: true, message: '请输入学生班级',trigger: 'blur'}
+                    {required: true, message: '请选择班级',trigger: 'blur'}
                 ]
             },
             classGrades: [],
@@ -119,7 +111,7 @@ export default {
     },
     created(){
         this.axios.get('/admin/user/getClassAll').then(res =>{
-            this.classGrades = res.data.data
+            this.classGrades = res.data.data;
         })
     }
 }

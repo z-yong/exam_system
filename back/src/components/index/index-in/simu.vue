@@ -58,10 +58,10 @@
                     </el-table-column>
                     <el-table-column prop="searchNum" label="卷数" min-width="10px">
                     </el-table-column>
-                    <el-table-column prop="usersNum" label="考生数" min-width="10px">
+                    <!-- <el-table-column prop="usersNum" label="考生数" min-width="10px">
                     </el-table-column>
                     <el-table-column prop="qual" label="合格率" min-width="10px">
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column label="操作" min-width="36px">
                         <template slot-scope="scope">
                             <!-- <el-button @click="handleClick(scope.row)" type="text" size="small"><i class="iconfont">&#xe605;</i>查看</el-button> -->
@@ -252,7 +252,7 @@
                 this.axios.get('/admin/issue/trueList').then(res =>{
                   this._getData(res.data.data)
                 })
-              }
+              } 
             }
         },
         searchData(){

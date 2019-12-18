@@ -1,6 +1,10 @@
 <template>
     <div class="answer-wrapper">
         <div class="topic-box">
+            <!-- <div style="display:flex;align-items: center;background:#fff;border-bottom:1px solid #eee;margin-top:2vh"> -->
+                    <!-- <div v-for="(menu,mi) in menuList" :key="mi" style="padding:1.2vh 2vw;cursor: pointer;border:1px solid #f7f7f7;" @click="changeMenu(mi)"
+                        :style="{background:currentIndex == mi ? '#0070d8' : '',color: currentIndex == mi ? '#fff' : '',opacity: currentIndex == mi ? '0.7' : ''}">{{menu}}</div> -->
+                <!-- </div> -->
             <div class="topic">
                 <div class="topic-item">
                     <div class="item-name">单选题</div>
@@ -47,8 +51,10 @@
                                     <div>E. {{duo.subject.e}}</div>
                                     <div>F. {{duo.subject.f}}</div>
                                     <div style="margin:1vh 0 0 -1vh">
-                                        <div>学生答案: <span :class="duo.correct == 0 ? 'green' : 'red'">{{duo.user_answer}}</span></div>
-                                        <div style="margin-top:10px">正确答案: {{duo.answer}}</div>
+                                        <div>学生答案: <span v-for="(d, di) in duo.user_answer" :key="di" :class="duo.correct == 0 ? 'green' : 'red'">{{d}}</span></div>
+                                        <div style="margin-top:10px">正确答案:
+                                            <span v-for="(u, ui) in duo.answer" :key="ui">{{u}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
@@ -71,8 +77,10 @@
                                         <div style="margin-left:15px;color:red">精确到{{tian.subject.error}}</div>
                                     </div>
                                     <div>
-                                        <div>学生答案: <span :class="tian.correct == 0 ? 'green' : 'red'">{{tian.user_answer}}</span></div>
-                                        <div style="margin-top:10px">正确答案: {{tian.answer}}</div>
+                                        <div>学生答案: <span v-for="(t, ti) in  tian.user_answer" :key="ti" :class="tian.correct == 0 ? 'green' : 'red'">{{t}}</span></div>
+                                        <div style="margin-top:10px">正确答案:
+                                            <span v-for="(tt,tti) in tian.answer" :key="tti">{{tt}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
@@ -110,8 +118,14 @@ export default {
     },
     methods: {
         _getData(){
-            this.axios.post('/admin/user/get_user_answer_card',{s_id: this.answerData.s_id, u_id: this.answerData.u_id}).then(res =>{
-                console.log(res)
+            console.log(this.answerData)
+            const data = {
+                j_id: this.answerData.j_id, 
+                u_id: this.answerData.u_id,
+                id: this.answerData.id,
+                s_type: this.answerData.s_type_a
+            }
+            this.axios.post('/admin/user/get_user_answer_card', data).then(res =>{
                 this.radioData = res.data.data.dan;
                 this.checkData = res.data.data.duo;
                 this.gapData = res.data.data.tian;

@@ -33,7 +33,7 @@
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
                 <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
             </div>
-            </el-dialog>
+        </el-dialog>
     </div>
 </template>
 
@@ -104,12 +104,8 @@ export default {
                 pass: ''
             },
             rules: {
-                username: [
-                    { validator: validateUsername, trigger: 'blur' }
-                ],
-                pass: [
-                    { validator: validatePass, trigger: 'blur' }
-                ]
+                username: [{ validator: validateUsername, trigger: 'blur' }],
+                pass: [{ validator: validatePass, trigger: 'blur' }]
             },
             checked: false,
             dialogFormVisible: false,

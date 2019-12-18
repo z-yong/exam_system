@@ -2,87 +2,32 @@
     <div class="wrapper-index">
         <div class="index-left">
             <div class="user-photo">
-                <img src="../../assets/img/userPhoto.png" alt="">
+                <img src="../../assets/img/userPhoto.png" alt="" @click="gogogo">
                 <p>{{userName}}</p>
             </div>
             <div class="index-left-menu" :class="fixed ? 'fixed' : ''">
                 <el-col :span="24">
-                    <el-menu
-                    :unique-opened="true"
-                    class="el-menu-vertical-demo"
-                    @open="handleOpen"
-                    @close="handleClose"
-                    @select="handleActive"
-                    background-color="#1362cc"
-                    text-color="#fff"
-                    active-text-color="#fff">
+                    <el-menu :default-openeds='defaultOpeneds' :default-active='defaultActive' :unique-opened="true" class="el-menu-vertical-demo"
+                             @open="handleOpen" @close="handleClose" @select="handleActive" background-color="#1362cc" text-color="#fff" active-text-color="#fff">
                         <el-submenu v-if="isA" index="1">
-                            <template slot="title">
-                                <i class="icon iconfont">&#xe6d4;</i>
-                                <span>题库管理</span>
-                            </template>
-                            <el-menu-item index="1-1" v-if="isbb">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                模拟试卷出题
-                            </el-menu-item>
-                            <el-menu-item index="1-2" v-if="iscc">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                正式试卷出题
-                            </el-menu-item>
-                            <!-- <el-menu-item index="1-3" v-if="iscc">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                理论试卷出题
-                            </el-menu-item> -->
+                            <template slot="title"><i class="icon iconfont">&#xe6d4;</i><span>题库管理</span></template>
+                            <el-menu-item index="1-1" v-if="isbb"><i class="iconfont circle">&#xe6b7;</i>模拟试卷出题</el-menu-item>
+                            <el-menu-item index="1-2" v-if="iscc"><i class="iconfont circle">&#xe6b7;</i>正式试卷出题</el-menu-item>
                         </el-submenu>
                         <el-submenu index="2" v-if="isD">
-                            <template slot="title">
-                                <i class="icon iconfont">&#xe638;</i>
-                                <span>考卷管理</span>
-                            </template>
-                            <el-menu-item index="2-1" v-if="isee">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                模拟考卷
-                            </el-menu-item>
-                            <el-menu-item index="2-2" v-if="isff">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                正式考卷
-                            </el-menu-item>
-                            <!-- <el-menu-item index="2-3" v-if="isff">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                批阅理论卷
-                            </el-menu-item> -->
+                            <template slot="title"><i class="icon iconfont">&#xe638;</i><span>考卷管理</span></template>
+                            <el-menu-item index="2-1" v-if="isee"><i class="iconfont circle">&#xe6b7;</i>模拟考卷</el-menu-item>
+                            <el-menu-item index="2-2" v-if="isff"><i class="iconfont circle">&#xe6b7;</i>正式考卷</el-menu-item>
                         </el-submenu>
                         <el-submenu index="3" v-if="isG">
-                            <template slot="title">
-                                <i class="icon iconfont">&#xe6a3;</i>
-                                <span>学生管理</span>
-                            </template>
-                            <el-menu-item index="3-1" v-if="ishh">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                添加学生
-                            </el-menu-item>
-                            <el-menu-item index="3-2" v-if="ishh">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                班级管理
-                            </el-menu-item>
-                            <!-- <el-menu-item index="3-3" v-if="isll">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                学生反馈
-                            </el-menu-item> -->
+                            <template slot="title"><i class="icon iconfont">&#xe6a3;</i><span>学生管理</span></template>
+                            <el-menu-item index="3-1" v-if="ishh"><i class="iconfont circle">&#xe6b7;</i>添加学生</el-menu-item>
+                            <el-menu-item index="3-2" v-if="ishh"><i class="iconfont circle">&#xe6b7;</i>班级管理</el-menu-item>
                         </el-submenu>
                         <el-submenu index="4" v-if="isJ">
-                            <template slot="title">
-                                <i class="icon iconfont">&#xe660;</i>
-                                <span slot="title">设置</span>
-                            </template>
-                            <el-menu-item index="4-1" v-if="iskk">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                权限分配
-                            </el-menu-item>
-                            <el-menu-item index="4-2" v-if="iskk">
-                                <i class="iconfont circle">&#xe6b7;</i>
-                                用户管理
-                            </el-menu-item>
+                            <template slot="title"><i class="icon iconfont">&#xe660;</i><span slot="title">设置</span></template>
+                            <el-menu-item index="4-1" v-if="iskk"><i class="iconfont circle">&#xe6b7;</i>权限分配</el-menu-item>
+                            <el-menu-item index="4-2" v-if="iskk"><i class="iconfont circle">&#xe6b7;</i>用户管理</el-menu-item>
                         </el-submenu>
                     </el-menu>
                 </el-col>
@@ -104,7 +49,7 @@
                         </div> -->
                         <div class="exit" @click="backLogin" @mouseenter="isTextShow=true" @mouseleave="isTextShow = false">
                             <span class="iconfont">&#xe6c0;</span>
-                            <div :class="isTextShow ? 'text show' : 'text' ">回到登录页</div>
+                            <div :class="isTextShow ? 'text show' : 'text'">回到登录页</div>
                         </div>
                     </div>
                 </div>
@@ -130,22 +75,20 @@
                 <z-student v-if="show =='student'" :classID='classID' @seeStuPer='seeStuPer($event)'></z-student>
                 <z-feedback v-if="show =='feedback'"></z-feedback>
                 <z-add-stu v-if="show =='addStu'"></z-add-stu>
-                <z-add-class v-if="show =='addClass'" @seeStudent='seeStudent($event)'></z-add-class>
+                <z-add-class v-if="show =='addClass'" @seeStudent='seeStudent($event)' @seeExamRecord='seeExamRecord($event)'></z-add-class>
                 <z-set-up v-if="show == 'setUp'"></z-set-up>
                 <z-user-admin v-if="show == 'userAdmin'"/>
                 <z-stu-performancet v-if="show == 'stuPerformancet'" :id='stuPerID' @correct='getCorrectData($event)' @seeAnswer='seeAnswer($event)'/>
                 <z-stu-answer v-if="show == 'answer'" :answerData='answerData'/>
                 <z-coorect v-if="show=='correct'" :ids='correctMess' @seeStuPer='seeStuPer($event)'/>
+                <z-exam-record v-if="show=='examRecord'" :id='examRecordID'/>
             </div>
         </div>
-        <el-dialog
-            title="提示"
-            :visible.sync="dialogVisible"
-            width="30%">
+        <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
             <span>确认返回登录页吗?</span>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="backLogin">确 定</el-button>
+                <el-button type="primary" @click="backLoginTrue">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -169,6 +112,7 @@ import userAdmin from './index-in/userAdmin'
 import stuPerformancet from './index-in/stuPerformancet'
 import stuAnswer from './index-in/anwser'
 import coorect from './index-in/correctTopic'
+import examRecord from './index-in/examRecord'
 
 export default {
     components: {
@@ -185,7 +129,8 @@ export default {
         "z-user-admin": userAdmin,
         "z-stu-performancet": stuPerformancet,
         "z-stu-answer": stuAnswer,
-        "z-coorect": coorect
+        "z-coorect": coorect,
+        "z-exam-record": examRecord
     },
     // 用于刷新页面
     provide(){
@@ -195,6 +140,8 @@ export default {
     },
     data(){
         return{
+            defaultOpeneds: [],
+            defaultActive: '',	
             topicIndex: 0,
             userName: '',
             fixed: false,
@@ -238,10 +185,14 @@ export default {
             ],
             currentIndex: 0,
             currentMenuIndex: 0,
-            tableData: ''
+            tableData: '',
+            examRecordID: ''
         }
     },
-methods: {
+    methods: {
+        gogogo(){
+            this.$router.push('/')
+        },
         receiveHome(e){ //接收home组件传递的值
             this.menuList = [
                 {
@@ -255,11 +206,14 @@ methods: {
             this.show = e.show;
             this.isOper = e.isOper;
             this.isSimuTitle = e.isSimuTitle;
-            console.log(e)
         },
         seeStuPer(e){
             this.stuPerID = parseInt(e);
             this._showPage('stuPerformancet')
+        },
+        seeExamRecord(e){
+            this.examRecordID = e;
+            this._showPage('examRecord')
         },
         getCorrectData(e){
             this.correctMess = e;
@@ -298,79 +252,34 @@ methods: {
         },
         // 查看答题卡
         seeAnswer(e){
-            this.answerData = e;
+            this.answerData = e; 
             this._showPage('answer')
         },
         handleOpen(index, indexPath) {
             if(index == 1){
-                 this.menuList = [
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe70b;',
-                        name: '模拟试卷出题'
-                    },
-                    {
-                        icon: '&#xe996;',
-                        name: '正式试卷出题'
-                    }
-                ]
+                 this.menuList = [{ icon: '&#xe663;', name: '首页' }, { icon: '&#xe70b;', name: '模拟试卷出题' },
+                    { icon: '&#xe996;', name: '正式试卷出题' }]
                 this.currentIndex = 0;
                 this.currentMenuIndex = 1
             }else if(index == 2){
-                this.menuList  =[
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe67f;',
-                        name: '模拟考卷'
-                    },
-                    {
-                        icon: '&#xe6a2;',
-                        name: '正式考卷'
-                    }
-                ]
+                this.menuList  =[{icon: '&#xe663;',name: '首页'},{ icon: '&#xe67f;', name: '模拟考卷'},
+                    {icon: '&#xe6a2;', name: '正式考卷'}]
                 this.currentIndex = 0;
                 this.currentMenuIndex = 2
             }else if(index == 3){
-                this.menuList  =[
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe67f;',
-                        name: '添加学生'
-                    },
-                    {
-                        icon: '&#xe6f5;',
-                        name: '班级管理'
-                    },
-                    // {
-                    //     icon: '&#xe61b;',
-                    //     name: '学生反馈'
-                    // }
+                this.menuList = [
+                    {icon: '&#xe663;',name: '首页'},
+                    {icon: '&#xe67f;',name: '添加学生'},
+                    {icon: '&#xe6f5;',name: '班级管理'},
+                    // {icon: '&#xe61b;',name: '学生反馈'}
                 ]
                 this.currentIndex = 0;
                 this.currentMenuIndex = 3
             }else if(index == 4){
                 this.menuList = [
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe647;',
-                        name: '权限分配'
-                    },
-                    {
-                        icon: '&#xe647;',
-                        name: '用户管理'
-                    }
+                    {icon: '&#xe663;',name: '首页'},
+                    {icon: '&#xe647;',name: '权限分配'},
+                    {icon: '&#xe647;',name: '用户管理'}
                 ]
                 this.currentIndex = 0;
                 this.currentMenuIndex = 4;
@@ -382,56 +291,71 @@ methods: {
         // 右边菜单路由
         changeMenu(index){
             if(this.currentIndex == -1){
-                this.menuList = [
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    }
-                ]
+                this.menuList = [{icon: '&#xe663;',name: '首页'}]
             }
             this.currentIndex = index;
             if(index == 0){
                     // this.$router.push({path: '/index/home'})// 到首页
+                    this.defaultOpeneds = [];
+                    this.defaultActive = ''
                     this._showPage('home')
                     return
             }
             if(this.currentMenuIndex == 0){ //如果在首页
-            }else if(this.currentMenuIndex == 1){//如果在题库管理
-                if(index == 1){// 模拟考卷管理'
+                
+            }else if(this.currentMenuIndex == 1){ //如果在题库管理
+                if(index == 1){ // 模拟考卷管理'
                     this.topicTitle = '模拟考卷';
                     this.isGetInfo = true;
-                    this._showPage('setTopic') 
+                    this._showPage('setTopic');
+                    this.defaultOpeneds = ['1'];
+                    this.defaultActive = '1-1';
                     // this.$refs.setTopic._getInfo()
-                }else if(index == 2){//正式考卷管理'
+                }else if(index == 2){ //正式考卷管理'
                     this.topicTitle = '正式考卷'
                     this.isGetInfo = true;
-                    this._showPage('setTopic')
+                    this._showPage('setTopic');
+                    this.defaultOpeneds = ['1'];
+                    this.defaultActive = '1-2';
                     // this.$refs.setTopic._getInfo()
                 }
-            }else if(this.currentMenuIndex == 2){//如果在考卷管理
+            }else if(this.currentMenuIndex == 2){ //如果在考卷管理
                 if(index == 1){ //模拟考卷
                     this.isSimuTitle = '模拟考卷列表'
                     this.isOper = false;
-                    this.reload(false)
+                    this.defaultOpeneds = ['2'];
+                    this.defaultActive = '2-1';
                     this._showPage('simu')
                 }else if(index == 2){//正式考卷
                     this.isSimuTitle = '正式考卷列表'
                     this.isOper = false;
+                    this.defaultOpeneds = ['2'];
+                    this.defaultActive = '2-2'
                     this.reload(false);
                     this._showPage('simu');
                 }
             }else if(this.currentMenuIndex == 3){//如果在学生管理
                 if(index == 1){
+                    this.defaultOpeneds = ['3'];
+                    this.defaultActive = '3-1'
                     this._showPage('addStu')
                 }else if(index == 2){
+                    this.defaultOpeneds = ['3'];
+                    this.defaultActive = '3-2'
                     this._showPage('addClass') 
                 }else if(index == 3){
+                    this.defaultOpeneds = ['3'];
+                    this.defaultActive = '3-3'
                     this._showPage('feedback')
                 }
             }else if(this.currentMenuIndex == 4){//如果在设置
                 if(index == 1){
+                    this.defaultOpeneds = ['4'];
+                    this.defaultActive = '4-1'
                     this._showPage('setUp')
                 }else if(index == 2){
+                    this.defaultOpeneds = ['4'];
+                    this.defaultActive = '4-2'
                     this._showPage('userAdmin')    
                 }
             }
@@ -440,18 +364,9 @@ methods: {
         handleActive(index,indexPath){
             if(index == '1-1'){//模拟考卷管理
                 this.menuList = [
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe70b;',
-                        name: '模拟试卷出题'
-                    },
-                    {
-                        icon: '&#xe996;',
-                        name: '正式试卷出题'
-                    }
+                    {icon: '&#xe663;',name: '首页'},
+                    {icon: '&#xe70b;',name: '模拟试卷出题'},
+                    {icon: '&#xe996;',name: '正式试卷出题'}
                 ]
                 this._showPage('setTopic')    
                 this.topicTitle = '模拟考卷'
@@ -462,44 +377,23 @@ methods: {
                 // this.$refs.setTopic._getInfo()
             }else if(index == '1-2'){//正式考卷管理
                 this.menuList = [
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe70b;',
-                        name: '模拟试卷出题'
-                    },
-                    {
-                        icon: '&#xe996;',
-                        name: '正式试卷出题'
-                    }
+                    {icon: '&#xe663;',name: '首页'},
+                    {icon: '&#xe70b;',name: '模拟试卷出题'},
+                    {icon: '&#xe996;',name: '正式试卷出题'}
                 ]
                 this._showPage('setTopic')    
                 this.topicTitle = '正式考卷'
                 this.isGetInfo = true;
-                this.reload(false)
+                this.reload(false);
                 this.currentIndex = 2;
                 this.currentMenuIndex = 1;
                 // this.$refs.setTopic._getInfo()
             }else if(index == '1-3'){//正式考卷管理
                 this.menuList = [
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe70b;',
-                        name: '模拟试卷出题'
-                    },
-                    {
-                        icon: '&#xe996;',
-                        name: '正式试卷出题'
-                    },
-                    {
-                        icon: '&#xe996;',
-                        name: '理论试卷出题'
-                    }
+                    {icon: '&#xe663;',name: '首页'},
+                    {icon: '&#xe70b;',name: '模拟试卷出题'},
+                    {icon: '&#xe996;',name: '正式试卷出题'},
+                    {icon: '&#xe996;',name: '理论试卷出题'}
                 ]
                 this._showPage('setTheoryTopic')    
                 this.topicTitle = '正式考卷';
@@ -509,39 +403,21 @@ methods: {
                 // this.$refs.setTopic._getInfo()
             }else if(index == '2-1'){ //考卷管理
                 this.menuList = [
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe61a;',
-                        name: '模拟考卷'
-                    },
-                    {
-                        icon: '&#xe61a;',
-                        name: '正式考卷'
-                    }
+                    {icon: '&#xe663;',name: '首页'},
+                    {icon: '&#xe61a;',name: '模拟考卷'},
+                    {icon: '&#xe61a;',name: '正式考卷'}
                 ],
                 this._showPage('simu')    
                 this.isSimuTitle = '模拟考卷列表'
                 this.isOper = false;
-                this.reload(false)
+                this.reload(false);
                 this.currentIndex = 1;
                 this.currentMenuIndex = 2;
             }else if(index == '2-2'){ //考卷管理
                 this.menuList = [
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe61a;',
-                        name: '模拟考卷'
-                    },
-                    {
-                        icon: '&#xe61a;',
-                        name: '正式考卷'
-                    }
+                    {icon: '&#xe663;',name: '首页'},
+                    {icon: '&#xe61a;',name: '模拟考卷'},
+                    {icon: '&#xe61a;',name: '正式考卷'}
                 ],               
                 this._showPage('simu')    
                 this.isSimuTitle = '正式考卷列表'
@@ -549,64 +425,37 @@ methods: {
                 this.reload(false)
                 this.currentIndex = 2;
                 this.currentMenuIndex = 2;
-            }else if(index == '3-1'){//学生管理
+            }else if(index == '3-1'){ //学生管理
                 this.menuList = [
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe67f;',
-                        name: '添加学生'
-                    },
-                    {
-                        icon: '&#xe6f5;',
-                        name: '班级管理'
-                    },
+                    {icon: '&#xe663;',name: '首页'},
+                    {icon: '&#xe67f;',name: '添加学生'},
+                    {icon: '&#xe6f5;',name: '班级管理'},
                     // {
                     //     icon: '&#xe61b;',
                     //     name: '学生反馈'
                     // }
                 ]
-                this._showPage('addStu')          
+                this._showPage('addStu');         
                 this.currentIndex = 1;
                 this.currentMenuIndex =  3;
-            }else if(index == '3-2'){//学生管理
+            }else if(index == '3-2'){ //学生管理
                 this.menuList = [
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe67f;',
-                        name: '添加学生'
-                    },
-                    {
-                        icon: '&#xe6f5;',
-                        name: '班级管理'
-                    },
+                    {icon: '&#xe663;', name: '首页'},
+                    {icon: '&#xe67f;',name: '添加学生'},
+                    {icon: '&#xe6f5;', name: '班级管理'},
                     // {
                     //     icon: '&#xe61b;',
                     //     name: '学生反馈'
                     // }
                 ]
-                this._showPage('addClass')       
+                this._showPage('addClass');     
                 this.currentIndex = 2;
                 this.currentMenuIndex =  3;
-            }else if(index == '3-3'){//学生管理
+            }else if(index == '3-3'){ //学生管理
                 this.menuList = [
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe67f;',
-                        name: '添加学生'
-                    },
-                    {
-                        icon: '&#xe6f5;',
-                        name: '班级管理'
-                    },
+                    {icon: '&#xe663;',name: '首页'},
+                    {icon: '&#xe67f;',name: '添加学生'},
+                    {icon: '&#xe6f5;',name: '班级管理'},
                     // {
                     //     icon: '&#xe61b;',
                     //     name: '学生反馈'
@@ -615,42 +464,24 @@ methods: {
                 this._showPage('feedback')         
                 this.currentIndex = 3;
                 this.currentMenuIndex = 3;
-            }else if(index == '4-1'){//设置
+            }else if(index == '4-1'){ //设置
                 this.menuList  =[
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe647;',
-                        name: '权限分配'
-                    },
-                    {
-                        icon: '&#xe647;',
-                        name: '用户管理'
-                    }
+                    {icon: '&#xe663;',name: '首页'},
+                    {icon: '&#xe647;',name: '权限分配'},
+                    {icon: '&#xe647;',name: '用户管理'}
                 ]
-                this._showPage('setUp')        
+                this._showPage('setUp');      
                 this.currentIndex = 1;
-                this.currentMenuIndex = 4
+                this.currentMenuIndex = 4;
             }else if(index == '4-2'){
                 this.menuList  =[
-                    {
-                        icon: '&#xe663;',
-                        name: '首页'
-                    },
-                    {
-                        icon: '&#xe647;',
-                        name: '权限分配'
-                    },
-                    {
-                        icon: '&#xe647;',
-                        name: '用户管理'
-                    }
+                    {icon: '&#xe663;',name: '首页'},
+                    {icon: '&#xe647;',name: '权限分配'},
+                    {icon: '&#xe647;',name: '用户管理'}
                 ]
-                this._showPage('userAdmin')    
+                this._showPage('userAdmin');    
                 this.currentIndex = 2;
-                this.currentMenuIndex = 4
+                this.currentMenuIndex = 4;
             }
         },
         // 监听模拟题库组件
@@ -670,15 +501,15 @@ methods: {
             // 页面属性不白屏 数据驱动
             this.isRouterAlive = false
             this.$nextTick(() =>{
-                this.isRouterAlive = true
+                this.isRouterAlive = true;
                 const reload = document.getElementById('reload');
                 let speed = 0;
                if(circle){
                     const timer = setInterval(() =>{
-                        speed += 2
+                        speed += 2;
                         if(speed >= 360){
                             clearInterval(timer);
-                            speed = 360
+                            speed = 360;
                         }
                         reload.style.transform = `rotate(${speed}deg)`;
                     },1)
@@ -688,21 +519,24 @@ methods: {
         // 回到首页
         goHome(){
             this._showPage('home');
-            this.currentIndex = 0
+            this.currentIndex = 0;
         },
         // 回到登录页
         backLogin(){
-            // this.dialogVisible = false;
-            this.isLeave = true
-            this.$router.push('/')
+            this.dialogVisible = true;
+            // this.isLeave = true;
+            // this.$router.push('/');
             // this.axios.post('/admin/login/outLogin').then(res =>{
             //     this.isLeave = true
             //     this.$router.push('/')
             // })
         },
+        backLoginTrue(){
+            this.$router.push('/');
+        },
         _showPage(page){
             this.show = page;
-            this.$forceUpdate()
+            this.$forceUpdate();
         },
         // 菜单权限设置
         _getInfoMenu(){
@@ -737,19 +571,18 @@ methods: {
         _getUserName(){
             this.axios.get('/admin/index/getUser').then(res =>{
                 if(res.data.code == 200){
-                    this.userName = res.data.msg
+                    this.userName = res.data.msg;
                 }else if(res.data.code == 4){
-                    console.log(1)
-                    this.$router.push('/')
+                    this.$router.push('/');
                 }
             })
         }
     },
     created(){
-       this. _getInfoMenu();
-       this._getUserName();
+        this. _getInfoMenu();
+        this._getUserName();
         // 滚动固定
-       this.$nextTick(()=>{
+        this.$nextTick(()=>{
             const header = document.getElementById('header');
             const headTop = header.offsetTop;
             window.addEventListener('scroll',()=>{
@@ -760,33 +593,32 @@ methods: {
                     // scrollTop = window.pageYOffset;
                 }
                 if(scrollTop >= headTop){
-                    this.fixed = true
+                    this.fixed = true;
                 }else{
-                    this.fixed = false
+                    this.fixed = false;
                 }
             })
         })
     },
     // 离开路由守卫
-    beforeRouteLeave(to, from, next) {
-        // 导航离开该组件的对应路由时调用
-        // 可以访问组件实例 `this`
-        // if(confirm('确认返回登录页?') == true){
-        //     next()
-        // }else{
-        //     next(false)
-        // }
-        if(this.isLeave){
-            this.isLeave = false
-            this.$confirm('确认返回登录页？')
-          .then(_ => {
-            this.axios.post('/admin/login/outLogin').then(res =>{
-                // this.$router.push('/')
-            })
-            next();
-          })
-          .catch(next(false));
-        }
-    },
+    // beforeRouteLeave(to, from, next) {
+    //     // 导航离开该组件的对应路由时调用
+    //     // 可以访问组件实例 `this`
+    //     // if(confirm('确认返回登录页?') == true){
+    //     //     next()
+    //     // }else{
+    //     //     next(false)
+    //     // }
+    //     if(this.isLeave){
+    //         this.isLeave = false;
+    //         this.$confirm('确认返回登录页？').then(_ => {
+    //         this.axios.post('/admin/login/outLogin').then(res =>{
+    //             // this.$router.push('/')
+    //         })
+    //         next();
+    //       })
+    //       .catch(next(false));
+    //     }
+    // },
 }
 </script>

@@ -11,7 +11,7 @@
                 <el-button type='primary' @click="addClass('add')" class="add-ident">添加新用户</el-button>
             </div>
             <div class="table">
-                <p class="table-title">班级列表</p>
+                <p class="table-title">管理员列表</p>
                 <el-table :data="myTableData" style="width: 100%">
                     <el-table-column prop="admin_name" label="账号" min-width="20px">
                     </el-table-column>
@@ -66,10 +66,7 @@
                 <el-button type="primary" @click="addClassTrue">确 定</el-button>
             </div>
         </el-dialog>
-        <el-dialog
-            title="提示"
-            :visible.sync="dialogVisible2"
-            width="30%">
+        <el-dialog title="提示" :visible.sync="dialogVisible2" width="30%">
             <span>确认删除该用户?</span>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible2 = false">取 消</el-button>

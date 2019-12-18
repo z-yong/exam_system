@@ -12,7 +12,7 @@
 .topic-box .answer{
     padding: 1vh 0;
 }
-.answer p{
+.answer div{
     padding-left: 2vw;
     margin-top: 1vh;
 }

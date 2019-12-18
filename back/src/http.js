@@ -2,6 +2,7 @@ import axios from 'axios'
 // import { Message, Loading } from 'element-ui';
 import { Message } from 'element-ui';
 import router from './router.js'
+import Vue from 'vue'
 
 
 // let loading;
@@ -38,7 +39,7 @@ axios.interceptors.response.use(
     response =>{
         // endLoading();
         if(response.data.code == 4){
-            router.push({name: 'Login'})
+            router.push('/')
         }
         return response;
     },

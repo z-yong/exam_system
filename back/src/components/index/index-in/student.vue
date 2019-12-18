@@ -17,18 +17,13 @@
                 <template>
                     <el-table :highlight-current-row="true"
                         :data="myTableData" style="width: 100%">
-                        <el-table-column fixed prop="serial" label="序号" min-width="5px">
-                        </el-table-column>
-                        <el-table-column prop="real_name" label="姓名" min-width="10px">
-                        </el-table-column>
-                        <el-table-column  prop="pass" label="合格率" min-width="10px">
-                        </el-table-column>
+                        <el-table-column fixed prop="serial" label="序号" min-width="5px"></el-table-column>
+                        <el-table-column prop="real_name" label="姓名" min-width="10px"></el-table-column>
+                        <el-table-column  prop="pass" label="合格率" min-width="10px"></el-table-column>
                         <!-- <el-table-column prop="mobile" label="手机号" min-width="10px">
                         </el-table-column> -->
-                        <el-table-column prop="user_name" label="学号" min-width="20px">
-                        </el-table-column>
-                        <el-table-column prop="examination" label="试卷名称" min-width="15px">
-                        </el-table-column>
+                        <el-table-column prop="user_name" label="学号" min-width="20px"></el-table-column>
+                        <!-- <el-table-column prop="examination" label="试卷名称" min-width="15px"></el-table-column> -->
                         <el-table-column label="操作" min-width="15px">
                             <template slot-scope="scope">
                                 <el-button type="text" @click="redact(scope.row)" size="small"><i class="iconfont">&#xe64b;</i>编辑</el-button>
@@ -55,9 +50,9 @@
                 <el-form-item label="姓名" label-width="100px">
                     <el-input v-model="formData.real_name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="手机" label-width="100px">
+                <!-- <el-form-item label="手机" label-width="100px">
                     <el-input type="number" v-model="formData.mobile" autocomplete="off"></el-input>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="学号" label-width="100px">
                     <el-input type="number" v-model="formData.user_name" autocomplete="off"></el-input>
                 </el-form-item>

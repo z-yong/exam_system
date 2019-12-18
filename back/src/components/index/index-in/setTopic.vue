@@ -36,7 +36,7 @@
                         </el-form-item>
                     </div>               
                     <div v-for="(el,i) in ruleForm.adjun" :key="i" class="topic_ed">
-                        <el-form-item label="附件名称" >
+                        <el-form-item :label="'附件名称'+(i+1)" >
                             <el-input type="text" v-model="ruleForm.adjun[i]['adjName']" @input="change($event)" placeholder="请输入附件名称"></el-input>
                         </el-form-item>
                         <div class="editor">
@@ -77,12 +77,7 @@
                                     <el-form-item label="难度" :prop="topic.difficulty">
                                         <template>
                                             <el-select v-model="topic.difficulty" @change="change($event)">
-                                                <el-option
-                                                    v-for="(item,index) in degrees" 
-                                                    :key="index"
-                                                    :value="item.label"
-                                                    :label="item.label">
-                                                </el-option>
+                                                <el-option v-for="(item,index) in degrees" :key="index" :value="item.label" :label="item.label"></el-option>
                                             </el-select>
                                         </template>
                                     </el-form-item>
@@ -110,6 +105,12 @@
                                         <el-form-item v-if="topic.type == '多选题'" label="F：">
                                             <el-input type="text" v-model="topic.f" @input="change($event)"></el-input>
                                         </el-form-item>
+                                        <el-form-item v-if="topic.type == '多选题'"  label="G：">
+                                            <el-input type="text" v-model="topic.g" @input="change($event)"></el-input>
+                                        </el-form-item>
+                                        <el-form-item v-if="topic.type == '多选题'" label="H：">
+                                            <el-input type="text" v-model="topic.h" @input="change($event)"></el-input>
+                                        </el-form-item>
                                     </div>
                                     <div class="answer">
                                         <el-form-item v-if="topic.type == '单选题'" label="正确答案">
@@ -132,18 +133,22 @@
                                                 <el-checkbox label="D" @change="change($event)"></el-checkbox>
                                                 <el-checkbox label="E" @change="change($event)"></el-checkbox>
                                                 <el-checkbox label="F" @change="change($event)"></el-checkbox>
+                                                <el-checkbox label="G" @change="change($event)"></el-checkbox>
+                                                <el-checkbox label="H" @change="change($event)"></el-checkbox>
                                             </el-checkbox-group>
                                         </el-form-item>
                                         <div class="gap">
                                             <el-form-item v-if="topic.type == '填空题'" label="正确答案">
-                                                <el-input v-model="topic.tiankong" type="number" @input="change($event)"></el-input>
-                                                <el-input v-model="topic.error" type="number" placeholder="请给出误差" @input="change($event)"></el-input>
+                                                <div v-for="(t) in 5" :key="t">
+                                                    <el-input v-model="topic.tiankong[t-1]" type="" @input="change($event)" placeholder="请填写答案(最少填一个)"></el-input>
+                                                </div>
+                                                <el-input v-model="topic.error" type="number" placeholder="请给出误差(可不填)" @input="change($event)"></el-input>
                                             </el-form-item>
                                         </div>
                                     </div>
                                     <div class="grade">
                                         <el-form-item label="分数">
-                                                <el-input type="number" @input="change($event)" v-model="topic.fraction"></el-input>
+                                            <el-input type="number" @input="change($event)" v-model="topic.fraction"></el-input>
                                         </el-form-item>
                                     </div>
                                     <div style="display:flex">
@@ -158,30 +163,6 @@
                             </div> 
                         </div>
                     </div>
-                    <!-- <el-dialog title="考试时间" :visible.sync="dialogFormVisible">
-                        <el-form-item label="考试日期" prop="date">
-                            <div class="block">
-                                <el-date-picker
-                                    v-model="ruleForm.date"
-                                    type="datetime"
-                                    placeholder="请填写开始考试日期">
-                                </el-date-picker>
-                            </div>
-                        </el-form-item>
-                        <el-form-item label="审核" prop="way">
-                                <el-select v-model="ruleForm.way" placeholder="请选择阅卷方式">
-                                    <el-option
-                                        v-for="item in ways" 
-                                        :key="item.value"
-                                        :value="item.value">
-                                    </el-option>
-                                </el-select>
-                        </el-form-item>
-                        <div slot="footer" class="dialog-footer">
-                            <el-button @click="dialogFormVisible = false">取 消</el-button>
-                            <el-button type="primary" @click="submitTure">提 交</el-button>
-                        </div>
-                    </el-dialog> -->
                 </el-form>
                 <!-- 理论出题 -->
                 <el-form v-if="currentIndex == 1" :model="ruleForms" :rules="rules" ref="ruleForms" label-width="100px" class="demo-ruleForm">
@@ -237,6 +218,12 @@
                                     <el-form-item v-if="topic.type == '多选题'" label="F：">
                                         <el-input type="text" v-model="topic.f" @input="change($event)"></el-input>
                                     </el-form-item>
+                                    <el-form-item v-if="topic.type == '多选题'"  label="G：">
+                                        <el-input type="text" v-model="topic.g" @input="change($event)"></el-input>
+                                    </el-form-item>
+                                    <el-form-item v-if="topic.type == '多选题'" label="H：">
+                                        <el-input type="text" v-model="topic.h" @input="change($event)"></el-input>
+                                    </el-form-item>
                                 </div>
                                 <div class="answer">
                                     <el-form-item v-if="topic.type == '单选题'" label="正确答案">
@@ -244,12 +231,6 @@
                                         <el-radio v-model="topic.danxuan" label="B" @change="change($event)">B</el-radio>
                                         <el-radio v-model="topic.danxuan" label="C" @change="change($event)">C</el-radio>
                                         <el-radio v-model="topic.danxuan" label="D" @change="change($event)">D</el-radio>
-                                        <!-- <el-checkbox-group v-if="ruleForms['topics'][index]['topicType'] == '多选题'" v-model="ruleForms['topics'][index]['checkList']">
-                                            <el-checkbox label="A" @change="change($event)"></el-checkbox>
-                                            <el-checkbox label="B" @change="change($event)"></el-checkbox>
-                                            <el-checkbox label="C" @change="change($event)"></el-checkbox>
-                                            <el-checkbox label="D" @change="change($event)"></el-checkbox>
-                                        </el-checkbox-group> -->
                                     </el-form-item>
                                     <el-form-item v-if="topic.type == '多选题'" label="正确答案">
                                         <el-checkbox-group v-model="topic.duoxuan">
@@ -259,13 +240,25 @@
                                             <el-checkbox label="D" @change="change($event)"></el-checkbox>
                                             <el-checkbox label="E" @change="change($event)"></el-checkbox>
                                             <el-checkbox label="F" @change="change($event)"></el-checkbox>
+                                            <el-checkbox label="G" @change="change($event)"></el-checkbox>
+                                            <el-checkbox label="H" @change="change($event)"></el-checkbox>
                                         </el-checkbox-group>
                                     </el-form-item>
                                     <div class="gap">
-                                        <el-form-item v-if="topic.type == '填空题'" label="正确答案">
-                                            <el-input v-model="topic.tianjian" type="number" @input="change($event)"></el-input>
-                                            <el-input v-model="topic.error" type="number" placeholder="请给出误差" @input="change($event)"></el-input>
-                                        </el-form-item>
+                                        <div v-if="topic.type == '填空题'">
+                                            <el-form-item label="正确答案">
+                                                <div v-for="(t) in 5" :key="t">
+                                                    <el-input v-model="topic.tiankong[t-1]" type="" @input="change($event)" placeholder="请填写答案(最少填一个)"></el-input>
+                                                </div>
+                                                <el-input v-model="topic.error" type="number" placeholder="请给出误差" @input="change($event)"></el-input>
+                                            </el-form-item>
+                                            <el-form-item label="阅卷方式">
+                                                <el-radio-group v-model="topic.automatic">
+                                                    <el-radio :label="0">电脑阅卷</el-radio>
+                                                    <el-radio :label="1">人工阅卷</el-radio>
+                                                </el-radio-group>
+                                            </el-form-item>
+                                        </div>
                                         <div class="textarea">
                                             <el-form-item v-if="topic.type == '简答题'" label="正确答案">
                                                 <el-input v-model="topic.tianjian" type="textarea" @input="change($event)"></el-input>
@@ -275,7 +268,7 @@
                                 </div>
                                 <div class="grade">
                                     <el-form-item label="分数">
-                                            <el-input type="number" @input="change($event)" v-model="topic.fraction"></el-input>
+                                        <el-input type="number" @input="change($event)" v-model="topic.fraction"></el-input>
                                     </el-form-item>
                                 </div>
                                 <div style="display:flex">
@@ -509,7 +502,7 @@ export default {
                     this.ruleForm.topics[index].id = res.data.msg;
                     if(this.ruleForm.topics[index].topicArr.length == 0){
                         this.ruleForm.topics[index].topicArr.push({id: '',title: '',type:'单选题',difficulty: '一般',c_id:res.data.msg,
-                        danxuan:'',duoxuan: [],tiankong:'',a: '',b:'',c:'',d:'',e:'',f:'',answer:'',fraction: '',error:''})
+                        danxuan:'',duoxuan: [],tiankong:[],a: '',b:'',c:'',d:'',e:'',f:'',answer:'',fraction: '',error:''})
                     }
                 }
             })
@@ -532,17 +525,16 @@ export default {
         saveQua(item,index,i){
             const title = tinymce.editors['topic'+index+'-'+i].getContent();
             let type, difficulty,answer;
-            if(!title) return this._isEmpty('请填写题目');
+            // if(!title) return this._isEmpty('请填写题目');
             if(item.type == '多选题' || item.type == '单选题'){
                 if(!item.a) return this._isEmpty('请填写A选项');
                 if(!item.b) return this._isEmpty('请填写B选项');
                 if(!item.c) return this._isEmpty('请填写C选项');
                 if(!item.d) return this._isEmpty('请填写D选项');
             }
-            if(item.type == '多选题'){
-                if(!item.e) return this._isEmpty('请填写E选项');
-                if(!item.f) return this._isEmpty('请填写F选项');
-            }
+            // if(item.type == '多选题'){
+            //     if(!item.e) return this._isEmpty('请填写E选项');
+            // }
             if(!item.fraction) return this._isEmpty('请填写分数');
             if(item.type == '单选题'){
                 type = 1;
@@ -562,13 +554,13 @@ export default {
             if(item.difficulty == '较难') difficulty = 1;
             if(item.difficulty == '最高难度') difficulty = 1;
             const data = {
-                title, a:item.a, b:item.b, c:item.c, d:item.d, e:item.e, f:item.f, fraction: item.fraction, answer,c_id:item.c_id,type,difficulty
+                title, a:item.a, b:item.b, c:item.c, d:item.d, e:item.e, f:item.f,g:item.g, h:item.h, fraction: item.fraction, 
+                answer,c_id:item.c_id,type,difficulty,error: item.error
             }
             this.axios.post('/admin/issue/subject',data).then(res =>{
                this.ruleForm.topics[index].topicArr[i].id = res.data.msg;
                this.ruleForm.topics[index].topicArr.push({id: '',title: '',type:'单选题',difficulty: '一般',c_id:item.c_id,
-                    danxuan:'',duoxuan: [],tiankong:'', a: '',b:'',c:'',d:'',e:'',f:'',answer:'',fraction: '',error:''})
-                    console.log(this.ruleForm.topics[index].topicArr)
+                    danxuan:'',duoxuan: [],tiankong:[], a: '',b:'',c:'',d:'',e:'',f:'',g: '',h: '', answer:'',fraction: '',error:''})
                this.$forceUpdate()
             })
         },
@@ -615,8 +607,8 @@ export default {
             this.axios.post('/admin/paper/paper',data).then(res =>{
                 if(res.data.code == 200){
                     this.ruleForms.id = res.data.msg;
-                    this.ruleForms.topicsLilun.push({id: '',title: '',type:'单选题',difficulty: '一般',error:'',
-                        danxuan:'',duoxuan: [],tianjian:'',a: '',b:'',c:'',d:'',e:'',f:'',answer:'',fraction: ''})
+                    this.ruleForms.topicsLilun.push({id: '',title: '',type:'单选题',difficulty: '一般',error:'',automatic: 0,
+                        danxuan:'',duoxuan: [],tiankong: [],tianjian:'',a: '',b:'',c:'',d:'',e:'',f:'',g: '',h: '', answer:'',fraction: ''})
                 }else{
                     this._isEmpty(res.data.msg)
                 }
@@ -634,10 +626,10 @@ export default {
                 if(!item.c) return this._isEmpty('请填写C选项');
                 if(!item.d) return this._isEmpty('请填写D选项');
             }
-            if(item.type == '多选题'){
-                if(!item.e) return this._isEmpty('请填写E选项');
-                if(!item.f) return this._isEmpty('请填写F选项');
-            }
+            // if(item.type == '多选题'){
+            //     if(!item.e) return this._isEmpty('请填写E选项');
+            //     if(!item.f) return this._isEmpty('请填写F选项');
+            // }
             if(!item.fraction) return this._isEmpty('请填写分数');
             if(item.type == '单选题'){
                 type = 1;
@@ -649,7 +641,7 @@ export default {
             }
             if(item.type == '填空题'){
                  type = 3;
-                 answer = item.tianjian;
+                 answer = item.tiankong;
             }
             if(item.type == '简答题'){
                  type = 4;
@@ -661,7 +653,8 @@ export default {
             if(item.difficulty == '较难') difficulty = '3';
             if(item.difficulty == '最高难度') difficulty = '4';
             const data = {
-               id:item.id, s_id, title, a:item.a, b:item.b, c:item.c, d:item.d, e:item.e, f:item.f, fraction: item.fraction, answer,type,difficulty,error:item.error,
+               id:item.id, s_id, title, a:item.a, b:item.b, c:item.c, d:item.d, e:item.e, f:item.f, g:item.g, h:item.h,
+               fraction: item.fraction, answer,type,difficulty,error:item.error,automatic: item.automatic
             }
             if(!this.isGetInfo){
                 data.s_id = this.topicID;
@@ -670,8 +663,8 @@ export default {
             this.axios.post('/admin/paper/topic',data).then(res =>{
                 if(res.data.code == 200){
                     this.ruleForms.topicsLilun[index].id = res.data.msg
-                    this.ruleForms.topicsLilun.push({id: '',title: '',type:'单选题',difficulty: '一般',error:'',
-                        danxuan:'',duoxuan: [],tianjian:'',a: '',b:'',c:'',d:'',e:'',f:'',answer:'',fraction: ''})
+                    this.ruleForms.topicsLilun.push({id: '',title: '',type:'单选题', difficulty: '一般',error:'',automatic: 0,
+                        danxuan:'',duoxuan: [],tiankong: [], tianjian:'',a: '',b:'',c:'',d:'',e:'',f:'',g: '',h:'', answer:'',fraction: ''})
                 }else{
                     this._isEmpty(res.data.msg)
                 }
@@ -692,7 +685,7 @@ export default {
                 this._isEmpty('删除成功')
             }
         },
-        // 添加附件 /////如果adjunNum为0 就把标题和想定内容post上去
+        // 添加附件    如果adjunNum为0 就把标题和想定内容post上去
         createAdjunct(){
             if(this.currentIndex == 1){
                 return this._isEmpty('这是理论出题 !')
@@ -868,7 +861,7 @@ export default {
                         subject[index].answer = ele.duoxuan;
                     }else if(ele.type == '填空题'){
                         subject[index].type = '3'
-                        subject[index].answer = ele.tianjian;
+                        subject[index].answer = ele.tiankong;
                     }else{
                         subject[index].type = '4'
                         subject[index].answer = ele.tianjian;
@@ -884,6 +877,7 @@ export default {
                     }
                     delete subject[index].danxuan;
                     delete subject[index].duoxuan;
+                    delete subject[index].tiankong;
                     delete subject[index].tianjian;
                 })
                 const data = {
@@ -937,8 +931,8 @@ export default {
             if(this.currentIndex == 0){
                 const outline = tinymce.editors['tinymce'].getContent();
                 const title = this.ruleForm.title;
-                if(!title) return this._isEmpty('您还未写标题')
-                if(!outline) return this._isEmpty('您还未写想定内容')
+                if(!title) return this._isEmpty('您还未写标题');
+                if(!outline) return this._isEmpty('您还未写想定内容');
             }else{
                 const title = this.ruleForms.title;
                 if(!title) return this._isEmpty('您还未写标题')
@@ -985,15 +979,16 @@ export default {
                     this.ruleForms.title = res.data.data.paper.title;
                     res.data.data.topic.forEach((el,index) =>{
                         if(el.type == '单选题'){
-                            el.danxuan = el.answer
+                            el.danxuan = el.answer;
                         }else if(el.type == '多选题'){
-                            el.duoxuan = el.answer
+                            el.duoxuan = el.answer;
+                        }else if(el.type == '填空题'){
+                            el.tiankong = el.answer;
                         }else{
-                            el.tianjian = el.answer
+                            el.tianjian = el.answer;
                         }
                     })
                     this.ruleForms.topicsLilun = res.data.data.topic;
-                    console.log(this.ruleForms)
                     this.isAllShow = true;
                     loadingInstance.close();
                 })
@@ -1023,7 +1018,7 @@ export default {
                     }
                 })
                 this.ruleForm.topics[index].topicArr.push({title: '',type:'单选题',difficulty: '一般',c_id:ele.id,
-                    danxuan:'',duoxuan: [],tiankong:'', a: '',b:'',c:'',d:'',e:'',f:'',answer:'',fraction: '',error:''})
+                    danxuan:'',duoxuan: [],tiankong:[], a: '',b:'',c:'',d:'',e:'',f:'',answer:'',fraction: '',error:''})
             })
             // 如果作业条件或者添加附件有内容的话 第一次点击作业条件无需post
             if(enclosure.length){
@@ -1071,11 +1066,12 @@ export default {
         }
     },
     created(){
+        console.log(tinymce)
         if(this.isGetInfo){//如果不是修改试卷
             this._getInfo();
         }else{
             if(this.outline == '修改'){//修改试卷topicIndex
-                if(this.topicIndex == 0){
+                if(this.topicIndex == 0){//技能
                     this.axios.get('/admin/issue/editAbcIssue?id='+this.topicID+'&s_type='+this.topicType).then(res =>{
                         this.absolute = false;
                         this.isAllShow = true;
@@ -1085,9 +1081,8 @@ export default {
                         this.tinymceHtml = res.data.data.outline;
                         this.submitText = '保存修改'
                     })
-                }else{
+                }else{//理论
                     this.axios.get('/admin/paper/editAbcIssue?id='+this.topicID+'&s_type='+this.topicType).then(res =>{
-                        console.log(res)
                         const data = res.data.data;
                         this.isAllShow = true;
                         this.ruleForms.id = data.paper.id;
@@ -1095,9 +1090,11 @@ export default {
                         this.ruleForms.topicsLilun = data.subject;
                         for (const item of this.ruleForms.topicsLilun) {
                             if(item.type == '单选题'){
-                                item.danxuan = item.answer
+                                item.danxuan = item.answer 
                             }else if(item.type == '多选题'){
                                 item.duoxuan = item.answer
+                            }else if(item.type == '填空题'){
+                                item.tiankong = item.answer
                             }else{
                                 item.tianjian = item.answer
                             }
@@ -1120,7 +1117,6 @@ export default {
                 }
             } 
         }
-        console.log(this.ruleForm)
          // 滚动固定
        this.$nextTick(()=>{
             const header = document.getElementById('set_head');
