@@ -1,7 +1,10 @@
 <template>
     <div class="mess">
         <div class="content">
-            <div class="mess-title">基本信息</div>
+            <div class="mess-title">
+                <div>基本信息</div>
+                <div class="xiugai" @click="goXiugai">修改信息</div>
+            </div>
             <ul>
                 <li>
                     <span class="caption">姓名:</span>
@@ -34,6 +37,10 @@
         padding-top: 2vh;
         width: 100%;
     }
+    .xiugai{
+        color:rgb(0, 112, 216);
+        cursor: pointer;
+    }
     .mess .content{
         background: #fff;
         width: 90%;
@@ -43,6 +50,9 @@
         box-shadow: 2px 2px 3px 0px #ccc
     }
     .mess .content .mess-title{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         font-size: 15px;
         font-weight: 600;
         height: 8vh;
@@ -68,6 +78,7 @@
 export default {
     data(){
         return {
+            id: '',
             username: '',
             userID: '',
             examNum: '',
@@ -76,9 +87,13 @@ export default {
         }
     },
     methods: {
+        goXiugai(){
+            this.$router.push('/index/content/xiugai/'+this.id)
+        },
         _getInfoUserMess(){
             this.axios.get('/index/index/userInfo').then(res =>{
                 const data = res.data.data;
+                this.id = data.id;
                 this.username = data.real_name;
                 this.userID = data.user_name;
                 this.examNum = data.kscs;

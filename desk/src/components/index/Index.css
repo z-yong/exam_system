@@ -20,7 +20,7 @@
     border-top: 1px solid #ccc
 }
 .index-main .content-left{
-    width: 20%;
+    min-width: 20%;
     display: inline-block;
     height: 100%;
 }

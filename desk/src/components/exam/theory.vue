@@ -43,8 +43,10 @@
                                     <p class="select-item"><el-checkbox label="B"></el-checkbox><span>{{topics[currentIndex].b}}</span></p>
                                     <p class="select-item"><el-checkbox label="C"></el-checkbox><span>{{topics[currentIndex].c}}</span></p>
                                     <p class="select-item"><el-checkbox label="D"></el-checkbox><span>{{topics[currentIndex].d}}</span></p>
-                                    <p class="select-item"><el-checkbox label="E"></el-checkbox><span>{{topics[currentIndex].e}}</span></p>
-                                    <p class="select-item"><el-checkbox label="F"></el-checkbox><span>{{topics[currentIndex].f}}</span></p>
+                                    <p v-if="topics[currentIndex].e" class="select-item"><el-checkbox label="E"></el-checkbox><span>{{topics[currentIndex].e}}</span></p>
+                                    <p v-if="topics[currentIndex].f" class="select-item"><el-checkbox label="F"></el-checkbox><span>{{topics[currentIndex].f}}</span></p>
+                                    <p v-if="topics[currentIndex].g" class="select-item"><el-checkbox label="F"></el-checkbox><span>{{topics[currentIndex].g}}</span></p>
+                                    <p v-if="topics[currentIndex].h" class="select-item"><el-checkbox label="F"></el-checkbox><span>{{topics[currentIndex].h}}</span></p>
                                 </el-checkbox-group>
                             </div>
                             <div v-if="topics[currentIndex].type == '3'" class="selects">

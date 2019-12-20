@@ -63,8 +63,8 @@
                                         <el-checkbox label="D">D</el-checkbox>
                                         <el-checkbox v-if="topicData[index].e" label="E">E</el-checkbox>
                                         <el-checkbox v-if="topicData[index].f" label="F">F</el-checkbox>
-                                        <el-checkbox v-if="topicData[index].g" label="F">G</el-checkbox>
-                                        <el-checkbox v-if="topicData[index].h" label="F">H</el-checkbox>
+                                        <el-checkbox v-if="topicData[index].g" label="G">G</el-checkbox>
+                                        <el-checkbox v-if="topicData[index].h" label="H">H</el-checkbox>
                                     </el-checkbox-group>
                                     <!-- <p class="item-desc" @click="goToSimu(item.id,item.serial)">作业条件{{item.serial}}</p> -->
                                 </li>
@@ -144,7 +144,7 @@ export default {
             bgColor: '#0070d8',
             fixed: false,
             color: '#fff',
-            userName: localStorage.getItem('username'),
+            userName: '',
             countDown: '',
             isShow: false,
             dialogVisible: false,
@@ -204,7 +204,7 @@ export default {
                 this.dialogVisible = true
             }
         },
-        goToSimu(id,index){
+        goToSimu(id){
             console.log(id)
             let indexi, ii;
             let i = 0;
@@ -220,7 +220,7 @@ export default {
                 }
                 i++
             }
-            const date = this._getStartTime()
+            this._getStartTime()
             const condition = JSON.stringify(this.condition)
             localStorage.setItem('condition',condition)
             const { href } = this.$router.resolve({path: '/index/simu'})
@@ -235,7 +235,7 @@ export default {
                 let time = 0;
                 if(seconds > 0){
                     const min = parseInt(this.anwserMess.countDown) - minute - 1;
-                    time = min*60 + (60 - seconds)
+                    time = min*60 + (60 - seconds);
                 }else{
                     const min = parseInt(this.anwserMess.countDown) - minute;
                     time = min*60
@@ -436,6 +436,12 @@ export default {
                     }
                 }
             })
+        },
+        _getUserName(){
+            this.axios.get('/index/index/index').then(res =>{
+                this.userName = res.data.data.real_name;
+                localStorage.setItem('username',this.userName)
+            })
         }
     }, 
     computed: {
@@ -468,6 +474,7 @@ export default {
        }
     },
     created(){
+        localStorage.setItem('leave',false);
         this.anwserMess = JSON.parse(localStorage.getItem('anwserMess'));
         this.countDown = this.anwserMess.countDown;
         this._getInfoData();
@@ -484,6 +491,7 @@ export default {
                 }
             })
         })
+        this._getUserName()
     },
     mounted(){
         let cardMinute;

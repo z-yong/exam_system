@@ -8,10 +8,10 @@
                 <p class="title-name">模拟考试</p>
                 <!-- <p class="title-desc">根据最新大纲的考察要求为你自动生成的模拟考卷</p> -->
                 <div class="exam-data">
-                    <p class="">技能卷开考日期：{{examData.mnjn_time || '暂无考试'}}</p>
-                    <p class="" style="margin-left:2em">技能卷名称：{{examData.mnjn_title}}</p>
-                    <p class="">理论卷开考日期：{{examData.mnll_time || '暂无考试'}}</p>
-                    <p class="" style="margin-left:2em">理论卷名称：{{examData.mnll_title}}</p>
+                    <p class="" style="white-space: nowrap;">技能卷开考日期：{{examData.mnjn_time || '暂无考试'}}</p>
+                    <p class="" style="margin-left:2em;white-space: nowrap;">技能卷名称：{{examData.mnjn_title}}</p>
+                    <p class="" style="white-space: nowrap;">理论卷开考日期：{{examData.mnll_time || '暂无考试'}}</p>
+                    <p class="" style="margin-left:2em;white-space: nowrap;">理论卷名称：{{examData.mnll_title}}</p>
                 </div>
                 <div class="btn-box">
                     <div class="action-btn" @click="simuExam">技能测试</div>
@@ -27,10 +27,10 @@
                 <p class="title-name">正式考试</p>
                 <!-- <p class="title-desc">根据最新大纲的考察要求为你自动生成的正式考卷</p> -->
                 <div class="exam-data">
-                    <p class="">技能卷开考日期：{{examData.zsjn_time || '暂无考试'}}</p>
-                    <p class="" style="margin-left:2em">技能卷名称：{{examData.zsjn_title}}</p>
-                    <p class="">理论卷开考日期：{{examData.zsll_time || '暂无考试'}}</p>
-                    <p class="" style="margin-left:2em">理论卷名称：{{examData.zsll_title}}</p>
+                    <p class="" style="white-space: nowrap;">技能卷开考日期：{{examData.zsjn_time || '暂无考试'}}</p>
+                    <p class="" style="margin-left:2em;white-space: nowrap;">技能卷名称：{{examData.zsjn_title}}</p>
+                    <p class="" style="white-space: nowrap;">理论卷开考日期：{{examData.zsll_time || '暂无考试'}}</p>
+                    <p class="" style="margin-left:2em;white-space: nowrap;">理论卷名称：{{examData.zsll_title}}</p>
                 </div>
                 <div class="btn-box">
                     <div class="action-btn" @click="officialExam">技能测试</div>
@@ -59,7 +59,7 @@
         background: #fff;
     }
     .wrapper .exam-box .exam-content{
-        width: 20%;
+        width: 35%;
         margin: auto;
         text-align: center
     }

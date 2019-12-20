@@ -15,6 +15,7 @@ import myQua from './components/index/index-com/myqua'
 import myMess from './components/index/index-com/my-mess'
 import myTopic from './components/index/index-com/my-topic'
 import myError from './components/index/index-com/my-error'
+import xiugai from './components/index/index-com/xiugaimima'
 
 
 Vue.use(Router)
@@ -80,6 +81,11 @@ export default new Router({
               path: '/index/content/myError',
               name: 'myError',
               component: myError
+            },
+            {
+              path: '/index/content/xiugai/:id',
+              name: 'xiugai',
+              component: xiugai
             }
           ]
         },

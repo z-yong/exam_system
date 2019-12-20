@@ -396,7 +396,7 @@ export default {
             next(false)
         }else{
             next()
-        }
+        } 
     },
     created(){
         this.$emit('simuSend','-1');//题目一加载即打开菜单

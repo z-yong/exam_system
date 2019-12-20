@@ -98,7 +98,7 @@ export default {
             var marker = new AMap.Marker({
                 position:[117.2312320000, 31.8407410000]//位置
             })
-            map.add(marker);//添加到地图
+            // map.add(marker);//添加到地图
             // map.plugin('AMap.DragRoute', function () {
             //     // path 是驾车导航的起、途径和终点，最多支持16个途经点
             //     var path = []

@@ -4,7 +4,7 @@ import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/iconfont/iconfont.css';
-import axios from 'axios'
+import axios from './http.js'
 import '@babel/polyfill';
 // https://blog.csdn.net/samll_cat/article/details/84565622 Eachts使用
 Vue.use(ElementUI);

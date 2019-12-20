@@ -233,7 +233,6 @@ export default {
             if(argument.length){
                 const reg = /([^?&=]+)=([^?&=|#]*)/g;
                 const arr = argument.match(reg);
-                let store_id = ''; 
                 arr.forEach((ele) =>{
                     const i = ele.indexOf('=');
                     const name = ele.slice(0,i)

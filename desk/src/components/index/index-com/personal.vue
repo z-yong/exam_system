@@ -8,7 +8,7 @@
                 </li>
                 <li @click="goToTopic">
                     <i class="iconfont">&#xe654;</i>
-                    <span>考试结果</span>
+                    <span>考试安排及结果</span>
                 </li>
                 <!-- <li @click="goToError">
                     <i class="iconfont">&#xe693;</i>

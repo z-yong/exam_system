@@ -15,7 +15,7 @@
                 <div class="header-right">
                     <ul> 
                         <router-link tag="div" to="/index/content/index-in/0" @click.native='goContent(1)' :style="{color:currentFontColor}">首页</router-link><div class="span">|</div>
-                        <!-- <router-link tag="li" to="/index/content/qua/1" :style="{color:currentFontColor}">问题反馈</router-link><li class="div">|</li> -->
+                         <!-- <router-link tag="li" to="/index/content/qua/1" :style="{color:currentFontColor}">问题反馈</router-link><li class="div">|</li> -->
                         <router-link tag="div" to="/index/content/personal/2" @click.native='goContent(0)' :style="{color:currentFontColor}">个人中心</router-link>
                         <div class="span">|</div>
                         <div @click='exit' :style="{color:currentFontColor}">退出</div>
