@@ -16,6 +16,8 @@ import 'tinymce/plugins/contextmenu'
 import 'tinymce/plugins/wordcount'
 import 'tinymce/plugins/colorpicker'
 import 'tinymce/plugins/textcolor'
+import 'tinymce/plugins/paste'
+// import 'tinymce/plugins/powerpaste'
 import '../../../public/tinymce/zh_CN.js'
 
 export default {
@@ -38,12 +40,17 @@ export default {
                 skin_url: '/tinymce/skins/ui/oxide',
                 height: 400,
                 //插件
-                plugins: 'link lists image code table colorpicker textcolor wordcount contextmenu',
+                plugins: 'link lists image code table colorpicker textcolor wordcount contextmenu paste',
                 //工具栏
-                toolbar:
-                         'bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | removeformat',
+                toolbar: 'bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | removeformat',
                 //隐藏tinymce的标识
                 branding: false,
+                // 复制图片处理
+                end_container_on_empty_block: true,
+                powerpaste_word_import: 'propmt',
+                powerpaste_html_import: 'propmt',
+                powerpaste_allow_local_images: true,
+                paste_data_images: true,
                 // 上传图片
                 images_upload_handler: (blobInfo, success, failure) => {
                     const formData = new FormData();

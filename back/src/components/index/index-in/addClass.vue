@@ -159,7 +159,7 @@ export default {
     },
     methods: {
         // 添加身份/编辑身份
-        addClass(value,row,index){
+        addClass(value,row){
             this.isClass = true;
             if(value == 'add'){
                 this.disTitle = '添加班级';
@@ -291,7 +291,6 @@ export default {
         },
         // 点击搜索
         searchData(value){
-            let index = 0;
             this.myTableData = this.tableData.filter(item =>{
                 return item.name.match(value)
             })

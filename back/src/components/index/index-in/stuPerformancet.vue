@@ -17,15 +17,30 @@
                             </template>
                         </el-table-column>
                         <el-table-column prop="title" label="技能卷考卷名称" min-width="15px"></el-table-column>
-                        <el-table-column prop="time" label="技能卷考试日期" min-width="10px"></el-table-column>
-                        <el-table-column prop="cj" label="技能分" min-width="5px"></el-table-column>
+                        <el-table-column prop="timea" label="技能卷考试日期" min-width="10px"></el-table-column>
+                        <el-table-column prop="cj" label="技能分" min-width="5px">
+                            <template slot-scope="scope">
+                                <div>
+                                    <span style="color:#DC143C">{{scope.row.cj}}</span>
+                                    <span>/{{scope.row.score}}</span>
+                                </div>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="title_a" label="理论卷考卷名称" min-width="15px"></el-table-column>
-                        <el-table-column prop="time_a" label="理论卷考试日期" min-width="10px"></el-table-column>
-                        <el-table-column prop="cj_a" label="理论分" min-width="5px"></el-table-column>
+                        <el-table-column prop="timeb" label="理论卷考试日期" min-width="10px"></el-table-column>
+                        <el-table-column prop="cj_a" label="理论分" min-width="5px">
+                            <template slot-scope="scope">
+                                <div>
+                                    <span style="color:#DC143C">{{scope.row.cj_a}}</span>
+                                    <span>/{{scope.row.score_a}}</span>
+                                </div>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="zongfen" label="总分" min-width="8px">
                             <template slot-scope="scope">
                                 <div>
-                                    <span style="color:#DC143C">{{scope.row.zongfen}}/{{scope.row.manfen}}</span>
+                                    <span style="color:#DC143C">{{scope.row.zongfen}}</span>
+                                    <span>/{{scope.row.manfen}}</span>
                                 </div>
                             </template>
                         </el-table-column>
@@ -132,7 +147,7 @@ export default {
         }
     },
     created(){
-        this._getOfficialData()
+        this._getOfficialData();
     }
 }
 </script>

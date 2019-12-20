@@ -13,7 +13,7 @@
                             <li v-if="!radioData.length" style="color: #999999;text-align:center;margin-top:1vh">无此项题</li>
                             <li v-for="(dan,di) in radioData" :key="di">
                                 <div class="item-mess">
-                                    <div style="display:flex;margin:0 0 1vh -1vh">
+                                    <div style="margin:0 0 1vh -1vh;">
                                         {{di+1}}、<div v-html="dan.subject.title">{{dan.subject.title}}</div>
                                         <span>({{dan.subject.fraction}}分)</span>
                                     </div>
@@ -42,18 +42,22 @@
                                 <div class="item-mess">
                                     <div style="display:flex;margin:0 0 1vh -1vh">
                                         {{du+1}}、<div v-html="duo.subject.title">{{duo.subject.title}}</div>
-                                        <span>({{duo.subject.fraction}}分)</span>
                                     </div>
+                                    <span>({{duo.subject.fraction}}分)</span>
                                     <div>A. {{duo.subject.a}}</div>
                                     <div>B. {{duo.subject.b}}</div>
                                     <div>C. {{duo.subject.c}}</div>
                                     <div>D. {{duo.subject.d}}</div>
-                                    <div>E. {{duo.subject.e}}</div>
-                                    <div>F. {{duo.subject.f}}</div>
+                                    <div v-if="duo.subject.e">E. {{duo.subject.e}}</div>
+                                    <div v-if="duo.subject.f">F. {{duo.subject.f}}</div>
+                                    <div v-if="duo.subject.g">G. {{duo.subject.g}}</div>
+                                    <div v-if="duo.subject.h">H. {{duo.subject.h}}</div>
                                     <div style="margin:1vh 0 0 -1vh">
-                                        <div>学生答案: <span v-for="(d, di) in duo.user_answer" :key="di" :class="duo.correct == 0 ? 'green' : 'red'">{{d}}</span></div>
+                                        <div>学生答案: 
+                                            <span v-for="(d, di) in duo.user_answer" :key="di" :class="duo.correct == 0 ? 'green' : 'red'"
+                                                  style="margin-right:1vw">{{d}}</span></div>
                                         <div style="margin-top:10px">正确答案:
-                                            <span v-for="(u, ui) in duo.answer" :key="ui">{{u}}</span>
+                                            <span v-for="(u, ui) in duo.answer" :key="ui" style="margin-right:1vw">{{u}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -71,15 +75,17 @@
                             <li v-if="!gapData.length" style="color: #999999;text-align:center;margin-top:1vh">无此项题</li>
                             <li v-for="(tian,ti) in gapData" :key="ti">
                                 <div class="item-mess">
-                                    <div style="display:flex;margin:0 0 1vh -1vh">
+                                    <div style="display:flex;flex-wrap:wrap; margin:0 0 1vh -1vh">
                                         {{ti+1}}、<div v-html="tian.subject.title">{{tian.subject.title}}</div>
                                         <span>({{tian.subject.fraction}}分)</span>
-                                        <div style="margin-left:15px;color:red">精确到{{tian.subject.error}}</div>
+                                        <div style="margin-left:15px;color:red">误差{{tian.subject.error}}</div>
                                     </div>
                                     <div>
-                                        <div>学生答案: <span v-for="(t, ti) in  tian.user_answer" :key="ti" :class="tian.correct == 0 ? 'green' : 'red'">{{t}}</span></div>
+                                        <div>学生答案: 
+                                            <span v-for="(t, ti) in  tian.user_answer" :key="ti" :class="tian.correct == 0 ? 'green' : 'red'"
+                                                  style="margin-right:1vw">{{t}}</span></div>
                                         <div style="margin-top:10px">正确答案:
-                                            <span v-for="(tt,tti) in tian.answer" :key="tti">{{tt}}</span>
+                                            <span v-for="(tt,tti) in tian.answer" :key="tti" style="margin-right:1vw">{{tt}}</span>
                                         </div>
                                     </div>
                                 </div>

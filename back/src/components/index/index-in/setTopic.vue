@@ -49,7 +49,6 @@
                             <el-button type="primary" @click="delAdjunct(el,i)">删除此附件</el-button>                
                         </div>
                     </div>
-                    
                     <div v-if="ruleForm.topics.length" class="new-topic">
                         <div class="topics" v-for="(topicItem,index) in ruleForm.topics" :key="index">
                             <div class="editor">        
@@ -449,7 +448,7 @@ export default {
         // 创建作业条件
         createConditions(){
             if(this.currentIndex == 1){
-                return this._isEmpty('这是理论出题 !')
+                return this._isEmpty('这是理论出题 !');
             }
             if(!this.ruleForm.topics.length){
                 if(!this.ruleForm.title){
@@ -486,7 +485,7 @@ export default {
         saveConditions(item,index){
             const content = tinymce.editors['topic'+index].getContent();
             if(!content){
-                this._isEmpty('请填写作业条件')
+                this._isEmpty('请填写作业条件');
                 return
             }
             const data = {
@@ -584,12 +583,14 @@ export default {
                 this.axios.post('/admin/issue/subject_delete',{id:item.id}).then(res =>{
                     this._isEmpty(res.data.msg)
                     if(res.data.code == 200){
-                        this.ruleForm.topics[index].topicArr.splice(index,1)
+                        this.ruleForm.topics[index].topicArr.splice(index,1);
+                        this.$forceUpdate()
                     }
                 })
             }else{
-                this.ruleForm.topics[index].topicArr.splice(index,1)
-                this._isEmpty('删除成功')
+                this.ruleForm.topics[index].topicArr.splice(index,1);
+                this.$forceUpdate()
+                // this._isEmpty('删除成功')
             }
         },
         // 保存标题
@@ -927,7 +928,7 @@ export default {
             }
         },
         // 判断提交
-        submitForm(formName) {
+        submitForm() {
             if(this.currentIndex == 0){
                 const outline = tinymce.editors['tinymce'].getContent();
                 const title = this.ruleForm.title;
@@ -943,15 +944,19 @@ export default {
         clearData(){
             if(this.currentIndex == 0){
                 this.axios.post('/admin/issue/emptyIssue?id='+this.ruleForm.id).then(res =>{
-                    this.dialogFormVisible0 = false;
-                    this.isAllShow = true;
-                    this.absolute = true;
+                    if(res.data.code == 200){
+                        this.dialogFormVisible0 = false;
+                        this.isAllShow = true;
+                        this.absolute = true;
+                    }
                 })
             }else{
                 this.axios.post('/admin/paper/emptyIssue?id='+this.ruleForms.id).then(res =>{
-                    this.dialogFormVisible0 = false;
-                    this.isAllShow = true;
-                    this.absolute = true;
+                    if(res.data.code == 200){
+                        this.dialogFormVisible0 = false;
+                        this.isAllShow = true;
+                        this.absolute = true;
+                    }
                 })
             }
         },
@@ -977,7 +982,7 @@ export default {
             }else{
                 this.axios.get('/admin/paper/proceed?id='+this.ruleForms.id).then(res =>{
                     this.ruleForms.title = res.data.data.paper.title;
-                    res.data.data.topic.forEach((el,index) =>{
+                    res.data.data.topic.forEach((el) =>{
                         if(el.type == '单选题'){
                             el.danxuan = el.answer;
                         }else if(el.type == '多选题'){
@@ -994,7 +999,7 @@ export default {
                 })
             }
         },
-        change(e){
+        change(){
             this.$forceUpdate()
         },
         _getData(enclosure,condition){
@@ -1008,7 +1013,7 @@ export default {
                 this.ruleForm.topics[index] = {};
                 this.ruleForm.topics[index]['content'] = ele.content;
                 this.ruleForm.topics[index].topicArr = ele.subject;
-                this.ruleForm.topics[index].topicArr.forEach((el,i) =>{
+                this.ruleForm.topics[index].topicArr.forEach((el) =>{
                     if(el.type == '单选题'){
                         el.danxuan = el.answer
                     }else if(el.type == '多选题'){

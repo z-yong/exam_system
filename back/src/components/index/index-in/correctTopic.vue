@@ -26,7 +26,8 @@
                 </div>
                 <div class="fraction">
                     <span>最终得分：</span>
-                    <input type="number" v-model="answerList[index].score" @input="callback => changeScore(callback, item.fraction)" placeholder="请输入该题得分">
+                    <!--  @input="callback => changeScore(callback, item.fraction)" -->
+                    <input type="number" v-model="answerList[index].score" placeholder="请输入该题得分">
                 </div>
             </div>
             <div class="submit">
@@ -88,12 +89,8 @@ export default {
                         return ele.type == 4 || ele.automatic == 1;
                     })
                     this.topicList.forEach((ele,index) =>{
-                        this.answerList[index] = {id:ele.daan_id,score: ele.score}
-                        if(ele.automatic && ele.automatic == 1){
-                            ele.user_answer = JSON.parse(ele.user_answer)
-                        }
+                        this.answerList[index] = { id: ele.daan_id, score: ele.score }
                     })
-                    console.log(this.topicList)
                 }
             })
         }

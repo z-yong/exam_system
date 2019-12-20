@@ -45,7 +45,7 @@ axios.interceptors.response.use(
     },
     error =>{
         // endLoading();
-        Message.error(error.response.data);
+        // Message.error(error.response.data);
         // Message.error('网络错误')
         // 当响应失败时
         const status = error.response.status;

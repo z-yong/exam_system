@@ -110,7 +110,7 @@ export default {
     },
     methods: {
         // 添加身份/编辑身份
-        addClass(value,row,index){
+        addClass(value,row){
             if(value == 'add'){
                 this.disTitle = '添加新用户';
                 this.passPlaceholder = '输入登录密码';
@@ -194,7 +194,6 @@ export default {
         },
         // 点击搜索
         searchData(value){
-            let index = 0;
             this.myTableData = this.tableData.filter(item =>{
                 return item.admin_real.match(value) || item.admin_limit_name.match(value)
             })
@@ -210,7 +209,7 @@ export default {
         }
     },
     created(){
-        this._getInfoData()
+        this._getInfoData();
     }
 }
 </script>

@@ -30,8 +30,9 @@
                     </div>
                     <div class="to-lead">
                         <p class="add-box-title">批量导入：</p>
+                        <!-- http://ksxt.90plus.cn/admin/user/addUserAll -->
                         <el-upload class="upload-demo" drag name='excel' show-file-list multiple :on-success='uploadSucceed'
-                                   :on-preview='clickFile' action="http://ksxt.90plus.cn/admin/user/addUserAll">
+                                   :on-preview='clickFile' action="http://127.0.0.1/admin/user/addUserAll">
                             <i class="el-icon-upload"></i>
                             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                             <div class="el-upload__tip" slot="tip">只能上传xlsx文件</div>
@@ -74,11 +75,9 @@ export default {
                         real_name: this.formInline.stuName,
                         class_a: this.classID,
                         password: this.formInline.pass,
-
                     }
                     this.axios.post('/admin/user/addUser',data).then(res =>{
-                        console.log(res)
-                        if(res.data.code = 200){
+                        if(res.data.code == 200){
                             this.$message({
                                 message: '添加成功！您可以继续添加学生',
                                 type: 'success'
