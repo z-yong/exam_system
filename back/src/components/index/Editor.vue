@@ -52,20 +52,20 @@ export default {
                 powerpaste_allow_local_images: true,
                 paste_data_images: true,
                 // 上传图片
-                images_upload_handler: (blobInfo, success, failure) => {
-                    const formData = new FormData();
-                    formData.append('filename', blobInfo.blob());
-                    console.log(formData)
-                    this.axios.post('/admin/issue/upload',formData).then(res =>{
-                        if(res.data['code'] == 200){
-                            success(res.data.msg)
-                        }else{
-                            failure('上传失败！')
-                        }
-                    }).catch(() => {
-                        failure('上传出错')
-                    })
-                }
+                // images_upload_handler: (blobInfo, success, failure) => {
+                //     const formData = new FormData();
+                //     formData.append('filename', blobInfo.blob());
+                //     console.log(formData)
+                //     this.axios.post('/admin/issue/upload',formData).then(res =>{
+                //         if(res.data['code'] == 200){
+                //             success(res.data.msg)
+                //         }else{
+                //             failure('上传失败！')
+                //         }
+                //     }).catch(() => {
+                //         failure('上传出错')
+                //     })
+                // }
             }
         };
     },
