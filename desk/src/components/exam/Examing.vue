@@ -117,6 +117,11 @@ export default {
             let condition = [];
             let id = 0;
             const reportID = localStorage.getItem('reportID');
+            if(!reportID){
+                return this.$message({
+                    message: '本场考试已结束!'
+                })
+            }
             if(this.id == 0){ //模拟
                 this.axios.get('/index/index/StartExamMn?id='+reportID).then(res =>{
                     enclosure = res.data.data.enclosure;
@@ -151,6 +156,11 @@ export default {
             let condition = [];
             let id;
             const reportID = localStorage.getItem('reportID');
+            if(!reportID){
+                return this.$message({
+                    message: '本场考试已结束!'
+                })
+            }
             if(this.id == 0){
                 this.axios.get('/index/index/StartExamMn?id='+reportID).then(res =>{
                     id = res.data.data.id;
