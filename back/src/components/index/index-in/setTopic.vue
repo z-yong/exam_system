@@ -1018,6 +1018,7 @@ export default {
                         el.danxuan = el.answer
                     }else if(el.type == '多选题'){
                         el.duoxuan = el.answer
+                        console.log(el.duoxuan)
                     }else{
                         el.tiankong = el.answer
                     }

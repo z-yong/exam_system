@@ -13,12 +13,9 @@
             <div class="table">
                 <p class="table-title">管理员列表</p>
                 <el-table :data="myTableData" style="width: 100%">
-                    <el-table-column prop="admin_name" label="账号" min-width="20px">
-                    </el-table-column>
-                    <el-table-column prop="admin_real" label="姓名" min-width="20px">
-                    </el-table-column>
-                    <el-table-column prop="admin_limit_name" label="身份" min-width="20px" >
-                    </el-table-column>
+                    <el-table-column prop="admin_name" label="账号" min-width="20px"></el-table-column>
+                    <el-table-column prop="admin_real" label="姓名" min-width="20px"></el-table-column>
+                    <el-table-column prop="admin_limit_name" label="身份" min-width="20px"></el-table-column>
                     <el-table-column prop="admin_state" label="是否启用" min-width="20px" >
                         <template slot-scope="scope">
                             <i class="iconfont" :class="scope.row.admin_state == 1 ? 'green' : 'red'">
@@ -26,8 +23,7 @@
                             </i>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="create_time" label="创建时间" min-width="20px">
-                    </el-table-column>
+                    <el-table-column prop="create_time" label="创建时间" min-width="20px"></el-table-column>
                     <el-table-column label="操作" min-width="20px">
                         <template slot-scope="scope">
                             <el-button type="text" size="small" @click="addClass('redact',scope.row,scope.$index)"><i class="iconfont">&#xe64b;</i>编辑</el-button>

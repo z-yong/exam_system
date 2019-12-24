@@ -54,8 +54,11 @@
                                     <div v-if="duo.subject.h">H. {{duo.subject.h}}</div>
                                     <div style="margin:1vh 0 0 -1vh">
                                         <div>学生答案: 
-                                            <span v-for="(d, di) in duo.user_answer" :key="di" :class="duo.correct == 0 ? 'green' : 'red'"
-                                                  style="margin-right:1vw">{{d}}</span></div>
+                                            <span v-for="(d, di) in duo.user_answer" :key="di" style="margin-right:1vw"
+                                                  :class="duoCorrect(d,duo.answer) ? 'green' : 'red'">
+                                                {{d}}
+                                            </span>
+                                        </div>
                                         <div style="margin-top:10px">正确答案:
                                             <span v-for="(u, ui) in duo.answer" :key="ui" style="margin-right:1vw">{{u}}</span>
                                         </div>
@@ -82,8 +85,11 @@
                                     </div>
                                     <div>
                                         <div>学生答案: 
-                                            <span v-for="(t, ti) in  tian.user_answer" :key="ti" :class="tian.correct == 0 ? 'green' : 'red'"
-                                                  style="margin-right:1vw">{{t}}</span></div>
+                                            <span v-for="(t, ti) in  tian.user_answer" :key="ti" style="margin-right:1vw"
+                                                  :class="tianCorrect(t,tian.answer,tian.subject.error) ? 'green' : 'red'">
+                                                {{t}}
+                                            </span>
+                                        </div>
                                         <div style="margin-top:10px">正确答案:
                                             <span v-for="(tt,tti) in tian.answer" :key="tti" style="margin-right:1vw">{{tt}}</span>
                                         </div>
@@ -100,9 +106,7 @@
         </div>
     </div>
 </template>
-<style src='./anwser.css' scoped>
-    
-</style>
+<style src='./anwser.css' scoped></style>
 <script>
 export default {
     props: {
@@ -123,8 +127,29 @@ export default {
         }
     },
     methods: {
+        //验证多选题学生答案的每一项与正确答案的每一项是否一致
+        duoCorrect(item, arr){
+            let A = false;
+            for (const el of arr){
+                if(el == item){
+                    A = true;
+                }
+            }
+            return A;
+        },
+        //验证填空题学生答案的每一项与正确答案的每一项是否一致
+        tianCorrect(item, arr, err){
+            let A = false;
+            const answer = parseFloat(item);
+            for (const el of arr) {
+                let num =  parseFloat(err)/100;
+                if(answer >= parseFloat(el)-num && answer <= parseFloat(el)+num){
+                    A = true;
+                }
+            }
+            return A;
+        },
         _getData(){
-            console.log(this.answerData)
             const data = {
                 j_id: this.answerData.j_id, 
                 u_id: this.answerData.u_id,

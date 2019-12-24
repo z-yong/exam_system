@@ -123,7 +123,6 @@ export default {
                     admin_pwd: this.ruleForm.pass
                 }
                 this.axios.post('/admin/login/adminLogin',data).then(res =>{
-                    console.log(res)
                    if(res.data.code == 200){
                         if(this.checked){
                             localStorage.setItem('username',res.data.data.admin_name);

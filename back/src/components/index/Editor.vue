@@ -75,7 +75,7 @@ export default {
         //     let content = tinymce.get(this.id).getContent()
         //     this.$emit('release',content)
         // }
-        getBase64Image(img) {  
+        getBase64Image(img){  
             const canvas = document.createElement("canvas");  
             canvas.width = img.width;  
             canvas.height = img.height;  
@@ -86,11 +86,11 @@ export default {
             return dataURL;  
         }
     },
-    mounted () {
+    mounted (){
         //配置的初始化
         tinymce.init(this.init);
     },
-    beforeDestroy() {
+    beforeDestroy(){
         //销毁
         tinymce.get(this.id).destroy();
     }
