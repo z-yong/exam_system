@@ -2,7 +2,10 @@
     <div class="per-wrapper">
         <div class="stu-per">
             <div class="per-table">
-                <p class="table-title">{{name}}的历史考卷列表</p>
+                <p class="table-title" style="display:flex;align-items:center;">
+                    <span class="iconfont" style="margin-right:0.2vw;cursor: pointer;font-size:18px" @click="back">&#xe501;</span>
+                    <span>{{name}}的历史考卷列表</span>
+                </p>
                 <!-- <div style="display:flex;align-items: center;background:#fff;border-bottom:1px solid #eee;margin-top:2vh"> -->
                     <!-- <div v-for="(menu,mi) in menuList" :key="mi" style="padding:1.2vh 2vw;cursor: pointer;border:1px solid #f7f7f7;" @click="changeMenu(mi)"
                         :style="{background:currentIndex == mi ? '#0070d8' : '',color: currentIndex == mi ? '#fff' : '',opacity: currentIndex == mi ? '0.7' : ''}">{{menu}}</div> -->
@@ -79,6 +82,9 @@ export default {
         }
     },
     methods:{
+        back(){
+            this.$emit('back')
+        },
         changeMenu(index){
             this.currentIndex = index;
             if(index == 0){

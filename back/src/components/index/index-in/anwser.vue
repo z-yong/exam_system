@@ -6,6 +6,7 @@
                         :style="{background:currentIndex == mi ? '#0070d8' : '',color: currentIndex == mi ? '#fff' : '',opacity: currentIndex == mi ? '0.7' : ''}">{{menu}}</div> -->
                 <!-- </div> -->
             <div class="topic">
+                <div style="padding:10px 0;color:#0070d8;cursor: pointer;" @click="back">返回上一层</div>
                 <div class="topic-item">
                     <div class="item-name">单选题</div>
                     <div class="topic-content-wrapper">
@@ -127,6 +128,9 @@ export default {
         }
     },
     methods: {
+        back(){
+            this.$emit('back')
+        },
         //验证多选题学生答案的每一项与正确答案的每一项是否一致
         duoCorrect(item, arr){
             let A = false;

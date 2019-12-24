@@ -13,9 +13,9 @@
             <div class="table">
                 <p class="table-title">班级列表</p>
                 <el-table :data="myTableData" style="width: 100%">
-                    <el-table-column prop="id" label="编号" min-width="10px"></el-table-column>
+                    <el-table-column prop="id" label="编号" min-width="5px"></el-table-column>
                     <el-table-column prop="name" label="班级名称" min-width="15px"></el-table-column>
-                    <el-table-column prop="time" label="班级创建时间" min-width="20px"></el-table-column>
+                    <el-table-column prop="time" label="班级创建时间" min-width="15px"></el-table-column>
                     <el-table-column label="操作" min-width="60px">
                         <template slot-scope="scope">
                             <el-button type="text" size="small" @click="addClass('redact',scope.row,scope.$index)"><i class="iconfont">&#xe64b;</i>修改</el-button>

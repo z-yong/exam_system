@@ -2,7 +2,7 @@
     <div class="wrapper-index">
         <div class="index-left">
             <div class="user-photo">
-                <img src="../../assets/img/userPhoto.png" alt="" @click="gogogo">
+                <img src="../../assets/img/userPhoto.png" alt="">
                 <p>{{userName}}</p>
             </div>
             <div class="index-left-menu" :class="fixed ? 'fixed' : ''">
@@ -72,16 +72,17 @@
                 <z-set-topic v-if="show == 'setTopic'" :topicTitle='topicTitle' :topicType='s_type' ref="setTopic" :isGetInfo='isGetInfo' :topicID='topicID' :topicName='topicName' :outline='outline' @gotoTopicTable='gotoTopicTable($event)' :topicIndex='topicIndex'></z-set-topic>
                 <!-- <z-theory v-if="show=='setTheoryTopic'"/> -->
                 <z-simu v-if="show =='simu'" :isOper='isOper' @studentShow='studentShow' :title="isSimuTitle" @addTopic='addTopic($event)' @amendTopic='amendTopic($event)'></z-simu>
-                <z-student v-if="show =='student'" :classID='classID' @seeStuPer='seeStuPer($event)'></z-student>
+                <z-student v-if="show =='student'" :classID='classID' @seeStuPer='seeStuPer($event)' @back='stuBack'></z-student>
                 <z-feedback v-if="show =='feedback'"></z-feedback>
                 <z-add-stu v-if="show =='addStu'"></z-add-stu>
                 <z-add-class v-if="show =='addClass'" @seeStudent='seeStudent($event)' @seeExamRecord='seeExamRecord($event)'></z-add-class>
                 <z-set-up v-if="show == 'setUp'"></z-set-up>
                 <z-user-admin v-if="show == 'userAdmin'"/>
-                <z-stu-performancet v-if="show == 'stuPerformancet'" :id='stuPerID' @correct='getCorrectData($event)' @seeAnswer='seeAnswer($event)'/>
-                <z-stu-answer v-if="show == 'answer'" :answerData='answerData'/>
-                <z-coorect v-if="show=='correct'" :ids='correctMess' @seeStuPer='seeStuPer($event)'/>
-                <z-exam-record v-if="show=='examRecord'" :id='examRecordID'/>
+                <z-stu-performancet v-if="show == 'stuPerformancet'" :id='stuPerID' @correct='getCorrectData($event)' 
+                                    @seeAnswer='seeAnswer($event)' @back='stuPerformancetBack'/>
+                <z-stu-answer v-if="show == 'answer'" :answerData='answerData' @back='answerBack'/>
+                <z-correct v-if="show=='correct'" :ids='correctMess' @seeStuPer='seeStuPer($event)' @back='correctBack'/>
+                <z-exam-record v-if="show=='examRecord'" :id='examRecordID' @back='examRecordBack'/>
             </div>
         </div>
         <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
@@ -111,7 +112,7 @@ import addClass from './index-in/addClass'
 import userAdmin from './index-in/userAdmin'
 import stuPerformancet from './index-in/stuPerformancet'
 import stuAnswer from './index-in/anwser'
-import coorect from './index-in/correctTopic'
+import correct from './index-in/correctTopic'
 import examRecord from './index-in/examRecord'
 
 export default {
@@ -129,7 +130,7 @@ export default {
         "z-user-admin": userAdmin,
         "z-stu-performancet": stuPerformancet,
         "z-stu-answer": stuAnswer,
-        "z-coorect": coorect,
+        "z-correct": correct,
         "z-exam-record": examRecord
     },
     // 用于刷新页面
@@ -190,8 +191,20 @@ export default {
         }
     },
     methods: {
-        gogogo(){
-            this.$router.push('/')
+        examRecordBack(){
+            this._showPage('addClass')
+        },
+        stuBack(){
+            this._showPage('addClass')
+        },
+        stuPerformancetBack(){
+            this._showPage('student')
+        },
+        answerBack(){
+            this._showPage('stuPerformancet')
+        },
+        correctBack(){
+            this._showPage('stuPerformancet')
         },
         receiveHome(e){ //接收home组件传递的值
             this.menuList = [
@@ -253,9 +266,9 @@ export default {
         // 查看答题卡
         seeAnswer(e){
             this.answerData = e; 
-            this._showPage('answer')
+            this._showPage('answer');
         },
-        handleOpen(index, indexPath) {
+        handleOpen(index) {
             if(index == 1){
                  this.menuList = [{ icon: '&#xe663;', name: '首页' }, { icon: '&#xe70b;', name: '模拟试卷出题' },
                     { icon: '&#xe996;', name: '正式试卷出题' }]
@@ -346,7 +359,7 @@ export default {
                 }else if(index == 3){
                     this.defaultOpeneds = ['3'];
                     this.defaultActive = '3-3'
-                    this._showPage('feedback')
+                    this._showPage('stuPerformancet')
                 }
             }else if(this.currentMenuIndex == 4){//如果在设置
                 if(index == 1){

@@ -1,5 +1,6 @@
 <template>
     <div class="correct-wrapper">
+        <div style="padding:0 0 10px;color:#0070d8;cursor: pointer;" @click="back">返回上一层</div>
         <div v-if="topicList.length" class="topic-box">
             <div class="topic-item" v-for="(item,index) in topicList" :key="index">
                 <div style="display: flex;align-items: center;">
@@ -35,7 +36,7 @@
             </div>
         </div>
         <div v-else>
-            此试卷无可批改的简答题
+            此试卷无可批改的题目
         </div>
     </div>
 </template>
@@ -53,6 +54,9 @@ export default {
         }
     },
     methods: {
+        back(){
+            this.$emit('back')
+        },
         changeScore(callback,fraction){
             // console.log(f,e)
         },

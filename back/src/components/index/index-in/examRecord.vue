@@ -2,7 +2,10 @@
     <div class="record-wrapper">
         <div class="table-box">
             <div class="table">
-                <p class="table-title">班级历史考卷</p>
+                <p class="table-title" style="display:flex;align-items:center;">
+                    <span class="iconfont" style="margin-right:0.2vw;cursor: pointer;font-size:18px" @click="back">&#xe501;</span>
+                    <span>班级历史考卷</span>
+                </p>
                 <el-table :data="myTableData" style="width: 100%">
                     <!-- <el-table-column prop="id" label="编号" min-width="10px"></el-table-column> -->
                     <el-table-column prop="title" label="技能卷名称" min-width="20px">
@@ -51,6 +54,9 @@ export default {
         }
     },
     methods: {
+        back(){
+            this.$emit('back')
+        }, 
         deleteData(id){
             this.recordID = id;
             this.dialogVisible = true;

@@ -13,7 +13,10 @@
                 </div>
             </div>
             <div class="stu-table">
-                <p class="table-title">所有学生列表</p>
+                <p class="table-title" style="display:flex;align-items:center;">
+                    <span class="iconfont" style="margin-right:0.2vw;cursor: pointer;font-size:18px" @click="back">&#xe501;</span>
+                    <span>所有学生列表</span>
+                </p>
                 <template>
                     <el-table :highlight-current-row="true"
                         :data="myTableData" style="width: 100%">
@@ -121,6 +124,9 @@ export default {
         }
     },
     methods: {
+        back(){
+            this.$emit('back')
+        }, 
         searchStudent(value){
             this.axios.get('/admin/user/userlist?value='+value).then(res =>{
                 res.data.data.forEach((ele,index) =>{

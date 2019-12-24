@@ -66,7 +66,7 @@
     justify-content: space-evenly;
     align-items: center;
     width: 24%;
-    text-align: center
+    text-align: center;
 }
 .current-state .start .start-desc,
 .current-state .end .end-desc{
@@ -99,7 +99,7 @@
     /* margin-top: 4vh */
 }    
 .answer-wrapper .topic-item{
-    margin-top: 3vh;
+    margin-bottom: 3vh;
     background: #ffff;
 }
 .answer-wrapper .topic .topic-content-wrapper{
