@@ -138,7 +138,7 @@
                                         </el-form-item>
                                         <div class="gap">
                                             <el-form-item v-if="topic.type == '填空题'" label="正确答案">
-                                                <div v-for="(t) in 5" :key="t">
+                                                <div v-for="(t) in 10" :key="t">
                                                     <el-input v-model="topic.tiankong[t-1]" type="" @input="change($event)" placeholder="请填写答案(最少填一个)"></el-input>
                                                 </div>
                                                 <el-input v-model="topic.error" type="number" placeholder="请给出误差(可不填)" @input="change($event)"></el-input>
@@ -246,7 +246,7 @@
                                     <div class="gap">
                                         <div v-if="topic.type == '填空题'">
                                             <el-form-item label="正确答案">
-                                                <div v-for="(t) in 5" :key="t">
+                                                <div v-for="(t) in 10" :key="t">
                                                     <el-input v-model="topic.tiankong[t-1]" type="" @input="change($event)" placeholder="请填写答案(最少填一个)"></el-input>
                                                 </div>
                                                 <el-input v-model="topic.error" type="number" placeholder="请给出误差" @input="change($event)"></el-input>

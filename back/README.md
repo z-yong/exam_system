@@ -3,6 +3,8 @@ cnpm i element-ui -S
 cnpm install echarts -S
 cnpm install @tinymce/tinymce-vue -S
 cnpm install tinymce -S
+cnpm install --save axios
+cnpm i babel-polyfill --save-dev
 ## Project setup
 ```
 npm install
