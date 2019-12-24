@@ -27,12 +27,18 @@ export default new Router({
     {
       path: '/',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: {
+        title: '学生考试系统'
+      }
     },
     {
       path: '/index',
       name: 'Index',
       component: Index,
+      meta: {
+        title: '技能卷'
+      },
       redirect: '/index/content',
       children: [
         {
@@ -44,7 +50,10 @@ export default new Router({
             {
               path: '/index/content/index-in/:id',
               name: 'indexIn',
-              component: indexIn
+              component: indexIn,
+              meta: {
+                title: '学生考试系统'
+              }
             },
             {
               path: '/index/content/personal/:id',
