@@ -144,7 +144,7 @@ export default {
                     localStorage.setItem('title',res.data.data.title);
                     localStorage.setItem('exam','simu')
                     localStorage.setItem('reportID', res.data.data.id);//成绩id
-                    this.$router.push({path: '/examing/0'});
+                    this.$router.push({path: '/examing/0'}); 
                 }
             }) 
         },

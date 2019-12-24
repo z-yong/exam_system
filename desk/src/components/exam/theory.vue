@@ -45,8 +45,8 @@
                                     <p class="select-item"><el-checkbox label="D"></el-checkbox><span>{{topics[currentIndex].d}}</span></p>
                                     <p v-if="topics[currentIndex].e" class="select-item"><el-checkbox label="E"></el-checkbox><span>{{topics[currentIndex].e}}</span></p>
                                     <p v-if="topics[currentIndex].f" class="select-item"><el-checkbox label="F"></el-checkbox><span>{{topics[currentIndex].f}}</span></p>
-                                    <p v-if="topics[currentIndex].g" class="select-item"><el-checkbox label="F"></el-checkbox><span>{{topics[currentIndex].g}}</span></p>
-                                    <p v-if="topics[currentIndex].h" class="select-item"><el-checkbox label="F"></el-checkbox><span>{{topics[currentIndex].h}}</span></p>
+                                    <p v-if="topics[currentIndex].g" class="select-item"><el-checkbox label="G"></el-checkbox><span>{{topics[currentIndex].g}}</span></p>
+                                    <p v-if="topics[currentIndex].h" class="select-item"><el-checkbox label="H"></el-checkbox><span>{{topics[currentIndex].h}}</span></p>
                                 </el-checkbox-group>
                             </div>
                             <div v-if="topics[currentIndex].type == '3'" class="selects">
@@ -107,6 +107,7 @@ export default {
             answer: [],
             type: '',
             len: 0,
+            isGoIndex: true,
             isLeave: false,
             allow: false
         }
@@ -170,7 +171,25 @@ export default {
             if(!JSON.parse(localStorage.getItem('leave'))){
                 const minute = localStorage.getItem('minute');
                 const seconds = localStorage.getItem('seconds');
-                this.hint = `距离考试结束还有${minute}分钟${seconds}秒，确认提交答卷吗？`;
+                if(this.id == 0){
+                    this.axios.get('/index/index/get_xiayichang_mn').then(res =>{
+                        this.isGoIndex = res.data.data.lianxian == 0 ? true : false;
+                        if(this.isGoIndex){
+                            this.hint = `距离考试结束还有${minute}分钟${seconds}秒，确认提交答卷吗？`;
+                        }else{
+                            this.hint = `距离考试结束还有${minute}分钟${seconds}秒，确认提交答卷并前往下一场(技能卷)考试？`;
+                        }
+                    })
+                }else{
+                    this.axios.get('/index/index/get_xiayichang').then(res =>{
+                        this.isGoIndex = res.data.data.lianxian == 0 ? true : false;
+                        if(this.isGoIndex){
+                            this.hint = `距离考试结束还有${minute}分钟${seconds}秒，确认提交答卷吗？`;
+                        }else{
+                            this.hint = `距离考试结束还有${minute}分钟${seconds}秒，确认提交答卷并前往下一场(技能卷)考试？`;
+                        }
+                    })
+                }
                 this.cancelShow = true;
                 this.allow = true;
                 this.dialogVisible = true;
@@ -190,11 +209,11 @@ export default {
                     time = min*60;
                 }
                 const data = {
-                    s_id:  this.s_id,
+                    s_id: this.s_id,
                     time
                 }
                this.axios.post('/index/index/post_issue_answer_a',data).then(res =>{
-                    clearInterval(this.timer);
+                    clearInterval(this.timer); 
                     localStorage.clear();
                     localStorage.setItem('leave',true);
                     this.dialogVisible = false;
@@ -203,7 +222,31 @@ export default {
                         message: res.data.msg,
                         type: 'success'
                     })
-                    this.$router.push({name: 'Index'});
+                    if(this.isGoIndex){
+                        this.$router.push({name: 'Index'});
+                    }else{
+                        if(this.id == 0){
+                            const data = { 
+                                zt: 2, jl: 1
+                            }
+                            this.axios.post('/index/index/shijuantimu', data).then(res =>{
+                                localStorage.setItem('title',res.data.data.title);
+                                localStorage.setItem('exam','simu')
+                                localStorage.setItem('reportID', res.data.data.id);//成绩id
+                                this.$router.push({path: '/examing/0'});
+                            }) 
+                        }else{
+                            const data = {
+                                zt: 1, jl: 1
+                            }
+                            this.axios.post('/index/index/shijuantimu', data).then(res =>{
+                                localStorage.setItem('exam','official')
+                                localStorage.setItem('title',res.data.data.title);
+                                localStorage.setItem('reportID', res.data.data.id);//成绩id
+                                this.$router.push({path: '/examing/1'});
+                            })
+                        }
+                    }
                })
             }else{
                 this.dialogVisible = false;

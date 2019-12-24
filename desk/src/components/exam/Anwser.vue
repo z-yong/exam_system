@@ -140,6 +140,7 @@ export default {
     data(){
         return{
             id: 0,
+            isZheng: '',//区分正式还是模拟
             path: require('../../assets/img/userPhoto.png'),
             bgColor: '#0070d8',
             fixed: false,
@@ -205,7 +206,6 @@ export default {
             }
         },
         goToSimu(id){
-            console.log(id)
             let indexi, ii;
             let i = 0;
             for (const item of this.condition) {
@@ -251,7 +251,7 @@ export default {
                     localStorage.setItem('leave',true)
                     this.isLeave = true;
                     this.dialogVisible = false;
-                    this.$router.push({path: '/examend', query: {data: res}})
+                    this.$router.push({path: '/examend', query: {data: res,id: this.isZheng}})
                     // this.$router.back()
                     // location.href = 'http://localhost:8080/index'
                 })
@@ -479,6 +479,7 @@ export default {
         this.countDown = this.anwserMess.countDown;
         this._getInfoData();
         this.condition = JSON.parse(this.anwserMess.condition)
+        this.isZheng = this.anwserMess.id;
         this.$nextTick(()=>{
             const head = document.getElementById('head');
             const top = head.offsetTop;
@@ -487,7 +488,7 @@ export default {
                 if(scrollTop >= top){
                     this.fixed = true;
                 }else{
-                    this.fixed = false
+                    this.fixed = false;
                 }
             })
         })
