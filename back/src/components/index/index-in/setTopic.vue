@@ -184,11 +184,8 @@
                                 <el-form-item label="难度" :prop="topic.difficulty">
                                     <template>
                                         <el-select v-model="topic.difficulty">
-                                            <el-option
-                                                v-for="(item,index) in degrees" 
-                                                :key="index"
-                                                :value="item.label"
-                                                :label="item.label">
+                                            <el-option v-for="(item,index) in degrees" :key="index" 
+                                                       :value="item.label" :label="item.label">
                                             </el-option>
                                         </el-select>
                                     </template>
@@ -581,10 +578,10 @@ export default {
         delQua(item,index){
             if(item.id){
                 this.axios.post('/admin/issue/subject_delete',{id:item.id}).then(res =>{
-                    this._isEmpty(res.data.msg)
+                    this._isEmpty(res.data.msg);
                     if(res.data.code == 200){
                         this.ruleForm.topics[index].topicArr.splice(index,1);
-                        this.$forceUpdate()
+                        this.$forceUpdate();
                     }
                 })
             }else{

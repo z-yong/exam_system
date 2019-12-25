@@ -16,7 +16,7 @@
                         <el-table-column fixed prop="serial" label="序号" min-width="5px"></el-table-column>
                         <el-table-column  prop="simulation" label="考卷类别" min-width="8px">
                             <template slot-scope="scope">
-                                <span>{{scope.row.simulation == 0 ? '正式考卷' : '模拟考卷'}}</span>
+                                <span>{{scope.row.zs == 2 ? '正式考卷' : '模拟考卷'}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column prop="title" label="技能卷考卷名称" min-width="15px"></el-table-column>

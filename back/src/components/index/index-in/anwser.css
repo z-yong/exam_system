@@ -130,7 +130,8 @@
 .answer-wrapper .topic .topic-content-ul li{
     padding: 20px 0;
     font-size: 15px;
-    color: #333
+    color: #333;
+    border-bottom: 3px solid #f0f0f0;
 }
 .answer-wrapper .topic .topic-content-ul li .item-desc{
     color: #0070d8;

@@ -23,6 +23,7 @@
                     <el-table-column prop="timeb" label="理论卷开考日期" min-width="10px" ></el-table-column>
                     <el-table-column label="操作" min-width="10px">
                         <template slot-scope="scope">
+                            <el-button type="text" size="small" @click="exportData(scope.row.id)"><i class="iconfont">&#xe7ef;</i>导出成绩</el-button>
                             <el-button type="text" size="small" @click="deleteData(scope.row.id)"><i class="iconfont">&#xe631;</i>删除</el-button>
                         </template>
                     </el-table-column>
@@ -60,7 +61,22 @@ export default {
     methods: {
         back(){
             this.$emit('back')
-        }, 
+        },
+        exportData(id){
+            this.axios.post('/admin/user/get_export',{ id }).then(res =>{
+                if(res.data.data.code && res.data.data.code == 200){
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'success'
+                    })
+                }else{
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'error'
+                    })
+                }
+            })
+        },
         deleteData(id){
             this.recordID = id;
             this.dialogVisible = true;
@@ -117,7 +133,10 @@ export default {
         text-indent: 0.5em;
         border-bottom: 1px solid #eee
     }
-    .record-wrapper .el-button.el-button--text.el-button--small{
+    .record-wrapper .el-button.el-button--text.el-button--small:nth-child(1){
+        color: green
+    }
+    .record-wrapper .el-button.el-button--text.el-button--small:nth-child(2){
         color: #ff637b;
     }
     .record-wrapper .el-button.el-button--text.el-button--small .iconfont{

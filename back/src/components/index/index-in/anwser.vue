@@ -8,101 +8,79 @@
             <div class="topic">
                 <div style="padding:10px 0;color:#0070d8;cursor: pointer;" @click="back">返回上一层</div>
                 <div class="topic-item">
-                    <div class="item-name">单选题</div>
+                    <!-- <div class="item-name">单选题</div> -->
                     <div class="topic-content-wrapper">
                         <ul class="topic-content-ul">
-                            <li v-if="!radioData.length" style="color: #999999;text-align:center;margin-top:1vh">无此项题</li>
-                            <li v-for="(dan,di) in radioData" :key="di">
-                                <div class="item-mess">
-                                    <div style="margin:0 0 1vh -1vh;">
-                                        {{di+1}}、<div v-html="dan.subject.title">{{dan.subject.title}}</div>
-                                        <span>({{dan.subject.fraction}}分)</span>
+                            <li v-if="!resultData.length" style="color: #999999;text-align:center;margin-top:1vh">无此项题</li>
+                            <li v-for="(item,index) in resultData" :key="index">
+                                <!-- 单选 -->
+                                <div v-if="item.subject.type == 1" class="item-mess">
+                                    <div style="margin:0 0 0vh 1vh;">
+                                        {{index+1}}、<div v-html="item.subject.title">{{item.subject.title}}</div>
+                                        <span>({{item.subject.fraction}}分)</span>
                                     </div>
-                                    <div>A. {{dan.subject.a}}</div>
-                                    <div>B. {{dan.subject.b}}</div>
-                                    <div>C. {{dan.subject.c}}</div>
-                                    <div>D. {{dan.subject.d}}</div>
+                                    <div style="margin-top:1vh">A. {{item.subject.a}}</div>
+                                    <div>B. {{item.subject.b}}</div>
+                                    <div>C. {{item.subject.c}}</div>
+                                    <div>D. {{item.subject.d}}</div>
                                     <div style="margin:1vh 0 0 -1vh">
-                                        <div>学生答案: <span :class="dan.correct == 0 ? 'green' : 'red'">{{dan.user_answer}}</span></div>
-                                        <div style="margin-top:10px">正确答案: {{dan.answer}}</div>
+                                        <div>学生答案：<span :class="item.correct == 0 ? 'green' : 'red'">{{item.user_answer}}</span></div>
+                                        <div>得分：<span style="color:green;font-weight:600">{{item.score}}</span> 分</div>
+                                        <div style="margin-top:10px">正确答案：{{item.answer}}</div>
                                     </div>
                                 </div>
-                            </li>
-                        </ul>
-                        <div class="item-line">
-                            <img src='../../../assets/img/line2.png' alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="topic-item">
-                    <div class="item-name">多选题</div>
-                    <div class="topic-content-wrapper">
-                        <ul class="topic-content-ul">
-                            <li v-if="!checkData.length" style="color: #999999;text-align:center;margin-top:1vh">无此项题</li>
-                            <li v-for="(duo,du) in checkData" :key="du">
-                                <div class="item-mess">
-                                    <div style="display:flex;margin:0 0 1vh -1vh">
-                                        {{du+1}}、<div v-html="duo.subject.title">{{duo.subject.title}}</div>
+                                <!-- 多选 -->
+                                <div v-if="item.subject.type == 2" class="item-mess">
+                                    <div style="display:flex;margin:0 0 0vh -1vh">
+                                        {{index+1}}、<div v-html="item.subject.title">{{item.subject.title}}</div>
+                                        <span>({{item.subject.fraction}}分)</span>
                                     </div>
-                                    <span>({{duo.subject.fraction}}分)</span>
-                                    <div>A. {{duo.subject.a}}</div>
-                                    <div>B. {{duo.subject.b}}</div>
-                                    <div>C. {{duo.subject.c}}</div>
-                                    <div>D. {{duo.subject.d}}</div>
-                                    <div v-if="duo.subject.e">E. {{duo.subject.e}}</div>
-                                    <div v-if="duo.subject.f">F. {{duo.subject.f}}</div>
-                                    <div v-if="duo.subject.g">G. {{duo.subject.g}}</div>
-                                    <div v-if="duo.subject.h">H. {{duo.subject.h}}</div>
+                                    <div style="margin-top:1vh">A. {{item.subject.a}}</div>
+                                    <div>B. {{item.subject.b}}</div>
+                                    <div>C. {{item.subject.c}}</div>
+                                    <div>D. {{item.subject.d}}</div>
+                                    <div v-if="item.subject.e">E. {{item.subject.e}}</div>
+                                    <div v-if="item.subject.f">F. {{item.subject.f}}</div>
+                                    <div v-if="item.subject.g">G. {{item.subject.g}}</div>
+                                    <div v-if="item.subject.h">H. {{item.subject.h}}</div>
                                     <div style="margin:1vh 0 0 -1vh">
-                                        <div>学生答案: 
-                                            <span v-for="(d, di) in duo.user_answer" :key="di" style="margin-right:1vw"
-                                                  :class="duoCorrect(d,duo.answer) ? 'green' : 'red'">
+                                        <div>学生答案：
+                                            <span v-for="(d, di) in item.user_answer" :key="di" style="margin-right:1vw"
+                                                  :class="duoCorrect(d,item.answer) ? 'green' : 'red'">
                                                 {{d}}
                                             </span>
                                         </div>
-                                        <div style="margin-top:10px">正确答案:
-                                            <span v-for="(u, ui) in duo.answer" :key="ui" style="margin-right:1vw">{{u}}</span>
+                                        <div>得分：<span style="color:green;font-weight:600">{{item.score}}</span> 分</div>
+                                        <div style="margin-top:10px">正确答案：
+                                            <span v-for="(u, ui) in item.answer" :key="ui" style="margin-right:1vw">{{u}}</span>
                                         </div>
                                     </div>
                                 </div>
-                            </li>
-                        </ul>
-                        <div class="item-line">
-                            <img src='../../../assets/img/line2.png' alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="topic-item">
-                    <div class="item-name">填空题</div>
-                    <div class="topic-content-wrapper">
-                        <ul class="topic-content-ul">
-                            <li v-if="!gapData.length" style="color: #999999;text-align:center;margin-top:1vh">无此项题</li>
-                            <li v-for="(tian,ti) in gapData" :key="ti">
-                                <div class="item-mess">
-                                    <div style="display:flex;flex-wrap:wrap; margin:0 0 1vh -1vh">
-                                        {{ti+1}}、<div v-html="tian.subject.title">{{tian.subject.title}}</div>
-                                        <span>({{tian.subject.fraction}}分)</span>
-                                        <div style="margin-left:15px;color:red">误差{{tian.subject.error}}</div>
+                                <!-- 填空 -->
+                                <div v-if="item.subject.type == 3" class="item-mess">
+                                    <div style="display:flex;flex-wrap:wrap; margin:0 0 0vh -1vh">
+                                        {{index+1}}、<div v-html="item.subject.title">{{item.subject.title}}</div>
+                                        <span>({{item.subject.fraction}}分)</span>
+                                        <div style="margin-left:15px;color:red">误差{{item.subject.error}}</div>
                                     </div>
-                                    <div>
-                                        <div>学生答案: 
-                                            <span v-for="(t, ti) in  tian.user_answer" :key="ti" style="margin-right:1vw"
-                                                  :class="tianCorrect(t,ti,tian.answer,tian.subject.error) ? 'green' : 'red'">
+                                    <div style="margin-top:1vh">
+                                        <div>学生答案：
+                                            <span v-for="(t, ti) in  item.user_answer" :key="ti" style="margin-right:1vw"
+                                                  :class="tianCorrect(t,ti,item.answer,item.subject.error) ? 'green' : 'red'">
                                                 {{t}}
                                             </span>
                                         </div>
-                                        <div style="margin-top:10px;">正确答案:
-                                            <span v-for="(tt,tti) in tian.answer" :key="tti" style="margin-right:1vw">{{tt}}</span>
+                                        <div>得分：<span style="color:green;font-weight:600">{{item.score}}</span> 分</div>
+                                        <div style="margin-top:10px;">正确答案：
+                                            <span v-for="(tt,tti) in item.answer" :key="tti" style="margin-right:1vw">{{tt}}</span>
                                         </div>
                                     </div>
                                 </div>
                             </li>
                         </ul>
-                        <div class="item-line">
-                            <img src='../../../assets/img/line2.png' alt="">
-                        </div>
                     </div>
                 </div>
+               
             </div>
         </div>
     </div>
@@ -122,6 +100,7 @@ export default {
             isShow: false,
             cancelShow: true,
             allow: false,
+            resultData: [],
             radioData: [],//单选答案
             checkData: [],//多选答案
             gapData: [],//填空答案
@@ -160,9 +139,10 @@ export default {
                 s_type: this.answerData.s_type_a
             }
             this.axios.post('/admin/user/get_user_answer_card', data).then(res =>{
-                this.radioData = res.data.data.dan;
-                this.checkData = res.data.data.duo;
-                this.gapData = res.data.data.tian;
+                // this.radioData = res.data.data.dan;
+                // this.checkData = res.data.data.duo;
+                // this.gapData = res.data.data.tian;
+                this.resultData = res.data.data;
             }).catch(err =>{
                 console.log(err)
             })
