@@ -152,7 +152,7 @@ export default {
             }
         },
          _drawLine1(){
-        // 基于准备好的dom，初始化echarts实例
+            // 基于准备好的dom，初始化echarts实例
             let myChart = this.$echarts.init(document.getElementById('myChart1'))
             const data = []
             this.ratioMess.forEach((ele,index) =>{
@@ -162,23 +162,21 @@ export default {
                 data[index]['itemStyle'] = {
                     color: ele.color, 
                     emphasis: {
-                                // shadowBlur: 200,
-                                shadowColor: 'rgba(0, 0, 0, 0.7)'
-                            }}
+                        // shadowBlur: 200,
+                        shadowColor: 'rgba(0, 0, 0, 0.7)'
+                    }}
             })
             data.reverse() //逆序
             const option = {
                 textStyle: {
                     "fontSize": 14
                 },
-                series : [
-                    {
+                series : [{
                         name: '访问来源',
                         type: 'pie',
                         radius: '55%',
                         data
-                    }
-                ]
+                    }]
             };
             myChart.setOption(option);
         },
@@ -197,14 +195,12 @@ export default {
                 textStyle: {
                     "fontSize": 14
                 },
-                series : [
-                    {
+                series : [{
                         name: '访问来源',
                         type: 'pie',
                         radius: '55%',
                         data
-                    }
-                ]
+                    }]
             };
             myChart.setOption(option);
         },

@@ -27,6 +27,9 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <div class="paging">
+                    <el-pagination background @current-change='currentPage' layout="prev, pager, next" :total="pages"></el-pagination>
+                </div>
             </div>
         </div>
         <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
@@ -50,7 +53,8 @@ export default {
             tableData: [],
             myTableData: [],
             dialogVisible: false,
-            recordID: ''
+            recordID: '',
+            pages: 1
         }
     },
     methods: {
@@ -64,15 +68,22 @@ export default {
         deleteTrue(){
             this.axios.post('/admin/user/delete_ksap', {id: this.recordID}).then(res =>{
                 this.$message({
-                    message: res.data.msg
+                    message: res.data.msg,
+                    type: 'success'
                 })
-                this._getData()
+                this._getData();
                 this.dialogVisible = false;
             })
         },
+        // 用户点击分页数字 
+        currentPage(index){
+            this.myTableData = this.tableData.slice(index*6-6,index*6)
+        },
         _getData(){
             this.axios.post('/admin/user/get_kaoshi_anpai',{b_id: this.id}).then(res =>{
-                this.myTableData = res.data.data
+                this.tableData = res.data.data;
+                this.pages =  Math.ceil(this.tableData.length*10/6);
+                this.myTableData = this.tableData.slice(0,6);
             })
         }
     },
@@ -111,5 +122,9 @@ export default {
     }
     .record-wrapper .el-button.el-button--text.el-button--small .iconfont{
         margin-right: 4px;
+    }
+    .record-wrapper .paging{
+        text-align: center;
+        margin: 4vh 0 0;
     }
 </style>

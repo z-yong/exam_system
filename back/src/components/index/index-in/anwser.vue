@@ -87,11 +87,11 @@
                                     <div>
                                         <div>学生答案: 
                                             <span v-for="(t, ti) in  tian.user_answer" :key="ti" style="margin-right:1vw"
-                                                  :class="tianCorrect(t,tian.answer,tian.subject.error) ? 'green' : 'red'">
+                                                  :class="tianCorrect(t,ti,tian.answer,tian.subject.error) ? 'green' : 'red'">
                                                 {{t}}
                                             </span>
                                         </div>
-                                        <div style="margin-top:10px">正确答案:
+                                        <div style="margin-top:10px;">正确答案:
                                             <span v-for="(tt,tti) in tian.answer" :key="tti" style="margin-right:1vw">{{tt}}</span>
                                         </div>
                                     </div>
@@ -116,8 +116,9 @@ export default {
         }
     },
     data(){
-        return{
+        return {
             id: 0,
+            // menuList: ['技能','理论'],
             isShow: false,
             cancelShow: true,
             allow: false,
@@ -141,15 +142,13 @@ export default {
             }
             return A;
         },
-        //验证填空题学生答案的每一项与正确答案的每一项是否一致
-        tianCorrect(item, arr, err){
+        //验证填空题学生答案的每一项与正确答案相同下标的那一项是否一致
+        tianCorrect(item, index, arr, err){
             let A = false;
             const answer = parseFloat(item);
-            for (const el of arr) {
-                let num =  parseFloat(err)/100;
-                if(answer >= parseFloat(el)-num && answer <= parseFloat(el)+num){
-                    A = true;
-                }
+            const num =  parseFloat(err)/100;
+            if(answer >= parseFloat(arr[index])-num && answer <= parseFloat(arr[index])+num){
+                A = true;
             }
             return A;
         },

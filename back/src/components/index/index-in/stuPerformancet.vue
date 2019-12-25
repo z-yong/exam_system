@@ -142,7 +142,6 @@ export default {
         },
         _getTheoryData(){
             this.axios.post('/admin/paper/get_answer_list',{id: this.id}).then(res =>{
-                console.log(res)
                 res.data.data.forEach((ele,index) =>{
                     ele.serial = index+1
                 })

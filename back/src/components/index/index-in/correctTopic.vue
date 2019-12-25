@@ -57,9 +57,9 @@ export default {
         back(){
             this.$emit('back')
         },
-        changeScore(callback,fraction){
-            // console.log(f,e)
-        },
+        // changeScore(callback,fraction){
+        //     // console.log(f,e)
+        // },
         submit(){
             const data = this.ids;
             const timo = [];
