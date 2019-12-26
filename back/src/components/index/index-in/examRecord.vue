@@ -63,19 +63,20 @@ export default {
             this.$emit('back')
         },
         exportData(id){
-            this.axios.post('/admin/user/get_export',{ id }).then(res =>{
-                if(res.data.data.code && res.data.data.code == 200){
-                    this.$message({
-                        message: res.data.msg,
-                        type: 'success'
-                    })
-                }else{
-                    this.$message({
-                        message: res.data.msg,
-                        type: 'error'
-                    })
-                }
-            })
+            window.location.href = '/admin/user/get_export?id='+id;//下载word文件
+            // this.axios.post('/admin/user/get_export',{ id }).then(res =>{
+            //     if(res.data.data.code && res.data.data.code == 200){
+            //         this.$message({
+            //             message: res.data.msg,
+            //             type: 'success'
+            //         })
+            //     }else{
+            //         this.$message({
+            //             message: res.data.msg,
+            //             type: 'error'
+            //         })
+            //     }
+            // })
         },
         deleteData(id){
             this.recordID = id;
