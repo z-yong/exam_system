@@ -62,21 +62,8 @@ export default {
         back(){
             this.$emit('back')
         },
-        exportData(id){
-            window.location.href = '/admin/user/get_export?id='+id;//下载word文件
-            // this.axios.post('/admin/user/get_export',{ id }).then(res =>{
-            //     if(res.data.data.code && res.data.data.code == 200){
-            //         this.$message({
-            //             message: res.data.msg,
-            //             type: 'success'
-            //         })
-            //     }else{
-            //         this.$message({
-            //             message: res.data.msg,
-            //             type: 'error'
-            //         })
-            //     }
-            // })
+        exportData(id){//下载word文件
+            window.location.href = '/admin/user/get_export?id='+id;
         },
         deleteData(id){
             this.recordID = id;
