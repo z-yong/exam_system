@@ -281,13 +281,13 @@ export default {
                         let stringSeconds = seconds;
                         let stringMinute = minute
                         if(stringSeconds < 10){
-                            stringSeconds = '0' + stringSeconds
+                            stringSeconds = '0' + stringSeconds;
                         }
                         if(stringSeconds == 60){
-                            stringSeconds = '00'
+                            stringSeconds = '00';
                         }
                         if(stringMinute < 10){
-                            stringMinute = '0' + stringMinute
+                            stringMinute = '0' + stringMinute;
                         }
                         this.countDown = stringMinute + ':' + stringSeconds;
                         // 每次都要进行存储
